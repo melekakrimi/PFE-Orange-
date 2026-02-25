@@ -1,0 +1,157 @@
+# agents/agent_analyste.py
+import os
+import sys
+import json
+from dotenv import load_dotenv
+from langchain_groq import ChatGroq
+from langchain_core.prompts import PromptTemplate
+
+# Astuce pour lier les dossiers : on va chercher le prompt dans le dossier 'prompts'
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from prompts.prompt_analyste import TEMPLATE_ANALYSTE
+
+# Charger les variables d'environnement (Clé API)
+load_dotenv()
+
+class AgentAnalyste:
+    """
+    Agent 1 : Analyse les besoins d'un client B2B (Fibre FTTO et Microsoft)
+    """
+    
+    def __init__(self):
+        # 1. Création du modèle IA
+        self.llm = ChatGroq(
+            model="llama-3.3-70b-versatile",
+            api_key=os.getenv("GROQ_API_KEY"),
+            temperature=0.0 # Température 0 pour un JSON parfait
+        )
+        
+        # 2. Chargement du Prompt depuis le fichier séparé
+        self.prompt = PromptTemplate(
+            input_variables=["description_client"],
+            template=TEMPLATE_ANALYSTE
+        )
+        
+        # 3. Connexion du Prompt à l'IA
+        self.chain = self.prompt | self.llm
+    
+    def analyser(self, description_client: str) -> dict:
+        """Analyse la description et retourne un dictionnaire propre"""
+        try:
+            # Appel à l'IA
+            resultat = self.chain.invoke({"description_client": description_client})
+            resultat_clean = resultat.content.strip()
+            
+            # Nettoyage pour s'assurer qu'on a bien un JSON
+            if resultat_clean.startswith("```"):
+                resultat_clean = resultat_clean.split("```")[1]
+                if resultat_clean.startswith("json"):
+                    resultat_clean = resultat_clean[4:]
+            resultat_clean = resultat_clean.strip()
+            
+            # Conversion en vrai dictionnaire Python
+            analyse = json.loads(resultat_clean)
+            #  VALIDATION (nouveau)
+            if self._valider_analyse(analyse):
+                print(" Analyse validée")
+                return analyse
+            else:
+                print("  Analyse incomplète mais retournée")
+            return analyse
+            
+        except json.JSONDecodeError as e:
+            print(f"❌ Erreur JSON : {e}")
+            print(f"Résultat brut : {resultat_clean}")
+            return {"erreur": "JSON invalide", "brut": resultat_clean}
+        except Exception as e:
+            print(f"❌ Erreur : {e}")
+            return {"erreur": str(e)}
+    
+    def _valider_analyse(self, analyse: dict) -> bool:
+        """Vérifie que l'analyse contient les champs essentiels"""
+        champs_requis = ["besoins_fibre", "besoins_microsoft", "urgence"]
+        
+        for champ in champs_requis:
+            if champ not in analyse:
+                print(f"⚠️  Champ manquant : {champ}")
+                return False
+        
+        # Vérifier la structure de besoins_fibre
+        if "demande_fibre" not in analyse["besoins_fibre"]:
+            print("⚠️  besoins_fibre.demande_fibre manquant")
+            return False
+        
+        # Vérifier la structure de besoins_microsoft
+        if "demande_microsoft" not in analyse["besoins_microsoft"]:
+            print("⚠️  besoins_microsoft.demande_microsoft manquant")
+            return False
+        
+        return True
+
+# ============================================
+# TESTS
+# ============================================
+if __name__ == "__main__":
+    
+    print(" Tests de l'Agent 1 - Analyste Fibre & Microsoft")
+    print("=" * 70)
+    
+    agent = AgentAnalyste()
+    
+    # Test 1 : Fibre + Microsoft
+    print("\n TEST 1 : Startup (Fibre + Microsoft)")
+    print("-" * 70)
+    description1 = """
+    Bonjour, c'est l'entreprise DevSoft. On déménage.
+    Il nous faut la fibre avec 200 Mega minimum. 
+    Le boîtier Orange est à 120 mètres de nos locaux.
+    Aussi, on a recruté, il nous faut 25 licences Microsoft 365 
+    pour l'équipe avec Word et Teams.
+    C'est urgent. Budget total : 1500 TND/mois.
+    """
+    analyse1 = agent.analyser(description1)
+    print(json.dumps(analyse1, indent=2, ensure_ascii=False))
+    
+    # Test 2 : Juste Fibre
+    print("\n\n TEST 2 : Restaurant (Fibre uniquement)")
+    print("-" * 70)
+    description2 = """
+    Restaurant La Belle Vue, on veut juste internet rapide 
+    pour les caisses et le WiFi clients. 100 Mega suffit.
+    Distance du boîtier Orange : environ 80 mètres.
+    Budget : 400 TND/mois max.
+    """
+    analyse2 = agent.analyser(description2)
+    print(json.dumps(analyse2, indent=2, ensure_ascii=False))
+    
+    # Test 3 : Juste Microsoft
+    print("\n\n TEST 3 : Cabinet comptable (Microsoft uniquement)")
+    print("-" * 70)
+    description3 = """
+    Cabinet d'expertise comptable Tunis Audit.
+    On a déjà internet, mais on veut passer sur Microsoft 365 
+    pour nos 12 comptables. Il nous faut Excel, Word, et le cloud 
+    pour partager les dossiers. Budget : 500 TND/mois.
+    """
+    analyse3 = agent.analyser(description3)
+    print(json.dumps(analyse3, indent=2, ensure_ascii=False))
+    
+    # Test 4 : Cas complexe
+    print("\n\n TEST 4 : PME multi-sites (Cas complexe)")
+    print("-" * 70)
+    description4 = """
+    Entreprise LogiTrans, secteur transport, 3 bureaux 
+    (Tunis, Sfax, Sousse). On veut la fibre dans les 3 sites.
+    Débit minimum 500 Mbps. Distance estimée : 200m pour Tunis,
+    150m pour Sfax, 180m pour Sousse.
+    
+    Aussi, 80 employés ont besoin de Microsoft 365 avec Teams 
+    pour les réunions à distance entre sites.
+    
+    Budget global : 5000 TND/mois. C'est assez urgent.
+    """
+    analyse4 = agent.analyser(description4)
+    print(json.dumps(analyse4, indent=2, ensure_ascii=False))
+    
+    print("\n\n" + "=" * 70)
+    print(" Tous les tests terminés !")
