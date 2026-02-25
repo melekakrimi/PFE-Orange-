@@ -51,20 +51,20 @@ class AgentAnalyste:
             
             # Conversion en vrai dictionnaire Python
             analyse = json.loads(resultat_clean)
-            #  VALIDATION (nouveau)
+            #  VALIDATION
             if self._valider_analyse(analyse):
                 print(" Analyse validée")
                 return analyse
             else:
-                print("  Analyse incomplète mais retournée")
+                print("  Analyse incomplète ")
             return analyse
             
         except json.JSONDecodeError as e:
-            print(f"❌ Erreur JSON : {e}")
+            print(f" Erreur JSON : {e}")
             print(f"Résultat brut : {resultat_clean}")
             return {"erreur": "JSON invalide", "brut": resultat_clean}
         except Exception as e:
-            print(f"❌ Erreur : {e}")
+            print(f" Erreur : {e}")
             return {"erreur": str(e)}
     
     def _valider_analyse(self, analyse: dict) -> bool:
@@ -73,17 +73,17 @@ class AgentAnalyste:
         
         for champ in champs_requis:
             if champ not in analyse:
-                print(f"⚠️  Champ manquant : {champ}")
+                print(f"  Champ manquant : {champ}")
                 return False
         
         # Vérifier la structure de besoins_fibre
         if "demande_fibre" not in analyse["besoins_fibre"]:
-            print("⚠️  besoins_fibre.demande_fibre manquant")
+            print("  besoins_fibre.demande_fibre manquant")
             return False
         
         # Vérifier la structure de besoins_microsoft
         if "demande_microsoft" not in analyse["besoins_microsoft"]:
-            print("⚠️  besoins_microsoft.demande_microsoft manquant")
+            print("  besoins_microsoft.demande_microsoft manquant")
             return False
         
         return True
