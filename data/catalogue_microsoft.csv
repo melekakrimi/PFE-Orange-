@@ -1,0 +1,663 @@
+id,famille,nom_service,product_id,prix_mensuel_tnd,cout_revient_tnd,marge_pct,duree
+1,Exchange,Exchange Online (Plan 1),CFQ7TTC0LH16,12.1,8.47,30,P1M
+2,Exchange,Exchange Online (Plan 1),CFQ7TTC0LH16,127.01,88.91,30,P1Y
+3,Exchange,Exchange Online (Plan 2),CFQ7TTC0LH1P,254.02,177.81,30,P1Y
+4,Exchange,Exchange Online (Plan 2),CFQ7TTC0LH1P,24.19,16.93,30,P1M
+5,Exchange,Exchange Online Archiving for Exchange Online,CFQ7TTC0LH0J,2.55,1.78,30,P1M
+6,Exchange,Exchange Online Archiving for Exchange Online,CFQ7TTC0LH0J,26.84,18.79,30,P1Y
+7,Exchange,Exchange Online Archiving for Exchange Online,CFQ7TTC0LH0J,95.26,66.68,30,P1Y
+8,Exchange,Exchange Online Archiving for Exchange Online,CFQ7TTC0LH0J,9.07,6.35,30,P1M
+9,Exchange,Exchange Online Archiving for Exchange Server,CFQ7TTC0LHQ5,95.26,66.68,30,P1Y
+10,Exchange,Exchange Online Archiving for Exchange Server,CFQ7TTC0LHQ5,9.07,6.35,30,P1M
+11,Exchange,Exchange Online Kiosk,CFQ7TTC0LH0L,6.05,4.23,30,P1M
+12,Exchange,Exchange Online Kiosk,CFQ7TTC0LH0L,63.5,44.45,30,P1Y
+13,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,13.01,9.11,30,P1M
+14,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,0.0,0.0,30,P1Y
+15,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,17.55,12.28,30,P1M
+16,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,13.01,9.11,30,P1M
+17,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,184.09,128.86,30,P1Y
+18,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,136.46,95.52,30,P1Y
+19,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,17.55,12.28,30,P1M
+20,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,184.09,128.86,30,P1Y
+21,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,0.0,0.0,30,P1M
+22,Microsoft 365,Microsoft 365 A3,CFQ7TTC0LHPL,136.46,95.52,30,P1Y
+23,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,24.19,16.93,30,P1M
+24,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,342.85,240.0,30,P1Y
+25,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,254.02,177.81,30,P1Y
+26,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,342.85,240.0,30,P1Y
+27,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,32.67,22.87,30,P1M
+28,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,254.02,177.81,30,P1Y
+29,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,0.0,0.0,30,P1Y
+30,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,24.19,16.93,30,P1M
+31,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,0.0,0.0,30,P1M
+32,Microsoft 365,Microsoft 365 A5,CFQ7TTC0LHPJ,32.67,22.87,30,P1M
+33,Microsoft 365,Microsoft 365 A5 for students use benefit,CFQ7TTC0LHP8,0.0,0.0,30,P1Y
+34,Microsoft 365,Microsoft 365 A5 for students use benefit,CFQ7TTC0LHP8,0.0,0.0,30,P1M
+35,Microsoft 365,Microsoft 365 Apps for business,CFQ7TTC0LH1G,25.11,17.58,30,P1M
+36,Microsoft 365,Microsoft 365 Apps for business,CFQ7TTC0LH1G,263.47,184.43,30,P1Y
+37,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,107.35,75.14,30,P1Y
+38,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,55.57,38.9,30,P1Y
+39,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,5.29,3.7,30,P1M
+40,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,10.21,7.15,30,P1M
+41,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,0.0,0.0,30,P1M
+42,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,72.95,51.06,30,P1Y
+43,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,6.96,4.87,30,P1M
+44,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,381.02,266.71,30,P1Y
+45,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,36.29,25.4,30,P1M
+46,Microsoft 365,Microsoft 365 Apps for enterprise,CFQ7TTC0LGZT,0.0,0.0,30,P1Y
+47,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,4.54,3.18,30,P1M
+48,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,0.0,0.0,30,P1M
+49,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,0.0,0.0,30,P1Y
+50,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,0.0,0.0,30,P1M
+51,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,0.0,0.0,30,P1M
+52,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,158.76,111.13,30,P1Y
+53,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,15.12,10.58,30,P1M
+54,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,0.0,0.0,30,P1Y
+55,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,47.63,33.34,30,P1Y
+56,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,3.4,2.38,30,P1M
+57,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,35.91,25.14,30,P1Y
+58,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,0.0,0.0,30,P1Y
+59,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,63.5,44.45,30,P1Y
+60,Microsoft 365,Microsoft 365 Audio Conferencing,CFQ7TTC0LHSL,6.05,4.23,30,P1M
+61,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,1008.13,705.69,30,P1Y
+62,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,18.14,12.7,30,P1M
+63,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,0.0,0.0,30,P1M
+64,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,1071.63,750.14,30,P1Y
+65,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,0.0,0.0,30,P1Y
+66,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,139.86,97.9,30,P1Y
+67,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,190.51,133.36,30,P1Y
+68,Microsoft 365,Microsoft 365 Business Basic,CFQ7TTC0LH18,13.29,9.3,30,P1M
+69,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,56.83,39.78,30,P1M
+70,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,698.54,488.98,30,P1Y
+71,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,66.53,46.57,30,P1M
+72,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,18.71,13.1,30,P1M
+73,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,196.56,137.59,30,P1Y
+74,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,1448.5,1013.95,30,P1Y
+75,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,1347.19,943.03,30,P1Y
+76,Microsoft 365,Microsoft 365 Business Premium,CFQ7TTC0LCHC,596.48,417.54,30,P1Y
+77,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,28.1,19.67,30,P1M
+78,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,1147.23,803.06,30,P1Y
+79,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,1045.55,731.88,30,P1Y
+80,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,37.8,26.46,30,P1M
+81,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,396.9,277.83,30,P1Y
+82,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,10.21,7.15,30,P1M
+83,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,107.35,75.14,30,P1Y
+84,Microsoft 365,Microsoft 365 Business Standard,CFQ7TTC0LDPB,294.84,206.39,30,P1Y
+85,Microsoft 365,Microsoft 365 Copilot,CFQ7TTC0MM8R,657.34,460.14,30,P1Y
+86,Microsoft 365,Microsoft 365 Copilot,CFQ7TTC0MM8R,750.33,525.23,30,P1Y
+87,Microsoft 365,Microsoft 365 Copilot,CFQ7TTC0MM8R,657.34,460.14,30,P1Y
+88,Microsoft 365,Microsoft 365 Copilot,CFQ7TTC0MM8R,910.98,637.69,30,P1Y
+89,Microsoft 365,Microsoft 365 Copilot,CFQ7TTC0MM8R,1071.63,750.14,30,P1Y
+90,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,1143.07,800.15,30,P1Y
+91,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,30.62,21.43,30,P1M
+92,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,321.68,225.18,30,P1Y
+93,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,108.86,76.2,30,P1M
+94,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,871.67,610.17,30,P1Y
+95,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,9.07,6.35,30,P1M
+96,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,108.86,76.2,30,P1M
+97,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,9.07,6.35,30,P1M
+98,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,871.67,610.17,30,P1Y
+99,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,95.26,66.68,30,P1Y
+100,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,1143.07,800.15,30,P1Y
+101,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,83.0,58.1,30,P1M
+102,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,95.26,66.68,30,P1Y
+103,Microsoft 365,Microsoft 365 E3,CFQ7TTC0LFLX,83.0,58.1,30,P1M
+104,Microsoft 365,Microsoft 365 E5,CFQ7TTC0LFLZ,146.51,102.56,30,P1M
+105,Microsoft 365,Microsoft 365 E5,CFQ7TTC0LFLZ,1538.46,1076.92,30,P1Y
+106,Microsoft 365,Microsoft 365 E5,CFQ7TTC0LFLZ,1809.86,1266.9,30,P1Y
+107,Microsoft 365,Microsoft 365 E5,CFQ7TTC0LFLZ,172.37,120.66,30,P1M
+108,Microsoft 365,Microsoft 365 E5,CFQ7TTC0LFLZ,77.55,54.28,30,P1M
+109,Microsoft 365,Microsoft 365 E5,CFQ7TTC0LFLZ,814.59,570.21,30,P1Y
+110,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,3.06,2.14,30,P1M
+111,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,254.02,177.81,30,P1Y
+112,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,5.29,3.7,30,P1M
+113,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,17.7,12.39,30,P1M
+114,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,254.02,177.81,30,P1Y
+115,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,32.13,22.49,30,P1Y
+116,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,24.19,16.93,30,P1M
+117,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,72.95,51.06,30,P1Y
+118,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,185.6,129.92,30,P1Y
+119,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,39.31,27.52,30,P1M
+120,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,24.19,16.93,30,P1M
+121,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,10.9,7.63,30,P1M
+122,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,6.96,4.87,30,P1M
+123,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,412.78,288.95,30,P1Y
+124,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,55.57,38.9,30,P1Y
+125,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,114.16,79.91,30,P1Y
+126,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,114.16,79.91,30,P1Y
+127,Microsoft 365,Microsoft 365 F1,CFQ7TTC0MBMD,10.9,7.63,30,P1M
+128,Microsoft 365,Microsoft 365 F3,CFQ7TTC0LH05,24.19,16.93,30,P1M
+129,Microsoft 365,Microsoft 365 F3,CFQ7TTC0LH05,254.02,177.81,30,P1Y
+130,Microsoft 365,Microsoft 365 F3,CFQ7TTC0LH05,71.44,50.01,30,P1Y
+131,Microsoft 365,Microsoft 365 F3,CFQ7TTC0LH05,20.95,14.66,30,P1M
+132,Microsoft 365,Microsoft 365 F3,CFQ7TTC0LH05,6.8,4.76,30,P1M
+133,Microsoft 365,Microsoft 365 F3,CFQ7TTC0LH05,220.0,154.0,30,P1Y
+134,Autre,Microsoft Defender for Business,CFQ7TTC0HX56,4.1,2.87,30,P1M
+135,Autre,Microsoft Defender for Business,CFQ7TTC0HX56,42.71,29.9,30,P1Y
+136,Autre,Microsoft Defender for Business,CFQ7TTC0HX56,9.07,6.35,30,P1M
+137,Autre,Microsoft Defender for Business,CFQ7TTC0HX56,95.26,66.68,30,P1Y
+138,Autre,Microsoft Defender for Business servers,CFQ7TTC0QKW2,4.1,2.87,30,P1M
+139,Autre,Microsoft Defender for Business servers,CFQ7TTC0QKW2,42.71,29.9,30,P1Y
+140,Autre,Microsoft Defender for Business servers,CFQ7TTC0QKW2,95.26,66.68,30,P1Y
+141,Autre,Microsoft Defender for Business servers,CFQ7TTC0QKW2,9.07,6.35,30,P1M
+142,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,22.3,15.61,30,P1Y
+143,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,76.36,53.45,30,P1Y
+144,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,111.13,77.79,30,P1Y
+145,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,7.24,5.07,30,P1M
+146,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,31.37,21.96,30,P1Y
+147,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,2.99,2.09,30,P1M
+148,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,2.11,1.48,30,P1M
+149,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,10.58,7.41,30,P1M
+150,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,2.11,1.48,30,P1M
+151,Autre,Microsoft Defender for Cloud Apps,CFQ7TTC0LHRR,22.3,15.61,30,P1Y
+152,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,9.07,6.35,30,P1M
+153,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,1.83,1.28,30,P1M
+154,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,18.9,13.23,30,P1Y
+155,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,1.83,1.28,30,P1M
+156,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,2.55,1.78,30,P1M
+157,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,6.05,4.23,30,P1M
+158,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,26.84,18.79,30,P1Y
+159,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,18.9,13.23,30,P1Y
+160,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,63.5,44.45,30,P1Y
+161,Autre,Microsoft Defender for Endpoint P1/F1,CFQ7TTC0J1GB,95.26,66.68,30,P1Y
+162,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,10.58,7.41,30,P1M
+163,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,3.02,2.11,30,P1M
+164,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,165.19,115.63,30,P1Y
+165,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,7.15,5.0,30,P1M
+166,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,31.75,22.22,30,P1Y
+167,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,111.13,77.79,30,P1Y
+168,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,7.15,5.0,30,P1M
+169,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,15.72,11.0,30,P1M
+170,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,74.84,52.39,30,P1Y
+171,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,7.56,5.29,30,P1M
+172,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,165.19,115.63,30,P1Y
+173,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,74.84,52.39,30,P1Y
+174,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,15.72,11.0,30,P1M
+175,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,79.38,55.57,30,P1Y
+176,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,165.19,115.63,30,P1Y
+177,Autre,Microsoft Defender for Endpoint P2,CFQ7TTC0LGV0,15.72,11.0,30,P1M
+178,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,34.78,24.35,30,P1Y
+179,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,174.64,122.25,30,P1Y
+180,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,34.78,24.35,30,P1Y
+181,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,3.34,2.34,30,P1M
+182,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,117.56,82.29,30,P1Y
+183,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,78.62,55.03,30,P1Y
+184,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,7.5,5.25,30,P1M
+185,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,3.34,2.34,30,P1M
+186,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,16.63,11.64,30,P1M
+187,Autre,Microsoft Defender for Identity,CFQ7TTC0LH0D,11.18,7.83,30,P1M
+188,Autre,Microsoft Defender for IoT - EIoT Device License - add-on,CFQ7TTC0MZH6,26.84,18.79,30,P1Y
+189,Autre,Microsoft Defender for IoT - EIoT Device License - add-on,CFQ7TTC0MZH6,2.58,1.81,30,P1M
+190,Autre,Microsoft Defender for IoT - EIoT Device License - add-on,CFQ7TTC0MZH6,2.58,1.81,30,P1M
+191,Autre,Microsoft Defender for IoT - EIoT Device License - add-on,CFQ7TTC0MZH6,2.58,1.81,30,P1M
+192,Autre,Microsoft Defender for IoT - EIoT Device License - add-on,CFQ7TTC0MZH6,26.84,18.79,30,P1Y
+193,Autre,Microsoft Defender for IoT - EIoT Device License - add-on,CFQ7TTC0MZH6,26.84,18.79,30,P1Y
+194,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,2222.64,1555.85,30,P1Y
+195,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,4762.8,3333.96,30,P1Y
+196,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,47628.0,33339.6,30,P1Y
+197,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,47628.0,33339.6,30,P1Y
+198,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,4762.8,3333.96,30,P1Y
+199,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,7938.0,5556.6,30,P1Y
+200,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,2222.64,1555.85,30,P1Y
+201,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,2222.64,1555.85,30,P1Y
+202,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,12700.8,8890.56,30,P1Y
+203,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,12700.8,8890.56,30,P1Y
+204,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,7938.0,5556.6,30,P1Y
+205,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,12700.8,8890.56,30,P1Y
+206,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,7938.0,5556.6,30,P1Y
+207,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,4762.8,3333.96,30,P1Y
+208,Autre,Microsoft Defender for IoT - OT Site License,CFQ7TTC0MLTF,47628.0,33339.6,30,P1Y
+209,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,2.11,1.48,30,P1M
+210,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,63.5,44.45,30,P1Y
+211,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,6.05,4.23,30,P1M
+212,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,28.73,20.11,30,P1Y
+213,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,44.6,31.22,30,P1Y
+214,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,42.71,29.9,30,P1Y
+215,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,4.1,2.87,30,P1M
+216,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,0.0,0.0,30,P1M
+217,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,4.22,2.95,30,P1M
+218,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,0.0,0.0,30,P1Y
+219,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,2.71,1.9,30,P1M
+220,Microsoft 365,Microsoft Defender for Office 365 (Plan 1),CFQ7TTC0LH04,22.3,15.61,30,P1Y
+221,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,6.65,4.66,30,P1M
+222,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,69.93,48.95,30,P1Y
+223,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,15.12,10.58,30,P1M
+224,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,6.8,4.76,30,P1M
+225,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,4.54,3.18,30,P1M
+226,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,158.76,111.13,30,P1Y
+227,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,47.63,33.34,30,P1Y
+228,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,108.11,75.68,30,P1Y
+229,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,10.27,7.19,30,P1M
+230,Microsoft 365,Microsoft Defender for Office 365 (Plan 2),CFQ7TTC0LHXH,71.44,50.01,30,P1Y
+231,Autre,Microsoft Defender Suite,CFQ7TTC0LHQB,381.02,266.71,30,P1Y
+232,Autre,Microsoft Defender Suite,CFQ7TTC0LHQB,16.32,11.42,30,P1M
+233,Autre,Microsoft Defender Suite,CFQ7TTC0LHQB,171.61,120.13,30,P1Y
+234,Autre,Microsoft Defender Suite,CFQ7TTC0LHQB,36.29,25.4,30,P1M
+235,Autre,Microsoft Defender Suite Edu,CFQ7TTC0J1KP,88.83,62.18,30,P1Y
+236,Autre,Microsoft Defender Suite Edu,CFQ7TTC0J1KP,104.71,73.3,30,P1Y
+237,Autre,Microsoft Defender Suite Edu,CFQ7TTC0J1KP,0.0,0.0,30,P1M
+238,Autre,Microsoft Defender Suite Edu,CFQ7TTC0J1KP,0.0,0.0,30,P1Y
+239,Autre,Microsoft Defender Suite Edu,CFQ7TTC0J1KP,8.47,5.93,30,P1M
+240,Autre,Microsoft Defender Suite Edu,CFQ7TTC0J1KP,9.99,6.99,30,P1M
+241,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,6.05,4.23,30,P1M
+242,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,6.05,4.23,30,P1M
+243,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,12.85,8.99,30,P1Y
+244,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,63.5,44.45,30,P1Y
+245,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,1.83,1.28,30,P1M
+246,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,1.35,0.94,30,P1M
+247,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,63.5,44.45,30,P1Y
+248,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,0.91,0.64,30,P1M
+249,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,63.5,44.45,30,P1Y
+250,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,1.7,1.19,30,P1M
+251,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,1.2,0.84,30,P1M
+252,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,17.77,12.44,30,P1Y
+253,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,14.36,10.05,30,P1Y
+254,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,6.05,4.23,30,P1M
+255,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,95.26,66.68,30,P1Y
+256,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,6.05,4.23,30,P1M
+257,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,9.07,6.35,30,P1M
+258,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,18.9,13.23,30,P1Y
+259,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,63.5,44.45,30,P1Y
+260,Autre,Microsoft Defender Vulnerability Management,CFQ7TTC0JPGV,9.45,6.61,30,P1Y
+261,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,12.1,8.47,30,P1M
+262,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,14.21,9.95,30,P1M
+263,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,8.16,5.71,30,P1M
+264,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,127.01,88.91,30,P1Y
+265,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,18.9,13.23,30,P1Y
+266,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,149.31,104.52,30,P1Y
+267,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,222.26,155.58,30,P1Y
+268,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,25.33,17.73,30,P1Y
+269,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,1.83,1.28,30,P1M
+270,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,2.43,1.7,30,P1M
+271,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,85.81,60.07,30,P1Y
+272,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,33.26,23.28,30,P1Y
+273,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,44.6,31.22,30,P1Y
+274,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,3.18,2.23,30,P1M
+275,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,4.22,2.95,30,P1M
+276,Autre,Microsoft Entra ID Governance,CFQ7TTC0MFT1,21.17,14.82,30,P1M
+277,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,27.22,19.05,30,P1M
+278,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,128.52,89.96,30,P1Y
+279,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,28.73,20.11,30,P1Y
+280,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,14.36,10.05,30,P1Y
+281,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,190.51,133.36,30,P1Y
+282,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,1.35,0.94,30,P1M
+283,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,2.71,1.9,30,P1M
+284,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,12.25,8.57,30,P1M
+285,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,0.0,0.0,30,P1M
+286,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,0.0,0.0,30,P1Y
+287,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,1.35,0.94,30,P1M
+288,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,18.14,12.7,30,P1M
+289,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,285.77,200.04,30,P1Y
+290,Autre,Microsoft Entra ID P2,CFQ7TTC0LFK5,14.36,10.05,30,P1Y
+291,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,226.8,158.76,30,P1M
+292,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,2381.4,1666.98,30,P1Y
+293,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,2.27,1.59,30,P1M
+294,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,23.81,16.67,30,P1Y
+295,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,3.02,2.11,30,P1M
+296,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,3.02,2.11,30,P1M
+297,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,108.11,75.68,30,P1Y
+298,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,23.81,16.67,30,P1Y
+299,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,158.76,111.13,30,P1Y
+300,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,31.75,22.22,30,P1Y
+301,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,2381.4,1666.98,30,P1Y
+302,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,108.11,75.68,30,P1Y
+303,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,158.76,111.13,30,P1Y
+304,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,2381.4,1666.98,30,P1Y
+305,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,31.75,22.22,30,P1Y
+306,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,15.12,10.58,30,P1M
+307,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,10.27,7.19,30,P1M
+308,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,2.27,1.59,30,P1M
+309,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,226.8,158.76,30,P1M
+310,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,226.8,158.76,30,P1M
+311,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,15.12,10.58,30,P1M
+312,Autre,Microsoft Entra Private and Internet Access,CFQ7TTC0PFZR,10.27,7.19,30,P1M
+313,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,381.02,266.71,30,P1Y
+314,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,190.51,133.36,30,P1Y
+315,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,171.61,120.13,30,P1Y
+316,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,42.71,29.9,30,P1Y
+317,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,27.22,19.05,30,P1M
+318,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,36.29,25.4,30,P1M
+319,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,57.08,39.96,30,P1Y
+320,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,285.77,200.04,30,P1Y
+321,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,24.19,16.93,30,P1M
+322,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,57.08,39.96,30,P1Y
+323,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,76.36,53.45,30,P1Y
+324,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,254.02,177.81,30,P1Y
+325,Autre,Microsoft Entra Suite,CFQ7TTC0NZT8,18.14,12.7,30,P1M
+326,Autre,Microsoft Entra Workload ID,CFQ7TTC0R9QB,9.07,6.35,30,P1M
+327,Autre,Microsoft Entra Workload ID,CFQ7TTC0R9QB,95.26,66.68,30,P1Y
+328,Autre,Microsoft Entra Workload ID,CFQ7TTC0R9QB,285.77,200.04,30,P3Y
+329,Autre,Microsoft Intune - Remote Help,CFQ7TTC0Q17R,10.58,7.41,30,P1M
+330,Autre,Microsoft Intune - Remote Help,CFQ7TTC0Q17R,111.13,77.79,30,P1Y
+331,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,6.8,4.76,30,P1M
+332,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,2.27,1.59,30,P1M
+333,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,108.11,75.68,30,P1Y
+334,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,10.27,7.19,30,P1M
+335,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,158.76,111.13,30,P1Y
+336,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,23.81,16.67,30,P1Y
+337,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,31.75,22.22,30,P1Y
+338,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,3.02,2.11,30,P1M
+339,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,71.44,50.01,30,P1Y
+340,Autre,Microsoft Intune Advanced Analytics,CFQ7TTC0NGGX,15.12,10.58,30,P1M
+341,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,14.36,10.05,30,P1Y
+342,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,18.9,13.23,30,P1Y
+343,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,95.26,66.68,30,P1Y
+344,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,42.71,29.9,30,P1Y
+345,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,43.09,30.16,30,P3Y
+346,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,1.35,0.94,30,P1M
+347,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,128.14,89.7,30,P3Y
+348,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,4.1,2.87,30,P1M
+349,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,63.5,44.45,30,P1Y
+350,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,6.05,4.23,30,P1M
+351,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,1.83,1.28,30,P1M
+352,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,9.07,6.35,30,P1M
+353,Autre,Microsoft Intune Endpoint Privilege Management,CFQ7TTC0RP6S,56.7,39.69,30,P3Y
+354,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,28.73,20.11,30,P1Y
+355,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,1.2,0.84,30,P1M
+356,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,6.05,4.23,30,P1M
+357,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,12.85,8.99,30,P1Y
+358,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,9.45,6.61,30,P1Y
+359,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,0.91,0.64,30,P1M
+360,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,4.06,2.84,30,P1M
+361,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,2.71,1.9,30,P1M
+362,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,63.5,44.45,30,P1Y
+363,Autre,Microsoft Intune Enterprise Application Management,CFQ7TTC0N400,42.71,29.9,30,P1Y
+364,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,71.44,50.01,30,P1Y
+365,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,6.8,4.76,30,P1M
+366,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,1.83,1.28,30,P1M
+367,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,18.9,13.23,30,P1Y
+368,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,24.19,16.93,30,P1M
+369,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,127.01,88.91,30,P1Y
+370,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,12.1,8.47,30,P1M
+371,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,8.16,5.71,30,P1M
+372,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,254.02,177.81,30,P1Y
+373,Autre,Microsoft Intune Plan 1,CFQ7TTC0LCH4,85.81,60.07,30,P1Y
+374,Autre,Microsoft Intune Plan 1 for Education,CFQ7TTC0LSNL,0.0,0.0,30,P1Y
+375,Autre,Microsoft Intune Plan 1 for Education,CFQ7TTC0LSNL,23.81,16.67,30,P1Y
+376,Autre,Microsoft Intune Plan 1 for Education,CFQ7TTC0LSNL,23.81,16.67,30,P1Y
+377,Autre,Microsoft Intune Plan 1 for Education,CFQ7TTC0LSNL,2.27,1.59,30,P1M
+378,Autre,Microsoft Intune Plan 1 for Education,CFQ7TTC0LSNL,0.0,0.0,30,P1M
+379,Autre,Microsoft Intune Plan 1 for Education,CFQ7TTC0LSNL,2.27,1.59,30,P1M
+380,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,12.1,8.47,30,P1M
+381,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,25.33,17.73,30,P1Y
+382,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,85.81,60.07,30,P1Y
+383,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,127.01,88.91,30,P1Y
+384,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,8.16,5.71,30,P1M
+385,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,56.7,39.69,30,P3Y
+386,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,171.23,119.86,30,P3Y
+387,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,75.98,53.19,30,P3Y
+388,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,18.9,13.23,30,P1Y
+389,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,57.08,39.96,30,P1Y
+390,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,1.83,1.28,30,P1M
+391,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,5.45,3.82,30,P1M
+392,Autre,Microsoft Intune Plan 2,CFQ7TTC0RP76,2.43,1.7,30,P1M
+393,Autre,Microsoft Intune Remote Help for FLW,CFQ7TTC0RHGC,7.24,5.07,30,P1M
+394,Autre,Microsoft Intune Remote Help for FLW,CFQ7TTC0RHGC,76.36,53.45,30,P1Y
+395,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,13.61,9.53,30,P1M
+396,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,142.88,100.02,30,P3Y
+397,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,30.24,21.17,30,P1M
+398,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,20.57,14.4,30,P1M
+399,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,190.51,133.36,30,P3Y
+400,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,428.65,300.05,30,P3Y
+401,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,4.54,3.18,30,P1M
+402,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,317.52,222.26,30,P1Y
+403,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,215.84,151.09,30,P1Y
+404,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,142.88,100.02,30,P1Y
+405,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,6.05,4.23,30,P1M
+406,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,47.63,33.34,30,P1Y
+407,Autre,Microsoft Intune Suite,CFQ7TTC0RZFJ,63.5,44.45,30,P1Y
+408,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,1512.0,1058.4,30,P1M
+409,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,16.32,11.42,30,P1M
+410,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,1512.0,1058.4,30,P1M
+411,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,171.61,120.13,30,P1Y
+412,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,36.29,25.4,30,P1M
+413,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,15876.0,11113.2,30,P1Y
+414,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,381.02,266.71,30,P1Y
+415,Autre,Microsoft Purview Suite,CFQ7TTC0LHR4,15876.0,11113.2,30,P1Y
+416,Autre,Microsoft Purview Suite Edu,CFQ7TTC0J1ZQ,9.39,6.57,30,P1M
+417,Autre,Microsoft Purview Suite Edu,CFQ7TTC0J1ZQ,79.38,55.57,30,P1Y
+418,Autre,Microsoft Purview Suite Edu,CFQ7TTC0J1ZQ,98.28,68.8,30,P1Y
+419,Autre,Microsoft Purview Suite Edu,CFQ7TTC0J1ZQ,7.56,5.29,30,P1M
+420,Autre,Microsoft Purview Suite Edu,CFQ7TTC0J1ZQ,50.27,35.19,30,P1Y
+421,Autre,Microsoft Purview Suite Edu,CFQ7TTC0J1ZQ,4.79,3.35,30,P1M
+422,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,15.88,11.12,30,P1Y
+423,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,12.1,8.47,30,P1Y
+424,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,28.73,20.11,30,P1Y
+425,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,2.71,1.9,30,P1M
+426,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,1.51,1.06,30,P1M
+427,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,63.5,44.45,30,P1Y
+428,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,1.13,0.79,30,P1M
+429,Autre,Microsoft Stream Plan 2,CFQ7TTC0LH0C,6.05,4.23,30,P1M
+430,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,302.4,211.68,30,P1M
+431,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,1428.84,1000.19,30,P1Y
+432,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,793.8,555.66,30,P1Y
+433,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,136.08,95.26,30,P1M
+434,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,3175.2,2222.64,30,P1Y
+435,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,75.6,52.92,30,P1M
+436,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,476.28,333.4,30,P1Y
+437,Autre,Microsoft Stream Storage Add-On (500 GB),CFQ7TTC0LHPG,45.36,31.75,30,P1M
+438,Teams,Microsoft Teams Enterprise,CFQ7TTC0MZJF,25.86,18.1,30,P1M
+439,Teams,Microsoft Teams Enterprise,CFQ7TTC0MZJF,271.4,189.98,30,P1Y
+440,Teams,Microsoft Teams Enterprise,CFQ7TTC0MZJF,271.4,189.98,30,P1Y
+441,Teams,Microsoft Teams Essentials,CFQ7TTC0JN4R,12.1,8.47,30,P1M
+442,Teams,Microsoft Teams Essentials,CFQ7TTC0JN4R,127.01,88.91,30,P1Y
+443,Teams,Microsoft Teams Essentials and Microsoft Teams Phone with​ Domestic Calling,CFQ7TTC0MJ3G,635.04,444.53,30,P1Y
+444,Teams,Microsoft Teams Essentials and Microsoft Teams Phone with​ Domestic Calling,CFQ7TTC0MJ3G,60.48,42.34,30,P1M
+445,Teams,Microsoft Teams Essentials and Microsoft Teams Phone with​ Pay as you go Calling,CFQ7TTC0MJ2C,476.28,333.4,30,P1Y
+446,Teams,Microsoft Teams Essentials with Phone,CFQ7TTC0RC5R,381.02,266.71,30,P1Y
+447,Teams,Microsoft Teams Essentials with Phone,CFQ7TTC0RC5R,36.29,25.4,30,P1M
+448,Teams,Microsoft Teams Phone Resource Account,CFQ7TTC0LH0R,0.0,0.0,30,P1M
+449,Teams,Microsoft Teams Phone Resource Account,CFQ7TTC0LH0R,0.0,0.0,30,P1Y
+450,Teams,Microsoft Teams Phone Resource Account,CFQ7TTC0LH0R,0.0,0.0,30,P1M
+451,Teams,Microsoft Teams Phone Resource Account,CFQ7TTC0LH0R,0.0,0.0,30,P1Y
+452,Teams,Microsoft Teams Phone Resource Account,CFQ7TTC0LH0R,0.0,0.0,30,P1Y
+453,Teams,Microsoft Teams Phone Resource Account,CFQ7TTC0LH0R,0.0,0.0,30,P1M
+454,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,15.12,10.58,30,P1M
+455,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,30.24,21.17,30,P1M
+456,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,317.52,222.26,30,P1Y
+457,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,95.26,66.68,30,P1Y
+458,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,142.88,100.02,30,P1Y
+459,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,9.07,6.35,30,P1M
+460,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,158.76,111.13,30,P1Y
+461,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,6.96,4.87,30,P1M
+462,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,72.95,51.06,30,P1Y
+463,Teams,Microsoft Teams Phone Standard,CFQ7TTC0LH0T,13.61,9.53,30,P1M
+464,Teams,Microsoft Teams Phone with​ Pay as you go Calling,CFQ7TTC0MJ20,412.78,288.95,30,P1Y
+465,Teams,Microsoft Teams Rooms Pro,CFQ7TTC0QW7C,508.03,355.62,30,P1Y
+466,Teams,Microsoft Teams Rooms Pro,CFQ7TTC0QW7C,48.38,33.87,30,P1M
+467,Teams,Microsoft Teams Rooms Pro,CFQ7TTC0QW7C,120.96,84.67,30,P1M
+468,Teams,Microsoft Teams Rooms Pro,CFQ7TTC0QW7C,34.02,23.81,30,P1M
+469,Teams,Microsoft Teams Rooms Pro,CFQ7TTC0QW7C,1270.08,889.06,30,P1Y
+470,Teams,Microsoft Teams Rooms Pro,CFQ7TTC0QW7C,357.21,250.05,30,P1Y
+471,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,10.9,7.63,30,P1M
+472,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,6.96,4.87,30,P1M
+473,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,24.19,16.93,30,P1M
+474,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,254.02,177.81,30,P1Y
+475,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,9.07,6.35,30,P1M
+476,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,114.16,79.91,30,P1Y
+477,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,72.95,51.06,30,P1Y
+478,Teams,Microsoft Teams Shared Devices,CFQ7TTC0LH0V,95.26,66.68,30,P1Y
+479,Microsoft 365,Office 365 A1,CFQ7TTC0LHPK,0.0,0.0,30,P1M
+480,Microsoft 365,Office 365 A1,CFQ7TTC0LHPK,0.0,0.0,30,P1Y
+481,Microsoft 365,Office 365 A1,CFQ7TTC0LHPK,0.0,0.0,30,P1M
+482,Microsoft 365,Office 365 A1,CFQ7TTC0LHPK,0.0,0.0,30,P1Y
+483,Microsoft 365,Office 365 A3,CFQ7TTC0LHPP,0.0,0.0,30,P1Y
+484,Microsoft 365,Office 365 A3,CFQ7TTC0LHPP,0.0,0.0,30,P1M
+485,Microsoft 365,Office 365 A3,CFQ7TTC0LHPP,104.71,73.3,30,P1Y
+486,Microsoft 365,Office 365 A3,CFQ7TTC0LHPP,7.56,5.29,30,P1M
+487,Microsoft 365,Office 365 A3,CFQ7TTC0LHPP,79.38,55.57,30,P1Y
+488,Microsoft 365,Office 365 A3,CFQ7TTC0LHPP,9.99,6.99,30,P1M
+489,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,0.0,0.0,30,P1M
+490,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,254.02,177.81,30,P1Y
+491,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,24.19,16.93,30,P1M
+492,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,190.51,133.36,30,P1Y
+493,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,254.02,177.81,30,P1Y
+494,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,18.14,12.7,30,P1M
+495,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,190.51,133.36,30,P1Y
+496,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,18.14,12.7,30,P1M
+497,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,0.0,0.0,30,P1Y
+498,Microsoft 365,Office 365 A5,CFQ7TTC0LHPM,24.19,16.93,30,P1M
+499,Microsoft 365,Office 365 Data Loss Prevention,CFQ7TTC0LHSW,26.84,18.79,30,P1Y
+500,Microsoft 365,Office 365 Data Loss Prevention,CFQ7TTC0LHSW,9.07,6.35,30,P1M
+501,Microsoft 365,Office 365 Data Loss Prevention,CFQ7TTC0LHSW,2.55,1.78,30,P1M
+502,Microsoft 365,Office 365 Data Loss Prevention,CFQ7TTC0LHSW,95.26,66.68,30,P1Y
+503,Microsoft 365,Office 365 E1,CFQ7TTC0LF8Q,215.46,150.82,30,P1Y
+504,Microsoft 365,Office 365 E1,CFQ7TTC0LF8Q,89.21,62.45,30,P1Y
+505,Microsoft 365,Office 365 E1,CFQ7TTC0LF8Q,20.54,14.38,30,P1M
+506,Microsoft 365,Office 365 E1,CFQ7TTC0LF8Q,8.51,5.96,30,P1M
+507,Microsoft 365,Office 365 E1,CFQ7TTC0LF8Q,30.24,21.17,30,P1M
+508,Microsoft 365,Office 365 E1,CFQ7TTC0LF8Q,317.52,222.26,30,P1Y
+509,Microsoft 365,Office 365 E1 Plus,CFQ7TTC0RP6W,50.78,35.55,30,P1M
+510,Microsoft 365,Office 365 E1 Plus,CFQ7TTC0RP6W,60.48,42.34,30,P1M
+511,Microsoft 365,Office 365 E1 Plus,CFQ7TTC0RP6W,635.04,444.53,30,P1Y
+512,Microsoft 365,Office 365 E1 Plus,CFQ7TTC0RP6W,532.98,373.09,30,P1Y
+513,Microsoft 365,Office 365 E3,CFQ7TTC0LF8R,458.89,321.22,30,P1Y
+514,Microsoft 365,Office 365 E3,CFQ7TTC0LF8R,19.56,13.69,30,P1M
+515,Microsoft 365,Office 365 E3,CFQ7TTC0LF8R,205.25,143.67,30,P1Y
+516,Microsoft 365,Office 365 E3,CFQ7TTC0LF8R,43.69,30.58,30,P1M
+517,Microsoft 365,Office 365 E3,CFQ7TTC0LF8R,730.3,511.21,30,P1Y
+518,Microsoft 365,Office 365 E3,CFQ7TTC0LF8R,69.55,48.68,30,P1M
+519,Microsoft 365,Office 365 E5,CFQ7TTC0LF8S,114.91,80.44,30,P1M
+520,Microsoft 365,Office 365 E5,CFQ7TTC0LF8S,51.72,36.2,30,P1M
+521,Microsoft 365,Office 365 E5,CFQ7TTC0LF8S,1206.58,844.61,30,P1Y
+522,Microsoft 365,Office 365 E5,CFQ7TTC0LF8S,542.81,379.97,30,P1Y
+523,Microsoft 365,Office 365 E5,CFQ7TTC0LF8S,89.05,62.33,30,P1M
+524,Microsoft 365,Office 365 E5,CFQ7TTC0LF8S,935.17,654.62,30,P1Y
+525,Microsoft 365,Office 365 Extra File Storage,CFQ7TTC0LHS9,6.43,4.5,30,P1Y
+526,Microsoft 365,Office 365 Extra File Storage,CFQ7TTC0LHS9,0.6,0.42,30,P1M
+527,Microsoft 365,Office 365 Extra File Storage,CFQ7TTC0LHS9,6.43,4.5,30,P1Y
+528,Microsoft 365,Office 365 Extra File Storage,CFQ7TTC0LHS9,3.02,2.11,30,P1Y
+529,Microsoft 365,Office 365 Extra File Storage,CFQ7TTC0LHS9,0.6,0.42,30,P1M
+530,Microsoft 365,Office 365 Extra File Storage,CFQ7TTC0LHS9,0.28,0.2,30,P1M
+531,Microsoft 365,Office 365 F3,CFQ7TTC0LGZW,111.13,77.79,30,P1Y
+532,Microsoft 365,Office 365 F3,CFQ7TTC0LGZW,10.58,7.41,30,P1M
+533,Microsoft 365,Office 365 F3,CFQ7TTC0LGZW,3.4,2.38,30,P1M
+534,Microsoft 365,Office 365 F3,CFQ7TTC0LGZW,35.91,25.14,30,P1Y
+535,Microsoft 365,Office 365 F3,CFQ7TTC0LGZW,12.1,8.47,30,P1M
+536,Microsoft 365,Office 365 F3,CFQ7TTC0LGZW,127.01,88.91,30,P1Y
+537,Autre,OneDrive for business (Plan 1),CFQ7TTC0LHSV,15.12,10.58,30,P1M
+538,Autre,OneDrive for business (Plan 1),CFQ7TTC0LHSV,158.76,111.13,30,P1Y
+539,Autre,OneDrive for business (Plan 2),CFQ7TTC0LH1M,30.24,21.17,30,P1M
+540,Autre,OneDrive for business (Plan 2),CFQ7TTC0LH1M,317.52,222.26,30,P1Y
+541,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,13.61,9.53,30,P1M
+542,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,18.14,12.7,30,P1M
+543,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,428.65,300.05,30,P1Y
+544,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,952.56,666.79,30,P1Y
+545,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,40.82,28.57,30,P1M
+546,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,90.72,63.5,30,P1M
+547,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,190.51,133.36,30,P1Y
+548,Autre,Planner and Project Plan 3,CFQ7TTC0HDB0,142.88,100.02,30,P1Y
+549,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,785.86,550.1,30,P1Y
+550,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,269.89,188.92,30,P1Y
+551,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,349.27,244.49,30,P1Y
+552,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,166.32,116.42,30,P1M
+553,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,33.26,23.28,30,P1M
+554,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,74.84,52.39,30,P1M
+555,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,1746.36,1222.45,30,P1Y
+556,Autre,Planner and Project Plan 5,CFQ7TTC0HD9Z,25.7,17.99,30,P1M
+557,Autre,Planner Plan 1,CFQ7TTC0HDB1,317.52,222.26,30,P1Y
+558,Autre,Planner Plan 1,CFQ7TTC0HDB1,30.24,21.17,30,P1M
+559,Power Platform,Power Apps and Power Automate capacity add-on,CFQ7TTC0LH1S,1041.77,729.24,30,P1Y
+560,Power Platform,Power Apps and Power Automate capacity add-on,CFQ7TTC0LH1S,99.22,69.45,30,P1M
+561,Power Platform,Power Apps and Power Automate capacity add-on,CFQ7TTC0LH1S,1250.42,875.29,30,P1Y
+562,Power Platform,Power Apps and Power Automate capacity add-on,CFQ7TTC0LH1S,141.75,99.22,30,P1M
+563,Power Platform,Power Apps and Power Automate capacity add-on,CFQ7TTC0LH1S,1488.56,1041.99,30,P1Y
+564,Power Platform,Power Apps and Power Automate capacity add-on,CFQ7TTC0LH1S,119.07,83.35,30,P1M
+565,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,10.58,7.41,30,P1M
+566,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,8.51,5.96,30,P1M
+567,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,9.07,6.35,30,P1M
+568,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,111.13,77.79,30,P1Y
+569,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,0.0,0.0,30,P1Y
+570,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,158.76,111.13,30,P1Y
+571,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,89.21,62.45,30,P1Y
+572,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,95.26,66.68,30,P1Y
+573,Power Platform,Power Apps Per App (1 app or website),CFQ7TTC0J4GS,15.12,10.58,30,P1M
+574,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,22.68,15.88,30,P1M
+575,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,595.35,416.74,30,P1Y
+576,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,178.79,125.15,30,P1Y
+577,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,31.18,21.83,30,P1M
+578,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,238.14,166.7,30,P1Y
+579,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,357.21,250.05,30,P1Y
+580,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,327.35,229.14,30,P1Y
+581,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,56.7,39.69,30,P1M
+582,Power Platform,Power Apps Premium,CFQ7TTC0LH2H,17.01,11.91,30,P1M
+583,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,2560.19,1792.13,30,P1Y
+584,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,6399.92,4479.94,30,P1Y
+585,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,335.38,234.77,30,P1M
+586,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,1921.75,1345.22,30,P1Y
+587,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,3521.45,2465.02,30,P1Y
+588,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,243.81,170.67,30,P1M
+589,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,183.02,128.11,30,P1M
+590,Power Platform,Power Automate Hosted Process,CFQ7TTC0PV17,609.52,426.66,30,P1M
+591,Power Platform,Power Automate per flow plan,CFQ7TTC0LH13,893.21,625.25,30,P1Y
+592,Power Platform,Power Automate per flow plan,CFQ7TTC0LH13,1637.12,1145.98,30,P1Y
+593,Power Platform,Power Automate per flow plan,CFQ7TTC0LH13,283.5,198.45,30,P1M
+594,Power Platform,Power Automate per flow plan,CFQ7TTC0LH13,2976.75,2083.72,30,P1Y
+595,Power Platform,Power Automate per flow plan,CFQ7TTC0LH13,155.92,109.14,30,P1M
+596,Power Platform,Power Automate per flow plan,CFQ7TTC0LH13,85.05,59.54,30,P1M
+597,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,446.42,312.49,30,P1Y
+598,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,178.79,125.15,30,P1Y
+599,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,23.53,16.47,30,P1M
+600,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,17.01,11.91,30,P1M
+601,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,135.7,94.99,30,P1Y
+602,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,247.21,173.05,30,P1Y
+603,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,12.92,9.04,30,P1M
+604,Power Platform,Power Automate per user plan,CFQ7TTC0LH3L,42.52,29.76,30,P1M
+605,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,247.21,173.05,30,P1Y
+606,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,12.92,9.04,30,P1M
+607,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,135.7,94.99,30,P1Y
+608,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,446.42,312.49,30,P1Y
+609,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,17.01,11.91,30,P1M
+610,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,178.79,125.15,30,P1Y
+611,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,42.52,29.76,30,P1M
+612,Power Platform,Power Automate Premium,CFQ7TTC0LSGZ,23.53,16.47,30,P1M
+613,Power Platform,Power Automate Process,CFQ7TTC0MFT9,714.42,500.09,30,P1Y
+614,Power Platform,Power Automate Process,CFQ7TTC0MFT9,68.04,47.63,30,P1M
+615,Power Platform,Power Automate Process,CFQ7TTC0MFT9,2143.26,1500.28,30,P1Y
+616,Power Platform,Power Automate Process,CFQ7TTC0MFT9,4762.8,3333.96,30,P1Y
+617,Power Platform,Power Automate Process,CFQ7TTC0MFT9,952.56,666.79,30,P1Y
+618,Power Platform,Power Automate Process,CFQ7TTC0MFT9,204.12,142.88,30,P1M
+619,Power Platform,Power Automate Process,CFQ7TTC0MFT9,90.72,63.5,30,P1M
+620,Power Platform,Power Automate Process,CFQ7TTC0MFT9,453.6,317.52,30,P1M
+621,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,31752.0,22226.4,30,P1Y
+622,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,71442.0,50009.4,30,P1Y
+623,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,23814.0,16669.8,30,P1Y
+624,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,6804.0,4762.8,30,P1M
+625,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,158760.0,111132.0,30,P1Y
+626,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,3024.0,2116.8,30,P1M
+627,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,2268.0,1587.6,30,P1M
+628,Power Platform,Power Automate Process Mining add-on,CFQ7TTC0S6D5,15120.0,10584.0,30,P1M
+629,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,1339.63,937.74,30,P1Y
+630,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,1786.05,1250.23,30,P1Y
+631,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,233.89,163.72,30,P1M
+632,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,4465.31,3125.72,30,P1Y
+633,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,170.1,119.07,30,P1M
+634,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,127.58,89.31,30,P1M
+635,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,2455.87,1719.11,30,P1Y
+636,Power Platform,Power Automate unattended RPA add-on,CFQ7TTC0LSH0,425.25,297.67,30,P1M
+637,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,72.58,50.81,30,P1M
+638,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,342.85,240.0,30,P1Y
+639,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,13.61,9.53,30,P1M
+640,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,142.88,100.02,30,P1Y
+641,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,7.56,5.29,30,P1M
+642,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,79.38,55.57,30,P1Y
+643,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,762.05,533.43,30,P1Y
+644,Power Platform,Power BI Premium Per User,CFQ7TTC0HL8W,32.67,22.87,30,P1M
+645,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,317.52,222.26,30,P1Y
+646,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0H61N,13.61,9.53,30,P1M
+647,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,72.95,51.06,30,P1Y
+648,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,13.61,9.53,30,P1M
+649,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,3.78,2.65,30,P1M
+650,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0H61N,142.88,100.02,30,P1Y
+651,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,142.88,100.02,30,P1Y
+652,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,30.24,21.17,30,P1M
+653,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,6.96,4.87,30,P1M
+654,Power Platform,Power BI Premium Per User Add-On,CFQ7TTC0HL8T,39.69,27.78,30,P1Y
+655,Power Platform,Power BI Pro,CFQ7TTC0LHSF,72.95,51.06,30,P1Y
+656,Power Platform,Power BI Pro,CFQ7TTC0LHSF,42.34,29.64,30,P1M
+657,Power Platform,Power BI Pro,CFQ7TTC0LHSF,6.96,4.87,30,P1M
+658,Power Platform,Power BI Pro,CFQ7TTC0LHSF,444.53,311.17,30,P1Y
+659,Power Platform,Power BI Pro,CFQ7TTC0LHSF,39.69,27.78,30,P1Y
+660,Power Platform,Power BI Pro,CFQ7TTC0H9MP,14.3,10.01,30,P1M
+661,Power Platform,Power BI Pro,CFQ7TTC0H9MP,150.07,105.05,30,P1Y
+662,Power Platform,Power BI Pro,CFQ7TTC0LHSF,3.78,2.65,30,P1M

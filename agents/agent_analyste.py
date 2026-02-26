@@ -103,10 +103,9 @@ if __name__ == "__main__":
     print("-" * 70)
     description1 = """
     Bonjour, c'est l'entreprise DevSoft. On déménage.
-    Il nous faut la fibre avec 200 Mega minimum. 
+    Il nous faut la fibre avec 200 Mega minimum.
     Le boîtier Orange est à 120 mètres de nos locaux.
-    Aussi, on a recruté, il nous faut 25 licences Microsoft 365 
-    pour l'équipe avec Word et Teams.
+    Aussi, on a recruté, il nous faut 25 licences Microsoft 365 pour l'équipe avec Word et Teams.
     C'est urgent. Budget total : 1500 TND/mois.
     """
     analyse1 = agent.analyser(description1)
@@ -116,7 +115,7 @@ if __name__ == "__main__":
     print("\n\n TEST 2 : Restaurant (Fibre uniquement)")
     print("-" * 70)
     description2 = """
-    Restaurant La Belle Vue, on veut juste internet rapide 
+    Restaurant La Belle Vue, on veut juste internet rapide
     pour les caisses et le WiFi clients. 100 Mega suffit.
     Distance du boîtier Orange : environ 80 mètres.
     Budget : 400 TND/mois max.
@@ -129,8 +128,8 @@ if __name__ == "__main__":
     print("-" * 70)
     description3 = """
     Cabinet d'expertise comptable Tunis Audit.
-    On a déjà internet, mais on veut passer sur Microsoft 365 
-    pour nos 12 comptables. Il nous faut Excel, Word, et le cloud 
+    On a déjà internet, mais on veut passer sur Microsoft 365
+    pour nos 12 comptables. Il nous faut Excel, Word, et le cloud
     pour partager les dossiers. Budget : 500 TND/mois.
     """
     analyse3 = agent.analyser(description3)
@@ -140,12 +139,12 @@ if __name__ == "__main__":
     print("\n\n TEST 4 : PME multi-sites (Cas complexe)")
     print("-" * 70)
     description4 = """
-    Entreprise LogiTrans, secteur transport, 3 bureaux 
+    Entreprise LogiTrans, secteur transport, 3 bureaux
     (Tunis, Sfax, Sousse). On veut la fibre dans les 3 sites.
     Débit minimum 500 Mbps. Distance estimée : 200m pour Tunis,
     150m pour Sfax, 180m pour Sousse.
     
-    Aussi, 80 employés ont besoin de Microsoft 365 avec Teams 
+    Aussi, 80 employés ont besoin de Microsoft 365 avec Teams
     pour les réunions à distance entre sites.
     
     Budget global : 5000 TND/mois. C'est assez urgent.
