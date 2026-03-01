@@ -1,8 +1,25 @@
+# Environnement
 env/
 .env
 __pycache__/
 *.pyc
 *.db
+*.sqlite3
+
+# Données sensibles Orange
 data/orange_reel/
+data/orange_propre/
 *.xlsx
 *.xls
+*.csv
+
+# Fichiers temporaires
+structure.txt
+git_status.txt
+*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
