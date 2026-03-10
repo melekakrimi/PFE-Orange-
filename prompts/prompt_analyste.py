@@ -22,6 +22,7 @@ CLIENT :
 3. GÉNÉRAL :
     - urgence = "faible" par défaut, "moyenne" si "assez urgent", "élevée" si "urgent"/"rapidement"
     - budget_mensuel = chercher le montant en TND/mois
+    - taille_entreprise = deviner : "TPE" (<10 employés), "PME" (10-250), "ETI" (250-5000), "GE" (>5000)
 
 IMPORTANT : Retourne UNIQUEMENT du JSON valide, aucun texte avant ou après.
 
@@ -30,6 +31,7 @@ Structure JSON exacte attendue :
 {{
     "nom_entreprise": "string ou null",
     "secteur": "Tech/Finance/Santé/Transport/Industrie/Autre ou null",
+    "taille_entreprise": "TPE/PME/ETI/GE ou null",
     "besoins_fibre": {{
         "demande_fibre": boolean,
         "nombre_sites": int ou null,

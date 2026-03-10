@@ -2,6 +2,7 @@
 import os
 import sys
 import json
+import re
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
@@ -23,7 +24,7 @@ class AgentAnalyste:
         self.llm = ChatGroq(
             model="llama-3.3-70b-versatile",
             api_key=os.getenv("GROQ_API_KEY"),
-            temperature=0.0 # Température 0 pour un JSON parfait
+            temperature=0.0  # Température 0 pour un JSON parfait
         )
         
         # 2. Chargement du Prompt depuis le fichier séparé
@@ -40,32 +41,49 @@ class AgentAnalyste:
         try:
             # Appel à l'IA
             resultat = self.chain.invoke({"description_client": description_client})
-            resultat_clean = resultat.content.strip()
-            
-            # Nettoyage pour s'assurer qu'on a bien un JSON
-            if resultat_clean.startswith("```"):
-                resultat_clean = resultat_clean.split("```")[1]
-                if resultat_clean.startswith("json"):
-                    resultat_clean = resultat_clean[4:]
-            resultat_clean = resultat_clean.strip()
+
+            #  FIX 2 : Nettoyage robuste (même méthode que l'Agent 2)
+            resultat_clean = self._parser_json(resultat.content)
             
             # Conversion en vrai dictionnaire Python
             analyse = json.loads(resultat_clean)
-            #  VALIDATION
+
+            # VALIDATION
             if self._valider_analyse(analyse):
                 print(" Analyse validée")
-                return analyse
             else:
-                print("  Analyse incomplète ")
+                print("  Analyse incomplète")
+            
             return analyse
             
         except json.JSONDecodeError as e:
             print(f" Erreur JSON : {e}")
-            print(f"Résultat brut : {resultat_clean}")
-            return {"erreur": "JSON invalide", "brut": resultat_clean}
+            print(f"Résultat brut : {resultat.content}")
+            return {"erreur": "JSON invalide", "brut": resultat.content}
         except Exception as e:
             print(f" Erreur : {e}")
             return {"erreur": str(e)}
+
+    def _parser_json(self, texte: str) -> str:
+        """
+            FIX 2 : Extraction robuste du JSON depuis la réponse du LLM.
+        Gère tous les formats : ```json ... ```, ``` ... ```, ou JSON brut.
+        (Méthode identique à celle de l'Agent 2 pour cohérence)
+        """
+        texte = texte.strip()
+
+        # Cas 1 : LLM entoure avec ```json ... ``` ou ``` ... ```
+        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", texte)
+        if match:
+            return match.group(1).strip()
+
+        # Cas 2 : JSON brut sans backticks
+        match = re.search(r"(\{[\s\S]*\})", texte)
+        if match:
+            return match.group(1).strip()
+
+        # Cas 3 : Retourner tel quel (laisse json.loads gérer l'erreur)
+        return texte
     
     def _valider_analyse(self, analyse: dict) -> bool:
         """Vérifie que l'analyse contient les champs essentiels"""
@@ -73,20 +91,26 @@ class AgentAnalyste:
         
         for champ in champs_requis:
             if champ not in analyse:
-                print(f"  Champ manquant : {champ}")
+                print(f"    Champ manquant : {champ}")
                 return False
         
         # Vérifier la structure de besoins_fibre
         if "demande_fibre" not in analyse["besoins_fibre"]:
-            print("  besoins_fibre.demande_fibre manquant")
+            print("    besoins_fibre.demande_fibre manquant")
             return False
         
         # Vérifier la structure de besoins_microsoft
         if "demande_microsoft" not in analyse["besoins_microsoft"]:
-            print("  besoins_microsoft.demande_microsoft manquant")
+            print("    besoins_microsoft.demande_microsoft manquant")
+            return False
+
+        #  FIX 1 : Vérification du nouveau champ taille_entreprise
+        if "taille_entreprise" not in analyse:
+            print("    Champ manquant : taille_entreprise")
             return False
         
         return True
+
 
 # ============================================
 # TESTS
@@ -135,7 +159,7 @@ if __name__ == "__main__":
     analyse3 = agent.analyser(description3)
     print(json.dumps(analyse3, indent=2, ensure_ascii=False))
     
-    # Test 4 : Cas complexe
+    # Test 4 : Cas complexe multi-sites
     print("\n\n TEST 4 : PME multi-sites (Cas complexe)")
     print("-" * 70)
     description4 = """
