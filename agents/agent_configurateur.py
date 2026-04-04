@@ -18,35 +18,53 @@ load_dotenv()
 class AgentConfigurateur:
     """
     Agent 2 : Configure des solutions Fibre + Microsoft selon les besoins analysés
-    
+
     IMPORTANT - Calcul des prix :
     =============================
-    
+
     MICROSOFT :
     - UnitPrice(DT) dans le CSV = Prix d'ACHAT annuel Orange (coût de revient)
     - Marge commerciale Orange = 14% (taux officiel confirmé par encadrant)
     - Prix de vente client = Prix d'achat × 1.14
-    
-    FIBRE :
-    - Prix actuels = Prix publics Orange Tunisie (provisoires)
-    - À REMPLACER par coûts réels fournis par l'encadrant
-    - Marge à définir selon politique Orange B2B
+
+    FIBRE (catalogue réel Orange Business) :
+    ─────────────────────────────────────────
+    Coûts fixes (one-time, par site) :
+        • Travaux FO    : distance_metres × 50 TND/mètre (VARIABLE selon distance)
+        • Routeur       : 300 TND
+        • Installation  : 200 TND
+
+    Coût variable mensuel (par site) :
+        • Bande passante : debit_mbps × 1.2 TND/mois (FIXE)
+
+    Prix de vente mensuel (tarif catalogue Orange) :
+        • debit_mbps × 10 TND/mois
+
+    STRATÉGIE MARGE :
+    ─────────────────
+    1. Priorité engagement 24 mois (marge optimale ~63%)
+    2. Si marge 24M négative → essayer 12 mois
+    3. Si les deux négatifs → limiter distance ou refuser offre
     """
+
+    # ── Tarifs Fibre Orange Business (source : catalogue réel) ──
+    FIBRE_COUT_PAR_METRE     = 50    # TND/mètre
+    FIBRE_COUT_ROUTEUR       = 300   # TND
+    FIBRE_COUT_INSTALLATION  = 200   # TND
+    FIBRE_COUT_PAR_MBPS      = 1.2   # TND/Mbps/mois
+    FIBRE_PRIX_VENTE_PAR_MBPS = 10.0 # TND/Mbps/mois
+
+    # Paliers de débit disponibles (Mbps)
+    FIBRE_PALIERS_DEBIT = [50, 100, 200, 500, 1000]
 
     MAX_RETRIES = 3
 
     def __init__(self):
-        # Charger les catalogues
+        # Charger le catalogue Microsoft
         self.catalogue_microsoft_brut = pd.read_csv("data/orange_propre/catalogue_propre.csv")
         self.catalogue_microsoft = self._preparer_catalogue_microsoft(self.catalogue_microsoft_brut)
-        
-        # Charger le catalogue Fibre (prix publics provisoires)
-        try:
-            self.catalogue_fibre = pd.read_csv("data/orange_propre/catalogue_fibre_orange.csv")
-            print(" Catalogue Fibre chargé (prix publics Orange.tn)")
-        except FileNotFoundError:
-            print("  Catalogue Fibre non trouvé, création d'un catalogue minimal...")
-            self.catalogue_fibre = self._creer_catalogue_fibre_minimal()
+        print(f" Catalogue Microsoft chargé ({len(self.catalogue_microsoft)} produits)")
+        print(" Catalogue Fibre : modèle de calcul Orange Business (distance variable)")
 
         # Créer le modèle IA
         self.llm = ChatGroq(
@@ -71,34 +89,89 @@ class AgentConfigurateur:
         # Créer la chaîne Microsoft
         self.chain_microsoft = self.prompt_microsoft | self.llm
 
-    def _creer_catalogue_fibre_minimal(self) -> pd.DataFrame:
-        """Crée un catalogue Fibre minimal si le fichier n'existe pas"""
-        data = {
-            'id': [1, 2, 3, 4, 5, 6, 7],
-            'nom_offre': [
-                'Fibre Basic 50M', 'Fibre Standard 100M', 'Fibre Pro 50M',
-                'Fibre Premium 100M', 'Fibre Business 200M',
-                'Fibre Business 500M', 'Fibre Enterprise 1G'
-            ],
-            'debit_mbps': [50, 100, 50, 100, 200, 500, 1000],
-            'prix_vente_mensuel_tnd': [69.9, 110.9, 64.9, 99.9, 180.0, 350.0, 600.0],
-            'engagement_mois': [12, 12, 12, 12, 12, 12, 12],
-            'type_client': [
-                'Particulier', 'Particulier', 'Professionnel', 'Professionnel',
-                'Entreprise', 'Entreprise', 'Entreprise'
-            ],
-            'cout_installation_tnd': [100, 100, 150, 150, 300, 300, 500],
-            'description': [
-                'Connexion stable 50 Mbps',
-                'Très Haut Débit 100 Mbps',
-                'Fibre pro 50 Mbps avec support prioritaire',
-                'Fibre pro 100 Mbps avec SLA',
-                'Débit garanti 200 Mbps',
-                'Débit garanti 500 Mbps',
-                'Fibre dédiée 1 Gbps symétrique'
-            ]
+    def _palier_debit(self, debit_min: float) -> int:
+        """Retourne le palier de débit disponible >= debit_min."""
+        for p in self.FIBRE_PALIERS_DEBIT:
+            if p >= debit_min:
+                return p
+        return self.FIBRE_PALIERS_DEBIT[-1]
+
+    def _calculer_distance_max(self, debit_mbps: int, engagement_mois: int) -> int:
+        """
+        Calcule la distance maximale pour avoir une marge positive.
+        
+        Formule :
+        Revenu total = prix_vente × engagement_mois
+        Coût mensuel total = (debit × 1.2) × engagement_mois
+        Coût fixe max = Revenu - Coût mensuel
+        Distance max = (Coût fixe max - Routeur - Installation) ÷ 50
+        """
+        prix_vente_mensuel = debit_mbps * self.FIBRE_PRIX_VENTE_PAR_MBPS
+        cout_mensuel = debit_mbps * self.FIBRE_COUT_PAR_MBPS
+        
+        revenu_total = prix_vente_mensuel * engagement_mois
+        cout_mensuel_total = cout_mensuel * engagement_mois
+        
+        cout_fixe_max = revenu_total - cout_mensuel_total
+        cout_travaux_fo_max = cout_fixe_max - self.FIBRE_COUT_ROUTEUR - self.FIBRE_COUT_INSTALLATION
+        
+        if cout_travaux_fo_max <= 0:
+            return 0
+        
+        distance_max = int(cout_travaux_fo_max / self.FIBRE_COUT_PAR_METRE)
+        return max(0, distance_max)
+
+    def _calculer_fibre(self, debit_mbps: int, distance_metres: int,
+                        nombre_sites: int, engagement_mois: int) -> dict:
+        """
+        Calcule les coûts et revenus pour une configuration Fibre.
+        
+        Coûts fixes (one-time, par site) :
+            - Travaux FO    : distance × 50 TND/m (VARIABLE)
+            - Routeur       : 300 TND
+            - Installation  : 200 TND
+
+        Coût variable mensuel (par site) :
+            - Bande passante : debit × 1.2 TND/mois (FIXE)
+
+        Prix de vente mensuel (tarif catalogue) :
+            - debit × 10 TND/mois
+        """
+        # Par site
+        cout_fo          = distance_metres * self.FIBRE_COUT_PAR_METRE
+        cout_initial_site = cout_fo + self.FIBRE_COUT_ROUTEUR + self.FIBRE_COUT_INSTALLATION
+        cout_mensuel_site = round(debit_mbps * self.FIBRE_COUT_PAR_MBPS, 2)
+        prix_vente_site   = round(debit_mbps * self.FIBRE_PRIX_VENTE_PAR_MBPS, 2)
+
+        # Total (tous sites)
+        cout_initial_total = round(cout_initial_site * nombre_sites, 2)
+        cout_mensuel_total = round(cout_mensuel_site * nombre_sites, 2)
+        prix_vente_total   = round(prix_vente_site * nombre_sites, 2)
+
+        # Sur la durée d'engagement
+        cout_total_engagement   = round(cout_initial_total + cout_mensuel_total * engagement_mois, 2)
+        revenu_total_engagement = round(prix_vente_total * engagement_mois, 2)
+        marge_tnd = round(revenu_total_engagement - cout_total_engagement, 2)
+        marge_pct = round(marge_tnd / revenu_total_engagement * 100, 1) if revenu_total_engagement > 0 else 0
+
+        return {
+            "debit_mbps":            debit_mbps,
+            "nombre_sites":          nombre_sites,
+            "engagement_mois":       engagement_mois,
+            "distance_metres":       distance_metres,
+            # Coûts détaillés
+            "cout_travaux_fo":       round(cout_fo * nombre_sites, 2),
+            "cout_routeur":          round(self.FIBRE_COUT_ROUTEUR * nombre_sites, 2),
+            "cout_installation":     round(self.FIBRE_COUT_INSTALLATION * nombre_sites, 2),
+            "cout_initial_total":    cout_initial_total,
+            "cout_mensuel_total":    cout_mensuel_total,
+            # Prix de vente
+            "prix_mensuel_total":    prix_vente_total,
+            # Rentabilité
+            "marge_pct":             marge_pct,
+            "marge_tnd":             marge_tnd,
+            "marge_positive":        marge_tnd > 0,
         }
-        return pd.DataFrame(data)
 
     def _preparer_catalogue_microsoft(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -120,7 +193,7 @@ class AgentConfigurateur:
         # Garde tout sauf les lignes vraiment vides
         df = df[df['prix_annuel_achat'].notna()].copy()
 
-        # Calcul des prix annuels (marge 14%) — catalogue 100% annuel
+        # Calcul des prix annuels (marge 14%)
         df['cout_revient_tnd'] = df['prix_annuel_achat'].round(2)
         df['prix_vente_tnd']   = (df['cout_revient_tnd'] * 1.14).round(2)
         df['marge_pct'] = 14
@@ -155,13 +228,18 @@ class AgentConfigurateur:
         return df
 
     # ═══════════════════════════════════════════════════════════════
-    # CONFIGURATION FIBRE
+    # CONFIGURATION FIBRE (avec gestion intelligente des marges)
     # ═══════════════════════════════════════════════════════════════
 
     def configurer_fibre(self, analyse_agent1: dict) -> dict:
         """
         Configure 3 offres Fibre (Économique, Standard, Premium)
-        selon les besoins analysés.
+        avec gestion intelligente des marges.
+        
+        STRATÉGIE :
+        1. Priorité engagement 24 mois (meilleure marge)
+        2. Si marge 24M négative → essayer 12 mois
+        3. Si les deux négatifs → limiter distance ou alerter
         """
         besoins_fibre = analyse_agent1.get("besoins_fibre", {})
 
@@ -175,119 +253,162 @@ class AgentConfigurateur:
         debit_souhaite = int(besoins_fibre.get("debit_souhaite_mbps", 100) or 100)
         nombre_sites = int(besoins_fibre.get("nombre_sites", 1) or 1)
         distance_metres = int(besoins_fibre.get("distance_metres", 100) or 100)
-        zone = besoins_fibre.get("zone", "urbain")
 
-        # Déterminer le type de client (PME ou Entreprise)
-        taille = analyse_agent1.get("taille_entreprise", "PME")
-        if taille in ["ETI", "GE", "Grande Entreprise"]:
-            type_client = "Entreprise"
-        elif taille in ["PME", "TPE"]:
-            type_client = "Professionnel"
-        else:
-            type_client = "Particulier"
+        # Sélectionner 3 débits distincts
+        debit_eco = self._palier_debit(debit_souhaite)
+        debit_std = self._palier_debit(debit_souhaite * 1.5)
+        debit_pre = self._palier_debit(debit_souhaite * 2)
 
-        # Filtrer les offres selon le type client
-        offres_disponibles = self.catalogue_fibre[
-            (self.catalogue_fibre['type_client'] == type_client) |
-            (self.catalogue_fibre['type_client'] == 'Entreprise')
-        ].sort_values('prix_vente_mensuel_tnd')
+        # Forcer des paliers distincts
+        if debit_std == debit_eco:
+            idx = self.FIBRE_PALIERS_DEBIT.index(debit_eco)
+            debit_std = self.FIBRE_PALIERS_DEBIT[min(idx + 1, len(self.FIBRE_PALIERS_DEBIT) - 1)]
+        if debit_pre <= debit_std:
+            idx = self.FIBRE_PALIERS_DEBIT.index(debit_std)
+            debit_pre = self.FIBRE_PALIERS_DEBIT[min(idx + 1, len(self.FIBRE_PALIERS_DEBIT) - 1)]
 
-        if len(offres_disponibles) == 0:
-            offres_disponibles = self.catalogue_fibre.sort_values('prix_vente_mensuel_tnd')
-
-        # Sélectionner 3 offres
         configurations = []
+        alertes = []
 
-        # Économique : débit >= demandé, le moins cher
-        eco = offres_disponibles[
-            offres_disponibles['debit_mbps'] >= debit_souhaite
-        ].head(1)
+        for niveau, debit in [
+            ("economique", debit_eco),
+            ("standard", debit_std),
+            ("premium", debit_pre)
+        ]:
+            # STRATÉGIE : Essayer d'abord 24 mois (meilleure marge)
+            calc_24m = self._calculer_fibre(debit, distance_metres, nombre_sites, 24)
+            
+            if calc_24m["marge_positive"]:
+                #  Marge 24M positive → on garde 24 mois
+                calc = calc_24m
+                engagement_choisi = 24
+                raison_engagement = "Engagement 24 mois pour marge optimale"
+            else:
+                #  Marge 24M négative → essayer 12 mois
+                calc_12m = self._calculer_fibre(debit, distance_metres, nombre_sites, 12)
+                
+                if calc_12m["marge_positive"]:
+                    #  Marge 12M positive → on prend 12 mois
+                    calc = calc_12m
+                    engagement_choisi = 12
+                    raison_engagement = "Engagement 12 mois (24M non rentable)"
+                    alertes.append({
+                        "niveau": niveau,
+                        "message": f" {niveau.capitalize()} : Marge négative sur 24M, basculé sur 12M"
+                    })
+                else:
+                    #  Les deux négatifs → calculer distance max
+                    distance_max_24m = self._calculer_distance_max(debit, 24)
+                    distance_max_12m = self._calculer_distance_max(debit, 12)
+                    
+                    # Prendre la meilleure option (24M si possible)
+                    if distance_max_24m >= distance_max_12m:
+                        distance_limite = distance_max_24m
+                        engagement_choisi = 24
+                    else:
+                        distance_limite = distance_max_12m
+                        engagement_choisi = 12
+                    
+                    # Recalculer avec distance limitée
+                    calc = self._calculer_fibre(debit, distance_limite, nombre_sites, engagement_choisi)
+                    raison_engagement = f"Distance limitée à {distance_limite}m pour marge positive"
+                    
+                    alertes.append({
+                        "niveau": niveau,
+                        "message": f" {niveau.capitalize()} : Distance {distance_metres}m trop élevée. "
+                                    f"Distance max rentable : {distance_limite}m ({engagement_choisi} mois).",
+                        "distance_demandee": distance_metres,
+                        "distance_max": distance_limite,
+                        "distance_reduite": True
+                    })
+            
+            configurations.append({
+                "niveau": niveau,
+                "nom_offre": f"Fibre Orange Business {debit}M",
+                "debit_mbps": calc["debit_mbps"],
+                "nombre_sites": calc["nombre_sites"],
+                "engagement_mois": calc["engagement_mois"],
+                "distance_metres": calc["distance_metres"],
+                
+                # Coûts
+                "cout_travaux_fo": calc["cout_travaux_fo"],
+                "cout_routeur": calc["cout_routeur"],
+                "cout_installation": calc["cout_installation"],
+                "cout_initial_total": calc["cout_initial_total"],
+                "cout_mensuel_total": calc["cout_mensuel_total"],
+                
+                # Prix
+                "prix_mensuel_total": calc["prix_mensuel_total"],
+                
+                # Rentabilité
+                "marge_pct": calc["marge_pct"],
+                "marge_tnd": calc["marge_tnd"],
+                "marge_positive": calc["marge_positive"],
+                
+                # Explications
+                "raison_engagement": raison_engagement,
+                "justification": self._generer_justification_fibre(niveau, debit, debit_souhaite, calc)
+            })
 
-        if len(eco) == 0:
-            eco = offres_disponibles.head(1)
-
-        # Standard : débit confortable (1.5x demandé)
-        std = offres_disponibles[
-            offres_disponibles['debit_mbps'] >= debit_souhaite * 1.5
-        ].iloc[0:1] if len(offres_disponibles) > 1 else offres_disponibles.iloc[1:2]
-
-        # Premium : meilleur débit
-        prem = offres_disponibles.tail(1)
-
-        # Construire les configurations
-        for idx, (niveau, offre_df) in enumerate([
-            ("economique", eco),
-            ("standard", std),
-            ("premium", prem)
-        ]):
-            if len(offre_df) > 0:
-                offre = offre_df.iloc[0]
-
-                # Calcul coûts
-                prix_mensuel = offre['prix_vente_mensuel_tnd'] * nombre_sites
-                cout_installation = offre['cout_installation_tnd'] * nombre_sites
-
-                # Coût génie civil si distance > 200m
-                cout_genie_civil = 0
-                if distance_metres and distance_metres > 200:
-                    cout_genie_civil = (distance_metres - 200) * 50
-
-                cout_total_initial = cout_installation + cout_genie_civil
-
-                configurations.append({
-                    "niveau": str(niveau),
-                    "nom_offre": str(offre['nom_offre']),
-                    "debit_mbps": int(offre['debit_mbps']),
-                    "prix_mensuel_par_site": float(offre['prix_vente_mensuel_tnd']),
-                    "nombre_sites": int(nombre_sites),
-                    "prix_mensuel_total": float(round(prix_mensuel, 2)),
-                    "cout_installation": float(round(cout_installation, 2)),
-                    "cout_genie_civil": float(round(cout_genie_civil, 2)),
-                    "cout_total_initial": float(round(cout_total_initial, 2)),
-                    "engagement_mois": int(offre['engagement_mois']),
-                    "description": str(offre['description']),
-                    "justification": self._generer_justification_fibre(
-                        niveau, offre, debit_souhaite, nombre_sites
-                    )
-                })
-
-        # Déterminer la recommandation
-        budget = analyse_agent1.get("budget_mensuel", 0)
-        if budget and budget < 150:
-            recommandation = "economique"
-        elif budget and budget < 400:
-            recommandation = "standard"
+        # Recommandation selon budget vs prix réels des configurations
+        budget = analyse_agent1.get("budget_mensuel", 0) or 0
+        if configurations and budget > 0:
+            prix_std = configurations[1]["prix_mensuel_total"]
+            prix_pre = configurations[2]["prix_mensuel_total"]
+            if budget >= prix_pre:
+                recommandation = "premium"
+            elif budget >= prix_std:
+                recommandation = "standard"
+            else:
+                recommandation = "economique"
         else:
-            recommandation = "premium"
+            recommandation = "standard"
 
-        return {
+        resultat = {
             "configurations": configurations,
             "recommandation": recommandation,
-            "note": "Prix basés sur tarifs publics Orange.tn - À actualiser avec coûts réels B2B"
         }
+        
+        # Ajouter les alertes si présentes
+        if alertes:
+            resultat["alertes"] = alertes
+            resultat["note"] = " Certaines configurations ont nécessité des ajustements (distance ou engagement)"
+        
+        return resultat
 
-    def _generer_justification_fibre(self, niveau: str, offre, debit_souhaite: int, nombre_sites: int) -> str:
+    def _generer_justification_fibre(self, niveau: str, debit_offert: int, debit_demande: int, calc: dict) -> str:
         """Génère une justification pour une offre Fibre"""
-        justifications = {
-            "economique": f"Offre la plus économique répondant au besoin de {debit_souhaite} Mbps. "
-                            f"Débit de {int(offre['debit_mbps'])} Mbps pour {nombre_sites} site(s).",
+        base_justifications = {
+            "economique": f"Offre la plus économique répondant au besoin de {debit_demande} Mbps. "
+                            f"Débit de {debit_offert} Mbps avec engagement {calc['engagement_mois']} mois.",
             
             "standard": f"Bon équilibre entre performance et prix. "
-                        f"Débit confortable de {int(offre['debit_mbps'])} Mbps pour anticiper la croissance.",
+                        f"Débit de {debit_offert} Mbps pour anticiper la croissance. "
+                        f"Engagement {calc['engagement_mois']} mois.",
             
-            "premium": f"Solution haut de gamme avec {int(offre['debit_mbps'])} Mbps. "
-                        f"Performance maximale et fiabilité garantie pour activités critiques."
+            "premium": f"Solution haut de gamme avec {debit_offert} Mbps. "
+                        f"Performance maximale et fiabilité garantie. "
+                        f"Engagement {calc['engagement_mois']} mois."
         }
-        return justifications.get(niveau, "Configuration adaptée aux besoins")
+        
+        justif = base_justifications.get(niveau, "Configuration adaptée aux besoins")
+        
+        # Ajouter info marge
+        if calc["marge_pct"] >= 50:
+            justif += f" Excellent retour ({calc['marge_pct']}% de marge)."
+        elif calc["marge_pct"] >= 30:
+            justif += f" Bon retour ({calc['marge_pct']}% de marge)."
+        elif calc["marge_pct"] > 0:
+            justif += f" Marge réduite ({calc['marge_pct']}%)."
+        
+        return justif
 
     # ═══════════════════════════════════════════════════════════════
-    # CONFIGURATION MICROSOFT (déjà existant)
+    # CONFIGURATION MICROSOFT
     # ═══════════════════════════════════════════════════════════════
 
     def configurer_microsoft(self, analyste_agent1: dict) -> dict:
-        """
-        Configure 3 offres Microsoft (Économique, Standard, Premium)
-        """
+        """Configure 3 offres Microsoft (Économique, Standard, Premium)"""
         besoins_ms = analyste_agent1.get("besoins_microsoft", {})
 
         if not besoins_ms.get("demande_microsoft", False):
@@ -337,9 +458,7 @@ class AgentConfigurateur:
     # ═══════════════════════════════════════════════════════════════
 
     def configurer(self, analyse_agent1: dict) -> dict:
-        """
-        Méthode principale : Configure Fibre ET Microsoft selon les besoins
-        """
+        """Méthode principale : Configure Fibre ET Microsoft selon les besoins"""
         print("\n" + "=" * 70)
         print(" Configuration des solutions Orange")
         print("=" * 70)
@@ -487,64 +606,82 @@ if __name__ == "__main__":
     agent_config = AgentConfigurateur()
 
     print(f"\n Catalogue Microsoft : {len(agent_config.catalogue_microsoft)} produits")
-    print(f" Catalogue Fibre : {len(agent_config.catalogue_fibre)} offres")
 
-    # Test 1 : Client avec Fibre + Microsoft
+    # Test 1 : Distance normale (rentable)
     print("\n\n" + "=" * 70)
-    print(" TEST 1 : Startup (Fibre 200 Mbps + Microsoft 25 users)")
+    print(" TEST 1 : Distance normale (50m - Rentable)")
     print("=" * 70)
     
     analyse_test1 = {
         "nom_entreprise": "DevSoft",
         "secteur": "Tech",
         "taille_entreprise": "PME",
-        "nombre_sites": 1,
-        "urgence": "moyen",
-        "contraintes": [],
+        "urgence": "moyenne",
         "besoins_fibre": {
             "demande_fibre": True,
-            "debit_souhaite_mbps": 200,
+            "debit_souhaite_mbps": 100,
             "nombre_sites": 1,
-            "distance_metres": 150,
-            "zone": "urbain"
+            "distance_metres": 50
         },
-        "besoins_microsoft": {
-            "demande_microsoft": True,
-            "nombre_licences": 25,
-            "type_besoin": "collaboration",
-            "services_mentionnes": ["Teams", "Word", "Excel"]
-        },
-        "budget_mensuel": 2000
+        "besoins_microsoft": {"demande_microsoft": False},
+        "budget_mensuel": 1000
     }
     
     resultats1 = agent_config.configurer(analyse_test1)
     print("\n RÉSULTATS :")
     print(json.dumps(resultats1, indent=2, ensure_ascii=False, cls=NumpyEncoder))
 
-    # Test 2 : Client Fibre uniquement
+    # Test 2 : Distance élevée (marge limite)
     print("\n\n" + "=" * 70)
-    print(" TEST 2 : Restaurant (Fibre 100 Mbps uniquement)")
+    print(" TEST 2 : Distance élevée (200m - Marge réduite)")
     print("=" * 70)
     
     analyse_test2 = {
-        "nom_entreprise": "La Belle Vue",
+        "nom_entreprise": "RestoBay",
         "secteur": "Restauration",
         "taille_entreprise": "TPE",
+        "urgence": "élevée",
         "besoins_fibre": {
             "demande_fibre": True,
-            "debit_souhaite_mbps": 100,
+            "debit_souhaite_mbps": 50,
             "nombre_sites": 1,
-            "distance_metres": 80
+            "distance_metres": 200
         },
-        "besoins_microsoft": {
-            "demande_microsoft": False
-        },
-        "budget_mensuel": 150
+        "besoins_microsoft": {"demande_microsoft": False},
+        "budget_mensuel": 500
     }
     
     resultats2 = agent_config.configurer(analyse_test2)
     print("\n RÉSULTATS :")
     print(json.dumps(resultats2, indent=2, ensure_ascii=False, cls=NumpyEncoder))
 
+    # Test 3 : Distance très élevée (non rentable)
+    print("\n\n" + "=" * 70)
+    print(" TEST 3 : Distance très élevée (500m - Limite dépassée)")
+    print("=" * 70)
+    
+    analyse_test3 = {
+        "nom_entreprise": "Ferme Rurale",
+        "secteur": "Agriculture",
+        "taille_entreprise": "TPE",
+        "urgence": "faible",
+        "besoins_fibre": {
+            "demande_fibre": True,
+            "debit_souhaite_mbps": 50,
+            "nombre_sites": 1,
+            "distance_metres": 500
+        },
+        "besoins_microsoft": {"demande_microsoft": False},
+        "budget_mensuel": 300
+    }
+    
+    resultats3 = agent_config.configurer(analyse_test3)
+    print("\n RÉSULTATS :")
+    print(json.dumps(resultats3, indent=2, ensure_ascii=False, cls=NumpyEncoder))
+
     print("\n\n" + "=" * 70)
     print(" Tests terminés !")
+    print("\nRésumé des stratégies appliquées :")
+    print("- Test 1 (50m)  :  Marge positive → Engagement 24M")
+    print("- Test 2 (200m) :  Marge réduite → Engagement ajusté")
+    print("- Test 3 (500m) :  Distance limitée automatiquement")

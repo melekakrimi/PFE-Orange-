@@ -47,7 +47,7 @@ class AgentAnalyste:
             
             # Conversion en vrai dictionnaire Python
             analyse = json.loads(resultat_clean)
-
+    
             # VALIDATION
             if self._valider_analyse(analyse):
                 print(" Analyse validée")
@@ -110,6 +110,14 @@ class AgentAnalyste:
             return False
         
         return True
+
+
+
+
+
+
+
+
 
 
 # ============================================

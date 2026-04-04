@@ -45,12 +45,12 @@ FORMAT DE RÉPONSE
 Réponds UNIQUEMENT avec le JSON ci-dessous. Aucun texte avant ou après.
 
 {{
-    "pitch_commercial": "Texte du pitch personnalisé...",
-    "arguments_negociation": [
-        "Argument 1 concret",
-        "Argument 2 concret",
-        "Argument 3 concret"
-    ],
-    "raison_recommandation": "Pourquoi ce niveau est le meilleur choix..."
+      "pitch_commercial": "Texte du pitch personnalisé...",
+         "arguments_negociation": [
+         "Argument 1 concret",
+         "Argument 2 concret",
+         "Argument 3 concret"
+      ],
+         "raison_recommandation": "Pourquoi ce niveau est le meilleur choix..."
 }}
 """
