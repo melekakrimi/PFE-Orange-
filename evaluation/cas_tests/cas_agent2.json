@@ -1,0 +1,73 @@
+[
+    {
+    "id": 1,
+    "input": {
+        "nom_entreprise": "DevSoft",
+        "secteur": "Tech",
+        "taille_entreprise": "PME",
+        "besoins_fibre": {
+        "demande_fibre": true,
+        "debit_souhaite_mbps": 100,
+        "nombre_sites": 1,
+        "distance_metres": 50
+        },
+        "besoins_microsoft": {
+        "demande_microsoft": false
+        },
+        "budget_mensuel": 1000
+    },
+    "expected": {
+        "nb_configurations": 3,
+        "marges_positives": true,
+        "engagement_24m": true,
+        "distance_inchangee": true
+    }
+    },
+    {
+    "id": 2,
+    "input": {
+        "nom_entreprise": "RestoBay",
+        "secteur": "Restauration",
+        "taille_entreprise": "TPE",
+        "besoins_fibre": {
+        "demande_fibre": true,
+        "debit_souhaite_mbps": 50,
+        "nombre_sites": 1,
+        "distance_metres": 200
+        },
+        "besoins_microsoft": {
+        "demande_microsoft": false
+        },
+        "budget_mensuel": 500
+    },
+    "expected": {
+        "nb_configurations": 3,
+        "marges_positives": true,
+        "marge_economique_reduite": true
+    }
+    },
+    {
+    "id": 3,
+    "input": {
+        "nom_entreprise": "Ferme Rurale",
+        "secteur": "Agriculture",
+        "taille_entreprise": "TPE",
+        "besoins_fibre": {
+        "demande_fibre": true,
+        "debit_souhaite_mbps": 50,
+        "nombre_sites": 1,
+        "distance_metres": 500
+        },
+        "besoins_microsoft": {
+        "demande_microsoft": false
+        },
+        "budget_mensuel": 300
+    },
+    "expected": {
+        "nb_configurations": 3,
+        "marges_positives": true,
+        "alertes_presentes": true,
+        "distance_limitee": true
+    }
+    }
+]

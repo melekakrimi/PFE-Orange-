@@ -1,0 +1,86 @@
+[
+    {
+        "id": 1,
+        "input": "PME de transport LogiTrans, 3 sites (Tunis, Sfax, Sousse), 80 employés. Besoin de fibre optique 500 Mbps et Microsoft 365 pour tous. Budget mensuel : 5000 TND.",
+        "expected": {
+            "nom_entreprise": "LogiTrans",
+            "secteur": "Transport",
+            "taille_entreprise": "PME",
+            "nombre_sites": 3,
+            "besoins_fibre": {
+                "demande_fibre": true,
+                "debit_souhaite_mbps": 500,
+                "nombre_sites": 3
+            },
+            "besoins_microsoft": {
+                "demande_microsoft": true,
+                "nombre_licences": 80
+            },
+            "budget_mensuel": 5000
+        }
+    },
+    {
+        "id": 2,
+        "input": "Startup TechInnovate dans la tech, 25 développeurs, besoin Microsoft 365 et fibre 200 Mbps. Budget serré : 2000 TND/mois.",
+        "expected": {
+            "nom_entreprise": "TechInnovate",
+            "secteur": "Tech",
+            "taille_entreprise": "PME",
+            "besoins_fibre": {
+                "demande_fibre": true,
+                "debit_souhaite_mbps": 200
+            },
+            "besoins_microsoft": {
+                "demande_microsoft": true,
+                "nombre_licences": 25
+            },
+            "budget_mensuel": 2000
+        }
+    },
+    {
+        "id": 3,
+        "input": "Clinique médicale HealthCare, 50 employés, besoin seulement de fibre 100 Mbps pour la télémédecine. Pas besoin de Microsoft.",
+        "expected": {
+            "nom_entreprise": "HealthCare",
+            "secteur": "Santé",
+            "taille_entreprise": "PME",
+            "besoins_fibre": {
+                "demande_fibre": true,
+                "debit_souhaite_mbps": 100
+            },
+            "besoins_microsoft": {
+                "demande_microsoft": false
+            }
+        }
+    },
+    {
+        "id": 4,
+        "input": "Cabinet d'avocats LegalPro, 15 avocats, besoin uniquement Microsoft 365 avec stockage OneDrive. Pas de fibre.",
+        "expected": {
+            "secteur": "Services",
+            "taille_entreprise": "TPE",
+            "besoins_fibre": {
+                "demande_fibre": false
+            },
+            "besoins_microsoft": {
+                "demande_microsoft": true,
+                "nombre_licences": 15
+            }
+        }
+    },
+    {
+        "id": 5,
+        "input": "Restaurant FastFood Express, 2 sites, 30 employés, fibre 50 Mbps suffit. Budget limité 800 TND/mois.",
+        "expected": {
+            "secteur": "Restauration",
+            "taille_entreprise": "TPE",
+            "nombre_sites": 2,
+            "besoins_fibre": {
+                "demande_fibre": true,
+                "debit_souhaite_mbps": 50,
+                "nombre_sites": 2
+            },
+            "budget_mensuel": 800
+        }
+    }
+]
