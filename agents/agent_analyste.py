@@ -112,17 +112,9 @@ class AgentAnalyste:
         return True
 
 
-
-
-
-
-
-
-
-
 # ============================================
 # TESTS
-# ============================================
+
 if __name__ == "__main__":
     
     print(" Tests de l'Agent 1 - Analyste Fibre & Microsoft")
@@ -135,10 +127,10 @@ if __name__ == "__main__":
     print("-" * 70)
     description1 = """
     Bonjour, c'est l'entreprise DevSoft. On déménage.
-    Il nous faut la fibre avec 200 Mega minimum.
+    Il nous faut la fibre avec 500 mega minimum.
     Le boîtier Orange est à 120 mètres de nos locaux.
-    Aussi, on a recruté, il nous faut 25 licences Microsoft 365 pour l'équipe avec Word et Teams.
-    C'est urgent. Budget total : 1500 TND/mois.
+    Aussi, on a recruté, il nous faut    pour l'équipe avec Word et Teams.
+    C'est urgent. Budget total : 500/TND mois max.
     """
     analyse1 = agent.analyser(description1)
     print(json.dumps(analyse1, indent=2, ensure_ascii=False))
@@ -159,8 +151,8 @@ if __name__ == "__main__":
     print("\n\n TEST 3 : Cabinet comptable (Microsoft uniquement)")
     print("-" * 70)
     description3 = """
-    Cabinet d'expertise comptable Tunis Audit.
-    On a déjà internet, mais on veut passer sur Microsoft 365
+    Cabinet d'expertise comptable National Pen.
+    On a déjà internet, mais on veut passer sur Power BI
     pour nos 12 comptables. Il nous faut Excel, Word, et le cloud
     pour partager les dossiers. Budget : 500 TND/mois.
     """
@@ -171,8 +163,8 @@ if __name__ == "__main__":
     print("\n\n TEST 4 : PME multi-sites (Cas complexe)")
     print("-" * 70)
     description4 = """
-    Entreprise LogiTrans, secteur transport, 3 bureaux
-    (Tunis, Sfax, Sousse). On veut la fibre dans les 3 sites.
+    Entreprise LogiTrans, secteur transport
+    (Tunis). On veut la fibre
     Débit minimum 500 Mbps. Distance estimée : 200m pour Tunis,
     150m pour Sfax, 180m pour Sousse.
     

@@ -1,4 +1,14 @@
 # agents/agent_optimiseur.py
+"""
+Agent 3 : Optimiseur de Prix et Marges
+
+Technique : Constrained Prompting
+- Reçoit la configuration unique d'Agent 2 (Fibre + Microsoft)
+- Calcule les coûts, prix de vente et marges de façon déterministe
+- Vérifie la contrainte Orange (marge >= 14%)
+- Génère un pitch commercial personnalisé via LLM
+"""
+
 import os
 import sys
 import json
@@ -15,33 +25,35 @@ load_dotenv()
 
 class AgentOptimiseur:
     """
-    Agent 3 : Synthétise les configurations Fibre + Microsoft de l'Agent 2,
-    calcule les totaux par scénario, choisit la recommandation selon le budget
-    et génère un pitch commercial personnalisé via LLM.
+    Agent 3 : Calcule la rentabilité de la configuration et génère le pitch.
 
-    BASE DE CALCUL :
-    ================
-    - Fibre    : prix_mensuel_total (mensuel, tel que retourné par l'Agent 2)
-    - Microsoft: prix_total_mensuel (mensuel, tel que retourné par l'Agent 2)
-    - Total mensuel = Fibre mensuel + Microsoft mensuel
-    - Comparaison avec budget_mensuel de l'Agent 1
+    CALCUL MARGE :
+        Fibre     : marge_pct = marge_tnd / revenu_total_engagement × 100
+        Microsoft : marge fixe 14% (prix_vente = cout × 1.14)
+        Total     : taux_marge = marge_brute / prix_vente_total × 100
+
+    CONTRAINTE Orange : taux_marge >= 14%
     """
+
+    MARGE_MIN_PCT = 14.0
+    MARGE_MS_PCT  = 14.0
 
     def __init__(self):
         self.llm = ChatGroq(
             model="llama-3.3-70b-versatile",
             api_key=os.getenv("GROQ_API_KEY"),
-            temperature=0.1   # FIX 3 : strict pour les calculs financiers
+            temperature=0.1
         )
 
         self.prompt = PromptTemplate(
             input_variables=[
                 "description_client",
-                "budget_mensuel",
-                "scenario_recommande",
-                "a_fibre",
-                "a_microsoft",
-                "dans_budget"
+                "configuration_json",
+                "cout_total",
+                "prix_total",
+                "marge_brute",
+                "taux_marge",
+                "marge_ok",
             ],
             template=TEMPLATE_OPTIMISEUR
         )
@@ -52,157 +64,105 @@ class AgentOptimiseur:
     # MÉTHODE PRINCIPALE
     # ═══════════════════════════════════════════════════════════════
 
-    def optimiser(self, analyse_agent1: dict, configurations_agent2: dict) -> dict:
+    def optimiser(self, analyse_agent1: dict, configuration_agent2: dict) -> dict:
         """
-        Méthode principale.
-
         Args:
-            analyse_agent1        : dict retourné par AgentAnalyste.analyser()
-            configurations_agent2 : dict retourné par AgentConfigurateur.configurer()
-
+            analyse_agent1       : dict retourné par AgentAnalyste.analyser()
+            configuration_agent2 : dict retourné par AgentConfigurateur.configurer()
         Returns:
-            dict avec les 3 scénarios + recommandation + pitch commercial
+            dict avec coûts/marges calculés + pitch commercial
         """
         print("\n" + "=" * 70)
-        print(" Synthèse et recommandation des offres Orange")
+        print(" Calcul de la rentabilité et génération du pitch")
         print("=" * 70)
 
-        fibre_data  = configurations_agent2.get("fibre", {})
-        ms_data     = configurations_agent2.get("microsoft", {})
-        budget      = float(analyse_agent1.get("budget_mensuel", 0) or 0)
+        fibre_data = configuration_agent2.get("fibre")
+        ms_data    = configuration_agent2.get("microsoft")
 
-        a_fibre     = isinstance(fibre_data.get("configurations"), list)
-        a_microsoft = "configuration_economique" in ms_data
+        # ── Calcul des coûts et prix (déterministe) ────────────────
+        fibre_cout_annuel, fibre_prix_annuel, fibre_detail = self._calculer_fibre(fibre_data)
+        ms_cout_annuel,    ms_prix_annuel,    ms_detail    = self._calculer_microsoft(ms_data)
 
-        # Construire les 3 scénarios
-        fibre_configs = {}
-        if a_fibre:
-            for c in fibre_data["configurations"]:
-                fibre_configs[c["niveau"]] = c
+        cout_total  = round(fibre_cout_annuel + ms_cout_annuel, 2)
+        prix_total  = round(fibre_prix_annuel + ms_prix_annuel, 2)
+        marge_brute = round(prix_total - cout_total, 2)
+        taux_marge  = round(marge_brute / prix_total * 100, 1) if prix_total > 0 else 0.0
+        marge_ok    = taux_marge >= self.MARGE_MIN_PCT
 
-        ms_keys = {
-            "economique": "configuration_economique",
-            "standard":   "configuration_standard",
-            "premium":    "configuration_premium"
-        }
+        print(f"  Cout total annuel  : {cout_total} TND")
+        print(f"  Prix total annuel  : {prix_total} TND")
+        print(f"  Marge brute        : {marge_brute} TND")
+        print(f"  Taux de marge      : {taux_marge}%  "
+                f"({'OK' if marge_ok else 'ATTENTION < 14%'})")
 
-        scenarios = []
-        for niveau in ["economique", "standard", "premium"]:
-            scenario = self._construire_scenario(
-                niveau       = niveau,
-                fibre_config = fibre_configs.get(niveau) if a_fibre else None,
-                ms_config    = ms_data.get(ms_keys[niveau]) if a_microsoft else None,
-                budget       = budget
-            )
-            scenarios.append(scenario)
-
-        # Choisir la recommandation
-        recommandation = self._choisir_recommandation(scenarios, budget)
-
-        # Générer le pitch pour le scénario recommandé
-        scenario_rec = next(s for s in scenarios if s["niveau"] == recommandation)
-        pitch_data   = self._generer_pitch(
-            analyse_agent1, scenario_rec, a_fibre, a_microsoft
+        # ── Pitch commercial via LLM ───────────────────────────────
+        pitch = self._generer_pitch(
+            analyse_agent1, fibre_detail, ms_detail,
+            cout_total, prix_total, marge_brute, taux_marge, marge_ok
         )
 
-        # Injecter le pitch dans le scénario recommandé
-        scenario_rec["pitch_commercial"]      = pitch_data.get("pitch_commercial", "")
-        scenario_rec["arguments_negociation"] = pitch_data.get("arguments_negociation", [])
-
-        print(f" Recommandation : niveau '{recommandation}'")
-
         return {
-            "scenarios":      scenarios,
-            "recommandation": recommandation,
-            "raison":         pitch_data.get("raison_recommandation", ""),
+            "fibre":             fibre_detail,
+            "microsoft":         ms_detail,
+            "cout_total_annuel": cout_total,
+            "prix_total_annuel": prix_total,
+            "marge_brute":       marge_brute,
+            "taux_marge":        taux_marge,
+            "contrainte_ok":     marge_ok,
+            "pitch_commercial":       pitch.get("pitch_commercial", ""),
+            "arguments_negociation":  pitch.get("arguments_negociation", []),
+            "raison_recommandation":  pitch.get("raison_recommandation", ""),
         }
 
     # ═══════════════════════════════════════════════════════════════
-    # CONSTRUCTION D'UN SCÉNARIO
+    # CALCULS DÉTERMINISTES
     # ═══════════════════════════════════════════════════════════════
 
-    def _construire_scenario(
-        self,
-        niveau: str,
-        fibre_config,
-        ms_config,
-        budget: float
-    ) -> dict:
-        """Calcule les totaux pour un scénario donné."""
+    def _calculer_fibre(self, fibre_data: dict):
+        """Extrait les coûts et prix annuels de la config Fibre d'Agent 2."""
+        if not fibre_data:
+            return 0.0, 0.0, None
 
-        # ── Fibre ──────────────────────────────────────────────────
-        fibre_mensuel = 0.0
-        fibre_detail  = None
-        if fibre_config:
-            fibre_mensuel = float(fibre_config.get("prix_mensuel_total", 0))
-            fibre_detail  = {
-                "nom_offre":         str(fibre_config.get("nom_offre", "")),
-                "debit_mbps":        int(fibre_config.get("debit_mbps", 0)),
-                "prix_mensuel":      round(fibre_mensuel, 2),
-                "cout_installation": float(fibre_config.get("cout_installation", 0)),
-                "engagement_mois":   int(fibre_config.get("engagement_mois", 12)),
-            }
+        engagement_mois     = max(int(fibre_data.get("engagement_mois", 24)), 1)
+        cout_initial        = float(fibre_data.get("cout_initial_total", 0))
+        cout_mensuel        = float(fibre_data.get("cout_mensuel_total", 0))
+        prix_mensuel        = float(fibre_data.get("prix_mensuel_total", 0))
 
-        # ── Microsoft ──────────────────────────────────────────────
-        # FIX 2 : utilise prix_total_mensuel (pas prix_total_annuel)
-        ms_mensuel = 0.0
-        ms_annuel  = 0.0
-        ms_detail  = None
-        if ms_config:
-            ms_mensuel = float(ms_config.get("prix_total_mensuel", 0))
-            ms_annuel  = round(ms_mensuel * 12, 2)
-            ms_detail  = {
-                "nom_produit":       str(ms_config.get("nom_produit", "")),
-                "product_id":        str(ms_config.get("product_id", "")),
-                "nombre_licences":   int(ms_config.get("nombre_licences", 0)),
-                "prix_unitaire_tnd": float(ms_config.get("prix_unitaire_tnd", 0)),
-                "prix_mensuel":      round(ms_mensuel, 2),
-                "prix_annuel":       ms_annuel,
-            }
+        # cout_initial est one-time → on l'amortit sur la durée d'engagement
+        cout_initial_annuel = round(cout_initial * 12 / engagement_mois, 2)
+        fibre_cout_annuel   = round(cout_initial_annuel + cout_mensuel * 12, 2)
+        fibre_prix_annuel   = round(prix_mensuel * 12, 2)
 
-        total_mensuel = round(fibre_mensuel + ms_mensuel, 2)
-        total_annuel  = round(total_mensuel * 12, 2)
-        dans_budget   = budget > 0 and total_mensuel <= budget
-
-        return {
-            "niveau":                niveau,
-            "fibre":                 fibre_detail,
-            "microsoft":             ms_detail,
-            "total_mensuel":         total_mensuel,
-            "total_annuel":          total_annuel,
-            "dans_budget":           dans_budget,
-            "pitch_commercial":      "",
-            "arguments_negociation": [],
+        detail = {
+            "nom_offre":          fibre_data.get("nom_offre", ""),
+            "debit_mbps":         fibre_data.get("debit_mbps", 0),
+            "engagement_mois":    engagement_mois,
+            "distance_metres":    fibre_data.get("distance_metres", 0),
+            "cout_initial_total": cout_initial,
+            "cout_mensuel_total": cout_mensuel,
+            "prix_mensuel_total": prix_mensuel,
+            "prix_annuel":        fibre_prix_annuel,
+            "marge_pct_fibre":    fibre_data.get("marge_pct", 0),
         }
+        return fibre_cout_annuel, fibre_prix_annuel, detail
 
-    # ═══════════════════════════════════════════════════════════════
-    # RECOMMANDATION
-    # ═══════════════════════════════════════════════════════════════
+    def _calculer_microsoft(self, ms_data: dict):
+        """Extrait les coûts et prix annuels de la config Microsoft d'Agent 2."""
+        if not ms_data:
+            return 0.0, 0.0, None
 
-    def _choisir_recommandation(self, scenarios: list, budget: float) -> str:
-        """
-        Logique de recommandation :
-        - Standard si dans le budget
-        - Économique si le standard dépasse le budget
-        - Premium si le budget permet un large confort
-        """
-        if budget <= 0:
-            return "standard"
+        ms_prix_annuel = float(ms_data.get("prix_total_annuel", 0))
+        ms_cout_annuel = round(ms_prix_annuel / (1 + self.MARGE_MS_PCT / 100), 2)
 
-        totaux      = {s["niveau"]: s["total_mensuel"] for s in scenarios}
-        dans_budget = {s["niveau"]: s["dans_budget"]   for s in scenarios}
-
-        if dans_budget.get("premium"):
-            if (totaux["premium"] - totaux["standard"]) < budget * 0.25:
-                return "premium"
-
-        if dans_budget.get("standard"):
-            return "standard"
-
-        if dans_budget.get("economique"):
-            return "economique"
-
-        return "economique"
+        detail = {
+            "nom_produit":       ms_data.get("nom_produit", ""),
+            "product_id":        ms_data.get("product_id", ""),
+            "nombre_licences":   ms_data.get("nombre_licences", 0),
+            "prix_unitaire_tnd": ms_data.get("prix_unitaire_tnd", 0),
+            "prix_annuel":       ms_prix_annuel,
+            "cout_annuel":       ms_cout_annuel,
+        }
+        return ms_cout_annuel, ms_prix_annuel, detail
 
     # ═══════════════════════════════════════════════════════════════
     # PITCH COMMERCIAL VIA LLM
@@ -211,50 +171,65 @@ class AgentOptimiseur:
     def _generer_pitch(
         self,
         analyse_agent1: dict,
-        scenario: dict,
-        a_fibre: bool,
-        a_microsoft: bool
+        fibre_detail,
+        ms_detail,
+        cout_total: float,
+        prix_total: float,
+        marge_brute: float,
+        taux_marge: float,
+        marge_ok: bool,
     ) -> dict:
-        """Appelle le LLM pour générer le pitch commercial."""
-        print("  🎯 Génération du pitch commercial...")
+        print("  Generation du pitch commercial...")
+
+        config_resume = {}
+        if fibre_detail:
+            config_resume["fibre"] = {
+                "offre":      fibre_detail["nom_offre"],
+                "debit":      f"{fibre_detail['debit_mbps']} Mbps",
+                "engagement": f"{fibre_detail['engagement_mois']} mois",
+                "prix_annuel": fibre_detail["prix_annuel"],
+            }
+        if ms_detail:
+            config_resume["microsoft"] = {
+                "plan":              ms_detail["nom_produit"],
+                "licences":          ms_detail["nombre_licences"],
+                "prix_total_annuel": ms_detail["prix_annuel"],
+            }
 
         inputs = {
             "description_client":  self._construire_description(analyse_agent1),
-            "budget_mensuel":      analyse_agent1.get("budget_mensuel", "Non spécifié"),
-            "scenario_recommande": json.dumps(scenario, indent=2, ensure_ascii=False),
-            "a_fibre":             "Oui" if a_fibre else "Non",
-            "a_microsoft":         "Oui" if a_microsoft else "Non",
-            "dans_budget":         "Oui" if scenario["dans_budget"] else "Non (à discuter)"
+            "configuration_json":  json.dumps(config_resume, indent=2, ensure_ascii=False),
+            "cout_total":          cout_total,
+            "prix_total":          prix_total,
+            "marge_brute":         marge_brute,
+            "taux_marge":          taux_marge,
+            "marge_ok":            "Oui" if marge_ok else "Non (attention requise)",
         }
 
         try:
             resultat = self.chain.invoke(inputs)
             return self._parser_json(resultat.content)
         except Exception as e:
-            print(f"  ⚠️  Erreur pitch LLM : {e}")
+            print(f"  Erreur pitch LLM : {e}")
             return {
-                "pitch_commercial":      "Offre personnalisée Orange Business.",
+                "pitch_commercial":      "Solution Orange Business personnalisée pour votre activité.",
                 "arguments_negociation": [],
-                "raison_recommandation": "Meilleur rapport qualité/prix pour ce profil."
+                "raison_recommandation": "Solution adaptée exactement à vos besoins.",
             }
 
     # ═══════════════════════════════════════════════════════════════
-    # MÉTHODES UTILITAIRES
+    # UTILITAIRES
     # ═══════════════════════════════════════════════════════════════
 
     def _construire_description(self, analyste: dict) -> str:
-        """Construit un résumé du profil client pour le prompt"""
-        lignes = [
-            f"Entreprise  : {analyste.get('nom_entreprise', 'Non spécifié')}",
-            f"Secteur     : {analyste.get('secteur', 'Non spécifié')}",
-            f"Taille      : {analyste.get('taille_entreprise', 'Non spécifié')}",
-            f"Nombre sites: {analyste.get('nombre_sites', 1)}",
-            f"Urgence     : {analyste.get('urgence', 'moyen')}",
-        ]
-        return "\n".join(lignes)
+        return "\n".join([
+            f"Entreprise : {analyste.get('nom_entreprise', 'Non specifie')}",
+            f"Secteur    : {analyste.get('secteur', 'Non specifie')}",
+            f"Taille     : {analyste.get('taille_entreprise', 'Non specifie')}",
+            f"Urgence    : {analyste.get('urgence', 'moyen')}",
+        ])
 
     def _parser_json(self, texte: str) -> dict:
-        """Extrait le JSON depuis la réponse du LLM"""
         texte = texte.strip()
         match = re.search(r"```(?:json)?\s*([\s\S]*?)```", texte)
         if match:
@@ -267,54 +242,30 @@ class AgentOptimiseur:
 
 
 # ============================================
-# TESTS
+# TEST
 # ============================================
 if __name__ == "__main__":
-
-    # FIX 1 : NumpyEncoder supprimé — n'existe pas dans agent_configurateur
     from agents.agent_analyste      import AgentAnalyste
     from agents.agent_configurateur import AgentConfigurateur
 
-    print("🧪 Tests de l'Agent 3 - Optimiseur de Prix")
+    print(" Test Agent 3 - Optimiseur")
     print("=" * 70)
 
-    agent_analyste      = AgentAnalyste()
-    agent_configurateur = AgentConfigurateur()
-    agent_optimiseur    = AgentOptimiseur()
+    a1 = AgentAnalyste()
+    a2 = AgentConfigurateur()
+    a3 = AgentOptimiseur()
 
-    # ── Test 1 : Startup Fibre + Microsoft ──────────────────────────
-    print("\n📋 TEST 1 : Startup (Fibre 200 Mbps + Microsoft 25 licences)")
-    print("-" * 70)
-
-    desc1 = """
-    DevSoft, entreprise tech (PME, 25 employés).
-    On déménage : fibre 200 Mbps minimum et 25 licences Microsoft 365
-    avec Teams et Word. Budget : 2000 TND/mois. Urgence élevée.
+    desc = """
+    DevSoft, entreprise tech, PME, 20 employes.
+    On demenage dans de nouveaux bureaux. On a besoin de la fibre 200 Mbps,
+    boitier Orange a 80 metres. Et 20 licences Microsoft avec Teams, OneDrive
+    et le Pack Office pour les developpeurs. Budget 26000 TND/an.
     """
-    analyse1 = agent_analyste.analyser(desc1)
-    configs1 = agent_configurateur.configurer(analyse1)
-    result1  = agent_optimiseur.optimiser(analyse1, configs1)
 
-    print("\n📄 RÉSULTATS :")
-    # FIX 1 : cls=NumpyEncoder supprimé
-    print(json.dumps(result1, indent=2, ensure_ascii=False))
+    analyse = a1.analyser(desc)
+    config  = a2.configurer(analyse)
+    result  = a3.optimiser(analyse, config)
 
-    # ── Test 2 : Cabinet Microsoft uniquement ───────────────────────
-    print("\n\n📋 TEST 2 : Cabinet comptable (Microsoft uniquement)")
-    print("-" * 70)
-
-    desc2 = """
-    Cabinet Tunis Audit, 12 comptables.
-    Besoin de Microsoft 365 avec Excel, Word et OneDrive.
-    Budget : 500 TND/mois.
-    """
-    analyse2 = agent_analyste.analyser(desc2)
-    configs2 = agent_configurateur.configurer(analyse2)
-    result2  = agent_optimiseur.optimiser(analyse2, configs2)
-
-    print("\n📄 RÉSULTATS :")
-    # FIX 1 : cls=NumpyEncoder supprimé
-    print(json.dumps(result2, indent=2, ensure_ascii=False))
-
-    print("\n\n" + "=" * 70)
-    print("✅ Tests Agent 3 terminés !")
+    print("\n RESULTATS :")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print("\n Test Agent 3 termine !")

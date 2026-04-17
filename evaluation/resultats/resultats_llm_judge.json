@@ -1,0 +1,58 @@
+{
+  "methode": "LLM-as-Judge",
+  "modele_juge": "llama-3.3-70b-versatile",
+  "nb_cas": 5,
+  "nb_valides": 3,
+  "moyennes": {
+    "score_global": 3.89,
+    "pertinence_secteur": 4.0,
+    "arguments_chiffres": 3.0,
+    "ton_professionnel": 4.67
+  },
+  "details": [
+    {
+      "id": 1,
+      "client": "DevSoft",
+      "secteur": "Tech",
+      "scenario": "Competitif",
+      "pitch": "Cher DevSoft, en tant qu'entreprise de technologie, vous avez besoin d'une solution qui vous permette de vous développer rapidement et efficacement. Notre scénario Competitif, avec un taux de marge de 65%, offre une valeur business exceptionnelle et un retour sur investissement significatif, tout en étant dans votre budget de 24000 TND. Avec la fibre et Microsoft inclus, vous bénéficierez d'une infrastructure solide pour votre croissance.",
+      "pertinence_secteur": 4,
+      "arguments_chiffres": 4,
+      "ton_professionnel": 5,
+      "score_global": 4.33,
+      "commentaire": "Le pitch est bien adapté au secteur tech, utilise des chiffres concrets et a un ton professionnel convaincant. Cependant, il pourrait être amélioré en incluant plus d'arguments spécifiques à l'entreprise DevSoft et en fournissant plus de détails sur la façon dont le scénario Competitif répond à ses besoins."
+    },
+    {
+      "id": 2,
+      "client": "FastFood Express",
+      "secteur": "Restauration",
+      "scenario": "Competitif",
+      "pitch": "Cher FastFood Express, en tant que PME du secteur de la restauration, vous pouvez bénéficier d'un retour sur investissement significatif avec notre offre Competitif, qui présente un taux de marge de 50,5%. Cette solution vous permettra de réduire vos coûts et d'améliorer votre efficacité, tout en restant dans votre budget annuel de 9600 TND.",
+      "pertinence_secteur": 4,
+      "arguments_chiffres": 4,
+      "ton_professionnel": 5,
+      "score_global": 4.33,
+      "commentaire": "Le pitch est bien adapté au secteur de la restauration et utilise des chiffres pertinents, mais pourrait être amélioré en incluant des détails spécifiques sur la façon dont l'offre Competitif répond aux besoins de FastFood Express."
+    },
+    {
+      "id": 3,
+      "client": "LegalPro",
+      "secteur": "Juridique",
+      "scenario": "Competitif",
+      "pitch": "Cher client de LegalPro, dans le secteur juridique, nous vous proposons le scénario Competitif, qui offre une valeur business exceptionnelle et un retour sur investissement optimal, avec un taux de marge de 14,0% pour Orange Business Tunisie.",
+      "pertinence_secteur": 4,
+      "arguments_chiffres": 1,
+      "ton_professionnel": 4,
+      "score_global": 3.0,
+      "commentaire": "Le pitch est bien adapté au secteur juridique et a un ton professionnel convaincant. Cependant, il ne reflète pas fidèlement les chiffres du scénario, notamment le prix annuel et le taux de marge, qui sont indiqués comme 0 TND et 0,0% dans le scénario, mais différents dans le pitch."
+    },
+    {
+      "id": 4,
+      "erreur": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01khr6zy4pepvs5aw2pnzp3w0w` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99660, Requested 788. Please try again in 6m27.071999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    },
+    {
+      "id": 5,
+      "erreur": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01khr6zy4pepvs5aw2pnzp3w0w` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99660, Requested 677. Please try again in 4m51.168s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+    }
+  ]
+}

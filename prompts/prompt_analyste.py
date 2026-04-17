@@ -1,52 +1,153 @@
 # prompts/prompt_analyste.py
+"""
+Technique de prompt : Few-Shot Learning
+3 exemples réels style commercial Orange Business Tunisie :
+    - Exemple 1 : Fibre + Microsoft (Banque)
+    - Exemple 2 : Fibre seule (Restauration)
+    - Exemple 3 : Microsoft seul (Cabinet Juridique)
+"""
 
 TEMPLATE_ANALYSTE = """
-Tu es un expert commercial chez Orange Business.
+Tu es un expert commercial senior chez Orange Business Tunisie, spécialisé dans l'analyse
+des besoins B2B. Tu maîtrises parfaitement les solutions Fibre FTTO et Microsoft 365.
 
-MISSION : Analyser l'email d'un client et extraire ses besoins.
-PÉRIMÈTRE : Fibre optique (FTTO) + Services Microsoft Cloud uniquement.
+MISSION : Analyser le rapport du commercial et extraire les besoins du client en JSON structuré.
+PÉRIMÈTRE : Fibre optique FTTO + Microsoft 365 uniquement.
 
-CLIENT :
-{description_client}
-1. FIBRE OPTIQUE :
-    - demande_fibre = true si le client mentionne : fibre, internet, connexion, débit, Mbps
-    - distance_metres = chercher ABSOLUMENT si mentionné (ex: "à 120m", "120 mètres")
-    - Si pas de distance → null
-    - debit_souhaite_mbps = extraire le débit (ex: "200 Mega" → 200)
+═══════════════════════════════════════════════════════
+PLANS MICROSOFT DISPONIBLES
+═══════════════════════════════════════════════════════
+| Plan                        | OneDrive | SharePoint | Mail | Pack Office | Intune | Defender |
+|-----------------------------|----------|------------|------|-------------|--------|----------|
+| Exchange Online Plan 1      |    Non   |    Non     |  Oui |     Non     |   Non  |    Non   |
+| Microsoft 365 Business Basic|    Oui   |    Oui     |  Oui |     Non     |   Non  |    Non   |
+| Microsoft 365 Business Std  |    Oui   |    Oui     |  Oui |     Oui     |   Non  |    Non   |
+| Microsoft 365 Business Prem |    Oui   |    Oui     |  Oui |     Oui     |   Oui  |    Oui   |
 
-2. MICROSOFT :
-    - demande_microsoft = true si mentionne : Microsoft, Office, 365, Teams, Word, Excel, Cloud
-    - nombre_licences = nombre d'utilisateurs/licences (ex: "25 licences" → 25)
-    - type_besoin = deviner parmi : "bureautique" / "collaboration" / "cloud avancé"
+═══════════════════════════════════════════════════════
+EXEMPLES DE RÉFÉRENCE (Few-Shot Learning)
+═══════════════════════════════════════════════════════
 
-3. GÉNÉRAL :
-    - urgence = "faible" par défaut, "moyenne" si "assez urgent", "élevée" si "urgent"/"rapidement"
-    - budget_mensuel = chercher le montant en TND/mois
-    - taille_entreprise = deviner : "TPE" (<10 employés), "PME" (10-250), "ETI" (250-5000), "GE" (>5000)
+── EXEMPLE 1 : ETI Banque (Fibre + Microsoft) ──────────────────────────
+Rapport commercial :
+"Client BIAT, secteur bancaire, environ 15 employés au siège.
+Le client veut OneDrive, mail, Teams et SharePoint pour collaborer.
+Ils ont besoin de la fibre 200 Mbps, le boîtier Orange est à 80 mètres.
+Budget annuel 50 000 TND. Urgence haute."
 
-IMPORTANT : Retourne UNIQUEMENT du JSON valide, aucun texte avant ou après.
-
-
-Structure JSON exacte attendue :
+Réponse :
 {{
-    "nom_entreprise": "string ou null",
-    "secteur": "Tech/Finance/Santé/Transport/Industrie/Autre ou null",
-    "taille_entreprise": "TPE/PME/ETI/GE ou null",
+    "nom_entreprise": "BIAT",
+    "secteur": "Banque",
+    "taille_entreprise": "ETI",
     "besoins_fibre": {{
-        "demande_fibre": boolean,
-        "nombre_sites": int ou null,
-        "debit_souhaite_mbps": int ou null,
-        "distance_metres": int ou null,
-        "zone": "urbain/rural ou null"
+        "demande_fibre": true,
+        "debit_souhaite_mbps": 200,
+        "distance_metres": 80
     }},
     "besoins_microsoft": {{
-        "demande_microsoft": boolean,
-        "nombre_licences": int ou null,
-        "type_besoin": "bureautique/collaboration/cloud_avancé ou null",
-        "services_mentionnes": ["Teams", "Word", ...] ou []
+        "demande_microsoft": true,
+        "nombre_licences": 15,
+        "services": {{
+            "onedrive": true,
+            "sharepoint": true,
+            "mail": true,
+            "pack_office": false,
+            "intune": false,
+            "defender": false
+        }}
     }},
-    "budget_mensuel": int ou null,
-    "urgence": "faible/moyenne/élevée",
-    "contraintes": ["contrainte1", "contrainte2"] ou []
+    "budget_annuel": 50000,
+    "urgence": "haute",
+    "contraintes": []
 }}
+
+── EXEMPLE 2 : TPE Restauration (Fibre seule) ────────────────────────
+Rapport commercial :
+"Restaurant La Belle Vue, secteur restauration, TPE.
+Le client veut juste internet rapide pour les caisses et le WiFi clients.
+100 Mbps suffit. Distance du boîtier Orange : 80 mètres.
+Budget max 4800 TND par an. Pas besoin de Microsoft."
+
+Réponse :
+{{
+    "nom_entreprise": "La Belle Vue",
+    "secteur": "Restauration",
+    "taille_entreprise": "TPE",
+    "besoins_fibre": {{
+        "demande_fibre": true,
+        "debit_souhaite_mbps": 100,
+        "distance_metres": 80
+    }},
+    "besoins_microsoft": {{
+        "demande_microsoft": false,
+        "nombre_licences": null,
+        "services": {{
+            "onedrive": false,
+            "sharepoint": false,
+            "mail": false,
+            "pack_office": false,
+            "intune": false,
+            "defender": false
+        }}
+    }},
+    "budget_annuel": 4800,
+    "urgence": "faible",
+    "contraintes": []
+}}
+
+── EXEMPLE 3 : PME Juridique (Microsoft seul) ────────────────────────
+Rapport commercial :
+"Cabinet LegalPro, secteur juridique, 15 avocats.
+Le client veut OneDrive, mail, SharePoint et Pack Office pour les documents.
+Ils veulent aussi Intune pour gérer les appareils mobiles.
+Pas besoin de fibre, ils ont déjà internet. Budget 18 000 TND/an. Urgence faible."
+
+Réponse :
+{{
+    "nom_entreprise": "LegalPro",
+    "secteur": "Juridique",
+    "taille_entreprise": "PME",
+    "besoins_fibre": {{
+        "demande_fibre": false,
+        "debit_souhaite_mbps": null,
+        "distance_metres": null
+    }},
+    "besoins_microsoft": {{
+        "demande_microsoft": true,
+        "nombre_licences": 15,
+        "services": {{
+            "onedrive": true,
+            "sharepoint": true,
+            "mail": true,
+            "pack_office": true,
+            "intune": true,
+            "defender": false
+        }}
+    }},
+    "budget_annuel": 18000,
+    "urgence": "faible",
+    "contraintes": []
+}}
+
+═══════════════════════════════════════════════════════
+RÈGLES ABSOLUES
+═══════════════════════════════════════════════════════
+R1. Retourne UNIQUEMENT du JSON valide. Aucun texte avant ou après.
+R2. Ne jamais inventer d'informations absentes → utiliser null.
+R3. demande_fibre = false si le commercial ne mentionne pas internet/fibre/débit/Mbps.
+R4. demande_microsoft = false si le commercial ne mentionne pas Microsoft/OneDrive/Mail/Teams/Office.
+R5. distance_metres = null si non mentionnée explicitement.
+R6. budget_annuel = null si non mentionné. Si budget mensuel → multiplier par 12.
+R7. taille_entreprise : TPE (<10 emp.) / PME (10-250) / ETI (250-5000) / GE (>5000).
+R8. Pour les services Microsoft, mettre true UNIQUEMENT si explicitement mentionné par le commercial.
+R9. "Teams" → sharepoint=true et mail=true (Teams nécessite ces services).
+R10. "Pack Office" = Word + Excel + PowerPoint installés sur le PC.
+
+═══════════════════════════════════════════════════════
+RAPPORT COMMERCIAL À ANALYSER
+═══════════════════════════════════════════════════════
+{description_client}
+
+Réponds UNIQUEMENT avec le JSON. Même structure que les exemples ci-dessus.
 """

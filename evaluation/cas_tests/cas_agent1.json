@@ -6,7 +6,6 @@
             "nom_entreprise": "LogiTrans",
             "secteur": "Transport",
             "taille_entreprise": "PME",
-            "nombre_sites": 3,
             "besoins_fibre": {
                 "demande_fibre": true,
                 "debit_souhaite_mbps": 500,
@@ -16,7 +15,7 @@
                 "demande_microsoft": true,
                 "nombre_licences": 80
             },
-            "budget_mensuel": 5000
+            "budget_annuel": 5000
         }
     },
     {
@@ -34,7 +33,7 @@
                 "demande_microsoft": true,
                 "nombre_licences": 25
             },
-            "budget_mensuel": 2000
+            "budget_annuel": 2000
         }
     },
     {
@@ -57,8 +56,8 @@
         "id": 4,
         "input": "Cabinet d'avocats LegalPro, 15 avocats, besoin uniquement Microsoft 365 avec stockage OneDrive. Pas de fibre.",
         "expected": {
-            "secteur": "Services",
-            "taille_entreprise": "TPE",
+            "secteur": "Juridique",
+            "taille_entreprise": "PME",
             "besoins_fibre": {
                 "demande_fibre": false
             },
@@ -73,14 +72,13 @@
         "input": "Restaurant FastFood Express, 2 sites, 30 employés, fibre 50 Mbps suffit. Budget limité 800 TND/mois.",
         "expected": {
             "secteur": "Restauration",
-            "taille_entreprise": "TPE",
-            "nombre_sites": 2,
+            "taille_entreprise": "PME",
             "besoins_fibre": {
                 "demande_fibre": true,
                 "debit_souhaite_mbps": 50,
                 "nombre_sites": 2
             },
-            "budget_mensuel": 800
+            "budget_annuel": 800
         }
     }
 ]

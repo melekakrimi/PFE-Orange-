@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "description": "PME Tech DevSoft, 25 developpeurs, besoin fibre 100 Mbps et Microsoft 365 pour toute l'equipe. Distance boitier Orange 50 metres. Budget 2000 TND/mois.",
-        "input": {
+        "description": "PME Tech DevSoft, 25 developpeurs, fibre 100 Mbps + Microsoft 365. Budget annuel 24000 TND.",
+        "input_agent1": {
             "nom_entreprise": "DevSoft",
             "secteur": "Tech",
             "taille_entreprise": "PME",
@@ -19,29 +19,19 @@
                 "type_besoin": "collaboration",
                 "services_mentionnes": ["Teams", "Word"]
             },
-            "budget_annuel": 2000
+            "budget_annuel": 24000
         },
         "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "eco_debit": 100,
-                "std_debit": 200,
-                "pre_debit": 500,
-                "recommandation": "standard"
-            },
-            "microsoft": {
-                "trois_configs": true,
-                "produits_distincts": true,
-                "nb_licences": 25,
-                "recommandation": "standard"
-            }
+            "nb_scenarios": 3,
+            "contraintes_marge_ok": true,
+            "recommandation_dans_budget": true,
+            "taux_marge_min": 10.0
         }
     },
     {
         "id": 2,
-        "description": "Restaurant FastFood Express, 2 sites, 30 employes, besoin fibre 50 Mbps uniquement. Distance 80 metres. Budget limite 800 TND/mois.",
-        "input": {
+        "description": "Restaurant FastFood Express, 2 sites, fibre 50 Mbps uniquement. Budget annuel 9600 TND.",
+        "input_agent1": {
             "nom_entreprise": "FastFood Express",
             "secteur": "Restauration",
             "taille_entreprise": "PME",
@@ -58,24 +48,19 @@
                 "type_besoin": null,
                 "services_mentionnes": []
             },
-            "budget_annuel": 800
+            "budget_annuel": 9600
         },
         "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "eco_debit": 50,
-                "std_debit": 100,
-                "pre_debit": 200,
-                "recommandation": "economique"
-            },
-            "microsoft": null
+            "nb_scenarios": 3,
+            "contraintes_marge_ok": true,
+            "recommandation_dans_budget": true,
+            "taux_marge_min": 10.0
         }
     },
     {
         "id": 3,
-        "description": "Cabinet d'avocats LegalPro, 15 avocats, besoin uniquement Microsoft 365 avec OneDrive pour le stockage. Pas de fibre. Budget 500 TND/mois.",
-        "input": {
+        "description": "Cabinet LegalPro, 15 avocats, Microsoft 365 uniquement. Budget annuel 6000 TND.",
+        "input_agent1": {
             "nom_entreprise": "LegalPro",
             "secteur": "Juridique",
             "taille_entreprise": "PME",
@@ -92,22 +77,19 @@
                 "type_besoin": "stockage",
                 "services_mentionnes": ["OneDrive"]
             },
-            "budget_annuel": 500
+            "budget_annuel": 6000
         },
         "expected": {
-            "fibre": null,
-            "microsoft": {
-                "trois_configs": true,
-                "produits_distincts": true,
-                "nb_licences": 15,
-                "recommandation": "economique"
-            }
+            "nb_scenarios": 3,
+            "contraintes_marge_ok": true,
+            "recommandation_dans_budget": true,
+            "taux_marge_min": 10.0
         }
     },
     {
         "id": 4,
-        "description": "Ferme agricole zone rurale, besoin fibre 50 Mbps, 1 site. Distance boitier Orange 500 metres (zone eloignee). Budget 300 TND/mois.",
-        "input": {
+        "description": "Ferme Rurale Bio, fibre 50 Mbps zone eloignee 500m. Budget annuel 3600 TND.",
+        "input_agent1": {
             "nom_entreprise": "Ferme Rurale Bio",
             "secteur": "Agriculture",
             "taille_entreprise": "TPE",
@@ -124,22 +106,19 @@
                 "type_besoin": null,
                 "services_mentionnes": []
             },
-            "budget_annuel": 300
+            "budget_annuel": 3600
         },
         "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "distance_reduite": true,
-                "recommandation": "economique"
-            },
-            "microsoft": null
+            "nb_scenarios": 3,
+            "contraintes_marge_ok": true,
+            "recommandation_dans_budget": true,
+            "taux_marge_min": 10.0
         }
     },
     {
         "id": 5,
-        "description": "Entreprise industrielle IndusTech, 3 sites, 120 employes, besoin fibre 200 Mbps haute performance et Microsoft 365 pour les equipes. Budget 15000 TND/mois.",
-        "input": {
+        "description": "IndusTech, 3 sites, 120 employes, fibre 200 Mbps + Microsoft 365. Budget annuel 180000 TND.",
+        "input_agent1": {
             "nom_entreprise": "IndusTech",
             "secteur": "Industrie",
             "taille_entreprise": "PME",
@@ -156,23 +135,13 @@
                 "type_besoin": "bureautique",
                 "services_mentionnes": ["Microsoft 365", "Teams", "Excel"]
             },
-            "budget_annuel": 15000
+            "budget_annuel": 180000
         },
         "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "eco_debit": 200,
-                "std_debit": 500,
-                "pre_debit": 1000,
-                "recommandation": "standard"
-            },
-            "microsoft": {
-                "trois_configs": true,
-                "produits_distincts": true,
-                "nb_licences": 120,
-                "recommandation": "premium"
-            }
+            "nb_scenarios": 3,
+            "contraintes_marge_ok": true,
+            "recommandation_dans_budget": true,
+            "taux_marge_min": 10.0
         }
     }
 ]
