@@ -1,0 +1,13 @@
+{
+  "llm_judge": {
+    "score_global": 4.08,
+    "pertinence_client": 4.0,
+    "coherence_donnees": 4.0,
+    "qualite_commerciale": 4.25
+  },
+  "bertscore": {
+    "bertscore_precision": 0.6777,
+    "bertscore_recall": 0.7385,
+    "bertscore_f1": 0.7068
+  }
+}

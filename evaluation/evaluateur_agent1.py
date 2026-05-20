@@ -3,23 +3,18 @@
 Evaluateur Agent 1 - Analyste de Besoins
 Metriques RAGAS : answer_relevancy + context_recall
 """
-
 import sys
 import os
 import json
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
-
 from ragas import evaluate, EvaluationDataset
 from ragas.dataset_schema import SingleTurnSample
 from ragas.metrics import AnswerRelevancy, ContextRecall
 from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
-
 from agents.agent_analyste import AgentAnalyste
 
 load_dotenv()
@@ -54,14 +49,10 @@ class EvaluateurAgent1:
             parties.append(f"Secteur : {data['secteur']}")
         if data.get("taille_entreprise"):
             parties.append(f"Taille : {data['taille_entreprise']}")
-        if data.get("budget_mensuel"):
-            parties.append(f"Budget mensuel : {data['budget_mensuel']} TND")
-
         fibre = data.get("besoins_fibre", {})
         if fibre.get("demande_fibre"):
             parties.append(
-                f"Fibre demandee : {fibre.get('debit_souhaite_mbps')} Mbps, "
-                f"{fibre.get('nombre_sites', 1)} site(s)"
+                f"Fibre demandee : {fibre.get('debit_souhaite_mbps')} Mbps"
             )
         else:
             parties.append("Pas de demande Fibre")

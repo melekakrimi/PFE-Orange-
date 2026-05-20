@@ -2,8 +2,8 @@
 """
 Evaluateur Agent 3 - Optimiseur de Prix et Marges
 Metrique RAGAS : faithfulness
-    → Le scenario recommande respecte-t-il le budget client ?
-    → Les claims de budget dans la reponse sont-elles supportees par les chiffres ?
+    → La configuration respecte-t-elle la contrainte marge >= 14% ?
+    → Les calculs prix/coût/marge sont-ils cohérents ?
 """
 
 import sys
@@ -41,58 +41,48 @@ class EvaluateurAgent3:
 
     # ═══════════════════════════════════════════════════════════════
     # RAGAS — faithfulness
-    # Verifie si le scenario recommande respecte le budget client
+    # Verifie si la configuration respecte la contrainte marge >= 14%
     # ═══════════════════════════════════════════════════════════════
 
     def evaluer_ragas(self, cas_avec_resultats: list) -> dict:
         """
-        faithfulness : le scenario recommande respecte-t-il le budget client ?
+        faithfulness : la configuration respecte-t-elle marge >= 14% ?
 
-        user_input         = description client avec budget annuel
-        response           = scenario recommande + prix + verdict budget
-        retrieved_contexts = [budget client + prix des 3 scenarios]
-        reference          = le scenario recommande doit etre dans le budget
+        user_input         = description client + besoins
+        response           = configuration + prix + marge calculée
+        retrieved_contexts = [règle marge Orange + calculs réels]
+        reference          = taux_marge >= 14% et calculs cohérents
         """
         samples = []
 
         for item in cas_avec_resultats:
-            cas       = item["cas"]
-            resultat  = item["resultat"]
-            scenarios = resultat.get("scenarios", [])
-            rec       = resultat.get("recommandation", "economique")
-            budget    = float(cas["input_agent1"].get("budget_annuel", 0) or 0)
+            cas      = item["cas"]
+            resultat = item["resultat"]
 
-            scenario_rec = next((s for s in scenarios if s["niveau"] == rec), None)
-            if not scenario_rec:
-                continue
+            prix_total  = resultat.get("prix_total_annuel", 0)
+            cout_total  = resultat.get("cout_total_annuel", 0)
+            marge_brute = resultat.get("marge_brute", 0)
+            taux_marge  = resultat.get("taux_marge", 0)
+            marge_ok    = resultat.get("contrainte_ok", False)
 
-            prix_rec    = scenario_rec.get("prix_vente_total", 0)
-            dans_budget = prix_rec <= budget if budget > 0 else True
-            taux_marge  = scenario_rec.get("taux_marge", 0)
-
-            # Response : ce que Agent 3 affirme sur le budget
             response = (
-                f"Le scenario {scenario_rec.get('nom_scenario', rec)} est recommande. "
-                f"Prix annuel total : {prix_rec} TND. "
-                f"Budget client declare : {budget} TND. "
-                f"Dans le budget : {'Oui' if dans_budget else 'Non'}. "
-                f"Taux de marge Orange : {taux_marge}%."
+                f"Configuration retenue. "
+                f"Prix annuel total : {prix_total} TND. "
+                f"Coût annuel total : {cout_total} TND. "
+                f"Marge brute : {marge_brute} TND. "
+                f"Taux de marge : {taux_marge}%. "
+                f"Contrainte marge >= 14% : {'respectée' if marge_ok else 'non respectée'}."
             )
 
-            # Contexte : les chiffres reels des 3 scenarios
             contexte = (
-                f"Budget annuel client : {budget} TND. "
-                + " | ".join([
-                    f"Scenario {s['nom_scenario']} : prix={s['prix_vente_total']} TND, "
-                    f"marge={s['taux_marge']}%, dans_budget={s['dans_budget']}"
-                    for s in scenarios
-                ])
+                f"Règle Orange : taux_marge = marge_brute / prix_vente × 100, minimum 14%. "
+                f"Résultats calculs : prix={prix_total} TND, cout={cout_total} TND, "
+                f"marge_brute={marge_brute} TND, taux_marge={taux_marge}%."
             )
 
-            # Reference : ce qu'on attend
             reference = (
-                f"Le scenario recommande doit avoir un prix inferieur ou egal "
-                f"au budget de {budget} TND et un taux de marge >= 14%."
+                f"Le taux de marge doit être >= 14%. "
+                f"La formule correcte est : taux_marge = marge_brute / prix_vente × 100."
             )
 
             samples.append(SingleTurnSample(
@@ -105,7 +95,7 @@ class EvaluateurAgent3:
         if not samples:
             return {"faithfulness": 0.0}
 
-        print("\n  Calcul RAGAS faithfulness (respect budget client)...")
+        print("\n  Calcul RAGAS faithfulness (respect contrainte marge >= 14%)...")
         dataset = EvaluationDataset(samples=samples)
         scores  = evaluate(dataset=dataset, metrics=[self.metric_faithfulness])
         df      = scores.to_pandas()
@@ -136,23 +126,17 @@ class EvaluateurAgent3:
                 configs_ag2  = self.agent_config.configurer(agent1_data)
                 resultat_ag3 = self.agent_optimiseur.optimiser(agent1_data, configs_ag2)
 
-                scenarios    = resultat_ag3.get("scenarios", [])
-                rec          = resultat_ag3.get("recommandation", "")
-                budget       = float(agent1_data.get("budget_annuel", 0) or 0)
-                scenario_rec = next((s for s in scenarios if s["niveau"] == rec), None)
+                taux_marge = resultat_ag3.get("taux_marge", 0)
+                marge_ok   = resultat_ag3.get("contrainte_ok", False)
 
-                dans_budget = scenario_rec["prix_vente_total"] <= budget if (scenario_rec and budget > 0) else None
-                marge_ok    = scenario_rec["contrainte_marge_ok"] if scenario_rec else False
-
-                statut = "[OK]" if dans_budget and marge_ok else "[~]"
-                print(f"{statut} budget={'OK' if dans_budget else 'KO'}  marge={'OK' if marge_ok else 'KO'}")
+                statut = "[OK]" if marge_ok else "[KO]"
+                print(f"{statut} marge={taux_marge:.1f}%  contrainte={'OK' if marge_ok else 'KO'}")
 
                 cas_avec_resultats.append({"cas": cas, "resultat": resultat_ag3})
 
             except Exception as e:
                 print(f"[ERREUR] {e}")
 
-        # RAGAS
         ragas = self.evaluer_ragas(cas_avec_resultats)
 
         resultats = {"ragas": ragas}
@@ -161,7 +145,7 @@ class EvaluateurAgent3:
         print("  RESULTATS")
         print(f"{'='*60}")
         print(f"  faithfulness : {ragas['faithfulness']:.4f}  ({ragas['faithfulness']*100:.1f}%)")
-        print(f"  Interpretation : respect des contraintes budget client")
+        print(f"  Interpretation : respect contrainte marge Orange >= 14%")
 
         os.makedirs("evaluation/resultats", exist_ok=True)
         with open("evaluation/resultats/resultats_agent3.json", 'w', encoding='utf-8') as f:

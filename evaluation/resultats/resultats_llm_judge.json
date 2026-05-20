@@ -1,58 +1,62 @@
 {
   "methode": "LLM-as-Judge",
   "modele_juge": "llama-3.3-70b-versatile",
-  "nb_cas": 5,
-  "nb_valides": 3,
+  "nb_cas": 4,
+  "nb_valides": 4,
   "moyennes": {
-    "score_global": 3.89,
+    "score_global": 4.17,
     "pertinence_secteur": 4.0,
-    "arguments_chiffres": 3.0,
-    "ton_professionnel": 4.67
+    "arguments_chiffres": 3.75,
+    "ton_professionnel": 4.75
   },
   "details": [
     {
       "id": 1,
-      "client": "DevSoft",
-      "secteur": "Tech",
-      "scenario": "Competitif",
-      "pitch": "Cher DevSoft, en tant qu'entreprise de technologie, vous avez besoin d'une solution qui vous permette de vous développer rapidement et efficacement. Notre scénario Competitif, avec un taux de marge de 65%, offre une valeur business exceptionnelle et un retour sur investissement significatif, tout en étant dans votre budget de 24000 TND. Avec la fibre et Microsoft inclus, vous bénéficierez d'une infrastructure solide pour votre croissance.",
+      "client": "BIAT",
+      "secteur": "Banque",
+      "scenario": "Fibre 200 Mbps + Microsoft 365 Business Premium",
+      "pitch": "Cher BIAT, en tant que banque, vous avez besoin d'une infrastructure de communication fiable et sécurisée pour assurer la continuité de vos services. Notre offre personnalisée, comprenant la fibre Orange Business 200M et Microsoft 365 Business Premium, vous permettra d'améliorer la productivité et la sécurité de vos données, tout en bénéficiant d'un débit garanti de 200 Mbps. Le prix de vente total annuel de cette solution est de 30840.0 TND.",
       "pertinence_secteur": 4,
-      "arguments_chiffres": 4,
-      "ton_professionnel": 5,
-      "score_global": 4.33,
-      "commentaire": "Le pitch est bien adapté au secteur tech, utilise des chiffres concrets et a un ton professionnel convaincant. Cependant, il pourrait être amélioré en incluant plus d'arguments spécifiques à l'entreprise DevSoft et en fournissant plus de détails sur la façon dont le scénario Competitif répond à ses besoins."
+      "arguments_chiffres": 3,
+      "ton_professionnel": 4,
+      "score_global": 3.67,
+      "commentaire": "Le pitch est bien adapté au secteur bancaire, utilise un ton professionnel et convaincant. Cependant, il manque de détails sur les avantages spécifiques de la solution pour le client et ne mentionne pas le taux de marge."
     },
     {
       "id": 2,
-      "client": "FastFood Express",
-      "secteur": "Restauration",
-      "scenario": "Competitif",
-      "pitch": "Cher FastFood Express, en tant que PME du secteur de la restauration, vous pouvez bénéficier d'un retour sur investissement significatif avec notre offre Competitif, qui présente un taux de marge de 50,5%. Cette solution vous permettra de réduire vos coûts et d'améliorer votre efficacité, tout en restant dans votre budget annuel de 9600 TND.",
+      "client": "DevSoft",
+      "secteur": "Tech",
+      "scenario": "Fibre 100 Mbps + Microsoft 365 Business Standard",
+      "pitch": "Cher DevSoft, leader dans le secteur tech, nous vous proposons une solution personnalisée pour améliorer votre productivité et votre sécurité. Avec notre offre Fibre Orange Business 100M et Microsoft 365 Business Standard, vous bénéficierez d'un débit garanti de 100 Mbps et d'outils de productivité de pointe pour vos 25 licences. Le prix de vente total annuel pour cette solution est de 14856.5 TND.",
       "pertinence_secteur": 4,
       "arguments_chiffres": 4,
       "ton_professionnel": 5,
       "score_global": 4.33,
-      "commentaire": "Le pitch est bien adapté au secteur de la restauration et utilise des chiffres pertinents, mais pourrait être amélioré en incluant des détails spécifiques sur la façon dont l'offre Competitif répond aux besoins de FastFood Express."
+      "commentaire": "Le pitch est bien adapté au secteur tech, utilise des chiffres concrets et a un ton professionnel convaincant. Cependant, il pourrait être amélioré en intégrant des arguments spécifiques à la taille de l'entreprise (PME) et en soulignant les avantages de la solution pour le secteur tech en particulier."
     },
     {
       "id": 3,
       "client": "LegalPro",
       "secteur": "Juridique",
-      "scenario": "Competitif",
-      "pitch": "Cher client de LegalPro, dans le secteur juridique, nous vous proposons le scénario Competitif, qui offre une valeur business exceptionnelle et un retour sur investissement optimal, avec un taux de marge de 14,0% pour Orange Business Tunisie.",
+      "scenario": "Microsoft 365 Business Basic",
+      "pitch": "Cher client de LegalPro, spécialisé dans le secteur juridique, nous vous proposons une solution de productivité avec Microsoft 365 Business Basic, qui répond à vos besoins de PME. Cette solution vous permettra d'améliorer la collaboration et la sécurité de vos données, avec un prix de vente total annuel de 1428.15 TND. Vous bénéficierez ainsi d'une productivité accrue et d'une meilleure gestion de vos données sensibles.",
       "pertinence_secteur": 4,
-      "arguments_chiffres": 1,
-      "ton_professionnel": 4,
-      "score_global": 3.0,
-      "commentaire": "Le pitch est bien adapté au secteur juridique et a un ton professionnel convaincant. Cependant, il ne reflète pas fidèlement les chiffres du scénario, notamment le prix annuel et le taux de marge, qui sont indiqués comme 0 TND et 0,0% dans le scénario, mais différents dans le pitch."
+      "arguments_chiffres": 4,
+      "ton_professionnel": 5,
+      "score_global": 4.33,
+      "commentaire": "Le pitch est bien adapté au secteur juridique, utilise des chiffres concrets et a un ton professionnel convaincant. Cependant, il pourrait être amélioré en intégrant des arguments spécifiques à la gestion de données sensibles dans le secteur juridique et en soulignant les avantages de la solution pour les PME."
     },
     {
       "id": 4,
-      "erreur": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01khr6zy4pepvs5aw2pnzp3w0w` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99660, Requested 788. Please try again in 6m27.071999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
-    },
-    {
-      "id": 5,
-      "erreur": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01khr6zy4pepvs5aw2pnzp3w0w` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99660, Requested 677. Please try again in 4m51.168s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "client": "FastFood Express",
+      "secteur": "Restauration",
+      "scenario": "Fibre 50 Mbps",
+      "pitch": "Cher FastFood Express, en tant que leader dans le secteur de la restauration, vous avez besoin d'une connexion internet fiable et rapide pour gérer vos opérations quotidiennes. Notre offre Fibre Orange Business 50M vous permettra de bénéficier d'un débit garanti de 50 Mbps, essentiel pour la gestion de vos systèmes de commande et de paiement en ligne. Avec un engagement de 24 mois, vous bénéficierez d'un prix de vente total annuel de 6000 TND, ce qui vous permettra de mieux gérer vos coûts et de vous concentrer sur votre activité principale.",
+      "pertinence_secteur": 4,
+      "arguments_chiffres": 4,
+      "ton_professionnel": 5,
+      "score_global": 4.33,
+      "commentaire": "Le pitch est bien adapté au secteur de la restauration, utilise des chiffres concrets et a un ton professionnel convaincant. Cependant, il pourrait être amélioré en intégrant davantage de détails spécifiques sur les avantages de la fibre 50 Mbps pour les opérations quotidiennes de FastFood Express."
     }
   ]
 }

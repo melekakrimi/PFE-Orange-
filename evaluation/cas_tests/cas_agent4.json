@@ -15,9 +15,12 @@
             }
         },
         "expected": {
-            "contraintes_marge_ok": true,
-            "taux_marge_min": 14.0
-        }
+            "nb_slides": 9,
+            "fichiers_crees": ["pptx", "word", "pdf"],
+            "nom_client_present": true,
+            "prix_non_nul": true
+        },
+        "reference_bertscore": "Orange Business offre à BIAT une solution sécurisée combinant la fibre optique dédiée et Microsoft 365 Business Premium avec Intune et Defender pour répondre aux exigences de conformité du secteur bancaire. Cette infrastructure garantit la protection des données sensibles et la continuité des opérations."
     },
     {
         "id": 2,
@@ -35,9 +38,12 @@
             }
         },
         "expected": {
-            "contraintes_marge_ok": true,
-            "taux_marge_min": 14.0
-        }
+            "nb_slides": 9,
+            "fichiers_crees": ["pptx", "word", "pdf"],
+            "nom_client_present": true,
+            "prix_non_nul": true
+        },
+        "reference_bertscore": "Orange Business propose à DevSoft une solution complète combinant la fibre optique FTTO haut débit et Microsoft 365 Business Standard pour améliorer la collaboration et la productivité des développeurs. Cette offre garantit une connectivité dédiée et des outils de travail modernes adaptés au secteur technologique."
     },
     {
         "id": 3,
@@ -55,13 +61,16 @@
             }
         },
         "expected": {
-            "contraintes_marge_ok": true,
-            "taux_marge_min": 14.0
-        }
+            "nb_slides": 9,
+            "fichiers_crees": ["pptx", "word", "pdf"],
+            "nom_client_present": true,
+            "prix_non_nul": true
+        },
+        "reference_bertscore": "Orange Business accompagne LegalPro dans sa transformation numérique avec une solution Microsoft 365 Business Basic adaptée aux besoins des professionnels du droit. La messagerie professionnelle et le stockage OneDrive garantissent la confidentialité et la disponibilité des dossiers clients."
     },
     {
         "id": 4,
-        "description": "FastFood Express, restauration, TPE. Fibre 50 Mbps uniquement, sans Microsoft.",
+        "description": "FastFood Express, restauration, TPE. Fibre 50 Mbps uniquement pour les caisses et le WiFi.",
         "input_agent1": {
             "nom_entreprise": "FastFood Express",
             "secteur": "Restauration",
@@ -75,8 +84,11 @@
             }
         },
         "expected": {
-            "contraintes_marge_ok": true,
-            "taux_marge_min": 14.0
-        }
+            "nb_slides": 9,
+            "fichiers_crees": ["pptx", "word", "pdf"],
+            "nom_client_present": true,
+            "prix_non_nul": true
+        },
+        "reference_bertscore": "Orange Business propose à FastFood Express une solution Fibre Optique FTTO dédiée pour assurer une connectivité rapide et fiable au service des caisses et du WiFi clients. Cette offre garantit une continuité de service adaptée aux besoins du secteur de la restauration."
     }
 ]

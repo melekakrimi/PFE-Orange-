@@ -23,6 +23,8 @@ from langchain_core.prompts import PromptTemplate
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from prompts.prompt_documents import TEMPLATE_DOCUMENTS
 from generators.generateur_pptx import generer_pptx
+from generators.generateur_word import generer_word
+from generators.generateur_pdf  import generer_pdf
 
 load_dotenv()
 
@@ -88,16 +90,32 @@ class AgentDocuments:
         # 2. Générer les textes via LLM
         textes = self._generer_textes(data)
 
-        # 3. Générer le PPTX
+        # 3. Générer les 3 documents
         client_slug = re.sub(r"[^\w]", "_", data["client"])
         from datetime import datetime
         ts = datetime.now().strftime("%H%M%S")
+
         chemin_pptx = os.path.join(dossier_sortie, f"proposition_{client_slug}_{ts}.pptx")
+        chemin_word = os.path.join(dossier_sortie, f"proposition_{client_slug}_{ts}.docx")
+        chemin_pdf  = os.path.join(dossier_sortie, f"proposition_{client_slug}_{ts}.pdf")
 
         generer_pptx(data, textes, chemin_pptx)
+        print(f"  PPTX : {chemin_pptx}")
 
-        print(f"\n Présentation générée : {chemin_pptx}")
-        return {"pptx": chemin_pptx}
+        generer_word(data, textes, chemin_word)
+        print(f"  Word : {chemin_word}")
+
+        generer_pdf(data, textes, chemin_pdf)
+        print(f"  PDF  : {chemin_pdf}")
+
+        print(f"\n 3 documents générés avec succès")
+        return {
+            "pptx":   chemin_pptx,
+            "word":   chemin_word,
+            "pdf":    chemin_pdf,
+            "textes": textes,
+            "data":   data,
+        }
 
     # ═══════════════════════════════════════════════════════════════
     # CONSTRUCTION DES DONNÉES
@@ -141,6 +159,7 @@ class AgentDocuments:
             "taille":   analyse.get("taille_entreprise", ""),
             "urgence":  analyse.get("urgence", ""),
             "date":     date_fr,
+            "validite": "30 jours",
 
             # Offre
             "titre_offre": titre_offre,
@@ -238,19 +257,42 @@ if __name__ == "__main__":
     a3 = AgentOptimiseur()
     a4 = AgentDocuments()
 
-    desc = """
-    BIAT, secteur bancaire, 15 employes au siege.
-    On veut la fibre 200 Mbps, boitier Orange a 80 metres.
-    Et 15 licences Microsoft avec le mail, OneDrive et SharePoint
-    pour les collaborateurs. Budget 50000 TND/an.
-    """
+    cas = [
+        ("BIAT — Fibre 200M + MS Premium", """
+        BIAT, banque tunisienne, 50 employes au siege.
+        On a besoin de la fibre 200 Mbps, le boitier Orange est a 80 metres.
+        Et 50 licences Microsoft avec le mail, OneDrive, SharePoint, Pack Office,
+        Intune pour les mobiles et Defender antivirus. Urgence haute.
+        """),
+        ("DevSoft — Fibre 100M + MS Standard", """
+        DevSoft, entreprise tech, PME, 25 developpeurs.
+        On demenage dans de nouveaux bureaux. Besoin de la fibre 100 Mbps,
+        boitier Orange a 50 metres. Et 25 licences Microsoft avec Teams,
+        OneDrive, SharePoint et Pack Office. Urgence haute.
+        """),
+        ("LegalPro — MS Basic uniquement", """
+        Cabinet LegalPro, 15 avocats. On a deja internet.
+        On veut uniquement Microsoft 365 pour la messagerie professionnelle
+        et OneDrive pour stocker les dossiers clients. Pas besoin de fibre.
+        """),
+        ("FastFood Express — Fibre 50M uniquement", """
+        FastFood Express, restaurant, petite entreprise.
+        On veut juste internet rapide pour les caisses et le WiFi clients.
+        50 Mega suffit. Le boitier Orange est a environ 80 metres.
+        Pas besoin de Microsoft.
+        """),
+    ]
 
-    analyse = a1.analyser(desc)
-    config  = a2.configurer(analyse)
-    resultat = a3.optimiser(analyse, config)
-    chemins = a4.generer(analyse, config, resultat, dossier_sortie="output")
+    for titre, desc in cas:
+        print(f"\n {'='*60}")
+        print(f"  {titre}")
+        print(f" {'='*60}")
+        analyse  = a1.analyser(desc)
+        config   = a2.configurer(analyse)
+        resultat = a3.optimiser(analyse, config)
+        chemins  = a4.generer(analyse, config, resultat, dossier_sortie="output")
+        print(f"  PPTX : {chemins.get('pptx', '')}")
+        print(f"  Word : {chemins.get('word', '')}")
+        print(f"  PDF  : {chemins.get('pdf', '')}")
 
-    print("\n Fichiers générés :")
-    for fmt, chemin in chemins.items():
-        print(f"  [{fmt.upper()}] {chemin}")
-    print("\n Test Agent 4 terminé !")
+    print("\n Tests Agent 4 termines !")

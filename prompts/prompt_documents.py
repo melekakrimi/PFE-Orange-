@@ -54,15 +54,15 @@ R3. Retourner UNIQUEMENT le JSON. Aucun texte avant ou après.
 FORMAT JSON
 ═══════════════════════════════════════════════════════
 {{
-    "pourquoi": "Texte 2-3 phrases...",
-    "benefice_1": "Premier bénéfice concret...",
-    "benefice_2": "Deuxième bénéfice concret...",
-    "benefice_3": "Troisième bénéfice concret...",
-    "cas_usage": "Texte cas d'usage avec résultat chiffré...",
-    "securite": "Texte sécurité et conformité...",
-    "accompagnement_1": "Premier engagement Orange...",
-    "accompagnement_2": "Deuxième engagement Orange...",
-    "accompagnement_3": "Troisième engagement Orange...",
-    "conclusion": "Phrase de clôture..."
+      "pourquoi": "Texte 2-3 phrases...",
+      "benefice_1": "Premier bénéfice concret...",
+      "benefice_2": "Deuxième bénéfice concret...",
+      "benefice_3": "Troisième bénéfice concret...",
+      "cas_usage": "Texte cas d'usage avec résultat chiffré...",
+      "securite": "Texte sécurité et conformité...",
+      "accompagnement_1": "Premier engagement Orange...",
+      "accompagnement_2": "Deuxième engagement Orange...",
+      "accompagnement_3": "Troisième engagement Orange...",
+      "conclusion": "Phrase de clôture..."
 }}
 """

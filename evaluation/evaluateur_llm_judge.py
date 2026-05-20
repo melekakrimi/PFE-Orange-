@@ -30,7 +30,6 @@ CONTEXTE DU CLIENT
 Entreprise : {client}
 Secteur    : {secteur}
 Taille     : {taille}
-Budget/an  : {budget} TND
 
 ═══════════════════════════════════════════════════════
 SCÉNARIO RECOMMANDÉ
@@ -38,7 +37,6 @@ SCÉNARIO RECOMMANDÉ
 Scénario       : {nom_scenario}
 Prix annuel    : {prix_annuel} TND
 Taux de marge  : {taux_marge}%
-Dans le budget : {dans_budget}
 
 ═══════════════════════════════════════════════════════
 PITCH À ÉVALUER
@@ -82,9 +80,8 @@ class LLMJuge:
             temperature=0.0
         )
         self.prompt = PromptTemplate(
-            input_variables=["client", "secteur", "taille", "budget",
-                                "nom_scenario", "prix_annuel", "taux_marge",
-                                "dans_budget", "pitch"],
+            input_variables=["client", "secteur", "taille",
+                                "nom_scenario", "prix_annuel", "taux_marge", "pitch"],
             template=PROMPT_JUGE
         )
         self.chain = self.prompt | self.llm
@@ -97,21 +94,26 @@ class LLMJuge:
         nom     = analyse.get("nom_entreprise", "")
         print(f"\n  Cas {cas['id']} : {nom}")
 
-        # Générer les scénarios
+        # Générer la configuration et le pitch
         try:
-            configs   = self.agent_config.configurer(analyse)
-            resultat  = self.agent_optim.optimiser(analyse, configs)
-            scenarios = resultat["scenarios"]
-            rec_niveau = resultat["recommandation"]
-            rec = next(s for s in scenarios if s["niveau"] == rec_niveau)
+            configs  = self.agent_config.configurer(analyse)
+            resultat = self.agent_optim.optimiser(analyse, configs)
         except Exception as e:
             print(f"    Erreur agents : {e}")
             return {"id": cas["id"], "erreur": str(e)}
 
-        pitch = rec.get("pitch_commercial", "")
+        pitch = resultat.get("pitch_commercial", "")
         if not pitch:
             print(f"    Pitch vide — cas ignoré")
             return {"id": cas["id"], "erreur": "pitch vide"}
+
+        # Construire le nom du scénario depuis les composants Agent 3
+        parties_scenario = []
+        if resultat.get("fibre"):
+            parties_scenario.append(f"Fibre {resultat['fibre'].get('debit_mbps', '')} Mbps")
+        if resultat.get("microsoft"):
+            parties_scenario.append(resultat["microsoft"].get("nom_produit", "Microsoft 365"))
+        nom_scenario = " + ".join(parties_scenario) if parties_scenario else "Solution Orange Business"
 
         # Appel LLM juge
         try:
@@ -119,11 +121,9 @@ class LLMJuge:
                 "client":       nom,
                 "secteur":      analyse.get("secteur", ""),
                 "taille":       analyse.get("taille_entreprise", ""),
-                "budget":       f"{analyse.get('budget_annuel', 0):,}",
-                "nom_scenario": rec.get("nom_scenario", ""),
-                "prix_annuel":  f"{rec.get('prix_vente_total', 0):,.0f}",
-                "taux_marge":   f"{rec.get('taux_marge', 0):.1f}",
-                "dans_budget":  "Oui" if rec.get("dans_budget") else "Non",
+                "nom_scenario": nom_scenario,
+                "prix_annuel":  f"{resultat.get('prix_total_annuel', 0):,.0f}",
+                "taux_marge":   f"{resultat.get('taux_marge', 0):.1f}",
                 "pitch":        pitch,
             })
             brut = reponse.content.strip()
@@ -148,7 +148,7 @@ class LLMJuge:
                 "id":                 cas["id"],
                 "client":             nom,
                 "secteur":            analyse.get("secteur", ""),
-                "scenario":           rec.get("nom_scenario", ""),
+                "scenario":           nom_scenario,
                 "pitch":              pitch,
                 "pertinence_secteur": note.get("pertinence_secteur", 0),
                 "arguments_chiffres": note.get("arguments_chiffres", 0),

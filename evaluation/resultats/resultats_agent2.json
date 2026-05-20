@@ -1,4 +1,11 @@
 {
-  "faithfulness": 0.75,
+  "verification_python": {
+    "nb_cas_microsoft": 3,
+    "plan_du_catalogue": "100.0%",
+    "prix_correct": "100.0%",
+    "services_couverts": "100.0%",
+    "plan_minimum": "100.0%",
+    "plan_exact_attendu": "100.0%"
+  },
   "context_precision": 1.0
 }

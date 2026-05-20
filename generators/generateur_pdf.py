@@ -1,151 +1,209 @@
 # generators/generateur_pdf.py
 """
-Générateur PDF — 1 page A4 charte Orange Business
-Proposition commerciale prête à signer.
+Générateur PDF — Contrat commercial Orange Business, prêt à signer.
+Format A4 formel, minimal, orienté signature client.
 """
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable)
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 
-ORANGE = colors.HexColor("#FF7900")
-GRIS   = colors.HexColor("#F5F5F5")
-GRIS_M = colors.HexColor("#E0E0E0")
-DARK   = colors.HexColor("#333333")
+ORANGE   = colors.HexColor("#FF7900")
+SAUMON   = colors.HexColor("#FFCCAA")
+SAUMON_L = colors.HexColor("#FFF5EC")
+DARK     = colors.HexColor("#1A1A1A")
+GRIS_M   = colors.HexColor("#E0E0E0")
 
 
 def generer_pdf(data: dict, textes: dict, chemin: str):
     doc = SimpleDocTemplate(chemin, pagesize=A4,
-                            leftMargin=1.5*cm, rightMargin=1.5*cm,
-                            topMargin=1.5*cm,  bottomMargin=1.5*cm)
+                            leftMargin=2*cm, rightMargin=2*cm,
+                            topMargin=2*cm,  bottomMargin=2*cm)
 
-    s_h1  = ParagraphStyle("h1",  fontSize=12, fontName="Helvetica-Bold", textColor=ORANGE, spaceBefore=8, spaceAfter=3)
-    s_txt = ParagraphStyle("txt", fontSize=9,  fontName="Helvetica",      textColor=colors.black, spaceAfter=3, leading=13)
-    s_it  = ParagraphStyle("it",  fontSize=9,  fontName="Helvetica-Oblique", textColor=DARK, spaceAfter=3, leading=13)
-    s_c   = ParagraphStyle("c",   fontSize=8,  fontName="Helvetica",      textColor=DARK, alignment=TA_CENTER)
+    s_titre = ParagraphStyle("titre", fontSize=18, fontName="Helvetica-Bold",textColor=ORANGE, spaceAfter=2)
+    s_sous  = ParagraphStyle("sous",  fontSize=10, fontName="Helvetica",textColor=DARK, spaceAfter=6)
+    s_h1    = ParagraphStyle("h1",    fontSize=11, fontName="Helvetica-Bold",textColor=ORANGE, spaceBefore=10, spaceAfter=4)
+    s_body  = ParagraphStyle("body",  fontSize=9,  fontName="Helvetica",textColor=DARK, spaceAfter=3, leading=14,alignment=TA_JUSTIFY)
+    s_legal = ParagraphStyle("legal", fontSize=8,  fontName="Helvetica",textColor=DARK, spaceAfter=2, leading=12, alignment=TA_JUSTIFY)
+    s_c     = ParagraphStyle("c",     fontSize=8,  fontName="Helvetica",textColor=DARK, alignment=TA_CENTER)
 
-    def hr(): return HRFlowable(width="100%", thickness=1.2, color=ORANGE, spaceAfter=4, spaceBefore=2)
-    def sp(): return Spacer(1, 0.25*cm)
+    def hr(): return HRFlowable(width="100%", thickness=1, color=ORANGE,spaceAfter=6, spaceBefore=4)
+    def sp(h=0.3): return Spacer(1, h*cm)
 
     story = []
 
     # ── En-tête ───────────────────────────────────────────────────
-    story += [
-        Paragraph('<font color="#FF7900" size="20"><b>Orange Business</b></font> '
-                    '<font color="#333333" size="10">· Tunisie  |  Proposition Commerciale Confidentielle</font>',
-                    ParagraphStyle("hdr", fontSize=10, fontName="Helvetica", spaceAfter=2)),
-        Paragraph(f'Client : <b>{data["client"]}</b>   |   '
-                    f'Date : {data["date"]}   |   Validité : {data["validite"]}',
-                    ParagraphStyle("meta", fontSize=9, fontName="Helvetica", textColor=DARK, spaceAfter=4)),
-        hr(),
-    ]
-
-    # ── Profil client (1 ligne compacte) ──────────────────────────
-    story.append(Paragraph("PROFIL CLIENT", s_h1))
-    story.append(_table(
-        [["Entreprise", data["client"], "Secteur", data["secteur"],
-            "Taille", data["taille"], "Sites", str(data["sites"]),
-            "Budget/an", f"{data['budget']:,.0f} TND" if data["budget"] else "—"]],
-        [2.5*cm,3*cm,1.8*cm,2.5*cm,1.5*cm,2.5*cm,1.3*cm,1*cm,2*cm,2.4*cm],
-        profil=True))
-    story.append(sp())
-
-    # ── Comparatif 3 scénarios ────────────────────────────────────
-    story.append(Paragraph("COMPARATIF DES 3 SCÉNARIOS TARIFAIRES", s_h1))
-    sc = data["scenarios"]
-    story.append(_table(
-        [["Critère", "Compétitif", "Équilibré", "Premium"]] + [
-            ["Prix annuel (TND)"]      + [f"{x.get('prix_vente_total',0):,.0f}"   for x in sc],
-            ["Coût de revient (TND)"]  + [f"{x.get('cout_revient_total',0):,.0f}" for x in sc],
-            ["Marge brute (TND)"]      + [f"{x.get('marge_brute',0):,.0f}"        for x in sc],
-            ["Taux de marge (%)"]      + [f"{x.get('taux_marge',0):.1f}%"         for x in sc],
-            ["Dans le budget"]         + ["OUI" if x.get("dans_budget") else "NON" for x in sc],
-            ["Marge ≥ 14%"]            + ["OK"  if x.get("contrainte_marge_ok") else "KO" for x in sc],
-        ], [6*cm, 3.83*cm, 3.83*cm, 3.83*cm]))
-    story.append(sp())
-
-    # ── Recommandation ────────────────────────────────────────────
-    story.append(Paragraph("RECOMMANDATION ORANGE BUSINESS", s_h1))
-    rec = data["rec"]
-    story.append(_table(
-        [[f"Scénario {rec.get('nom_scenario','').upper()}",
-            f"Prix annuel : {rec.get('prix_vente_total',0):,.0f} TND",
-            f"Marge : {rec.get('taux_marge',0):.1f}%",
-            "✓ Dans le budget" if rec.get("dans_budget") else "Hors budget"]],
-        [4.37*cm]*4, highlight=True))
-    story.append(sp())
-
-    # Synthèse LLM
-    synthese = textes.get("synthese") or data.get("pitch", "")
-    if synthese:
-        story.append(Paragraph(synthese, s_it))
-        story.append(sp())
-
-    # Arguments
-    args = data.get("arguments", [])
-    if args:
-        story.append(Paragraph("Arguments de négociation :", ParagraphStyle("ah", fontSize=9, fontName="Helvetica-Bold", textColor=DARK, spaceAfter=2)))
-        for i, arg in enumerate(args, 1):
-            story.append(Paragraph(f"<b>{i}.</b>  {arg}", s_txt))
-    story.append(sp())
-
-    # ── Conditions + Signature ────────────────────────────────────
+    story.append(Paragraph("Orange Business", s_titre))
+    story.append(Paragraph("Tunisie  |  Contrat de Prestation de Services", s_sous))
     story.append(hr())
+
+    # Référence contrat
     story.append(_table(
-        [["Durée : 12 ou 24 mois", "Facturation mensuelle", "Support 24h/24", f"Validité : {data['validite']}"]],
-        [4.37*cm]*4, footer=True))
+        [["Référence", f"OBT-{data['date'].replace(' ', '').upper()}",
+            "Date", data["date"],
+            "Validité", data["validite"]]],
+        [2.5*cm, 3.5*cm, 1.5*cm, 3*cm, 2*cm, 2*cm], footer=True
+    ))
     story.append(sp())
 
+    # ── Article 1 — Parties ───────────────────────────────────────
+    story.append(Paragraph("ARTICLE 1 — PARTIES CONTRACTANTES", s_h1))
+    story.append(_table(
+        [["Prestataire", "Client"],
+            ["Orange Business Tunisie\nSociété anonyme — Tunis, Tunisie\nICE : OBT-2024",
+            f"{data['client']}\nSecteur : {data['secteur']}  |  Taille : {data['taille']}"]],
+        [8.75*cm, 8.75*cm], sig=True
+    ))
+    story.append(sp())
+
+    # ── Article 2 — Objet ─────────────────────────────────────────
+    story.append(Paragraph("ARTICLE 2 — OBJET DU CONTRAT", s_h1))
+    story.append(Paragraph(
+        f"Le présent contrat a pour objet la fourniture par Orange Business Tunisie "
+        f"des services de communication et cloud suivants à {data['client']} : "
+        f"<b>{data['solutions']}</b>.",
+        s_body
+    ))
+    story.append(sp(0.2))
+
+    # ── Article 3 — Prestations ───────────────────────────────────
+    story.append(Paragraph("ARTICLE 3 — DÉTAIL DES PRESTATIONS", s_h1))
+
+    fibre = data.get("fibre")
+    ms    = data.get("microsoft")
+
+    rows = [["Prestation", "Spécification", "Durée", "Prix annuel (TND)"]]
+    if fibre:
+        rows.append([
+            fibre.get("nom_offre", "Fibre FTTO"),
+            f"{fibre.get('debit_mbps', '')} Mbps symétrique",
+            f"{fibre.get('engagement_mois', '')} mois",
+            f"{fibre.get('prix_annuel', 0):,.0f}",
+        ])
+    if ms:
+        rows.append([
+            ms.get("nom_produit", "Microsoft 365"),
+            f"{ms.get('nombre_licences', '')} licences",
+            "12 mois",
+            f"{ms.get('prix_annuel', 0):,.0f}",
+        ])
+
+    story.append(_table(rows, [6*cm, 4*cm, 2.5*cm, 3*cm]))
+    story.append(sp())
+
+    # ── Article 4 — Prix ──────────────────────────────────────────
+    story.append(Paragraph("ARTICLE 4 — CONDITIONS FINANCIÈRES", s_h1))
+    prix_annuel  = data.get("prix_total_annuel", 0)
+    prix_mensuel = round(prix_annuel / 12, 0)
+    story.append(_table(
+        [["Prix total annuel (TND HT)", "Équivalent mensuel (TND HT)", "Modalité"],
+            [f"{prix_annuel:,.0f}", f"{prix_mensuel:,.0f}", "Facturation mensuelle"]],
+        [5.83*cm, 5.83*cm, 5.83*cm]
+    ))
+    story.append(sp(0.2))
+    story.append(Paragraph(
+        "Les prix sont exprimés hors taxes. La TVA applicable sera ajoutée selon "
+        "la réglementation en vigueur. Le paiement est dû dans un délai de 30 jours "
+        "à compter de la date de facturation.",
+        s_legal
+    ))
+    story.append(sp())
+
+    # ── Article 5 — Durée ─────────────────────────────────────────
+    story.append(Paragraph("ARTICLE 5 — DURÉE ET RÉSILIATION", s_h1))
+    fibre_eng = fibre.get("engagement_mois", 12) if fibre else 12
+    story.append(Paragraph(
+        f"Le contrat est conclu pour une durée initiale de <b>{fibre_eng} mois</b> "
+        f"à compter de la date de mise en service. À l'échéance, il sera reconduit "
+        f"tacitement par période de 12 mois sauf résiliation notifiée par lettre "
+        f"recommandée avec un préavis de 3 mois.",
+        s_legal
+    ))
+    story.append(sp())
+
+    # ── Article 6 — Engagement de service ────────────────────────
+    story.append(Paragraph("ARTICLE 6 — ENGAGEMENTS DE SERVICE", s_h1))
+    story.append(_table(
+        [["Déploiement", "Support", "Disponibilité", "SLA"],
+            ["Équipes Orange Business", "24h/24 — 7j/7", "99,5% garantie", "4h intervention"]],
+        [4.37*cm] * 4, footer=True
+    ))
+    story.append(sp())
+
+    # ── Signatures ────────────────────────────────────────────────
+    story.append(hr())
     story.append(Paragraph("BON POUR ACCORD", s_h1))
+    story.append(Paragraph(
+        "Les parties soussignées reconnaissent avoir pris connaissance des conditions "
+        "du présent contrat et s'engagent à les respecter.",
+        s_legal
+    ))
+    story.append(sp(0.3))
     story.append(_table(
         [["Pour Orange Business Tunisie", "Pour le Client"],
             ["Nom : _________________________", "Nom : _________________________"],
+            ["Fonction : ____________________", "Fonction : ____________________"],
             ["Date : ________________________", "Date : ________________________"],
-            ["Signature & Cachet :\n\n\n",     "Signature & Cachet :\n\n\n"]],
-        [8.75*cm, 8.75*cm], sig=True))
+            ["Signature & Cachet :\n\n\n\n",   "Signature & Cachet :\n\n\n\n"]],
+        [8.75*cm, 8.75*cm], sig=True
+    ))
 
+    # ── Pied de page ──────────────────────────────────────────────
     story += [sp(), hr(),
-                Paragraph("Orange Business Tunisie  |  Proposition confidentielle — usage exclusif du destinataire", s_c)]
+                Paragraph(
+                    "Orange Business Tunisie  |  Document contractuel confidentiel — "
+                    "usage exclusif du destinataire",
+                    s_c
+                )]
 
     doc.build(story)
 
 
-def _table(rows, col_widths, highlight=False, profil=False, footer=False, sig=False):
+# ── Helper tableau ────────────────────────────────────────────────────────────
+
+def _table(rows, col_widths, footer=False, sig=False):
     t = Table(rows, colWidths=col_widths)
-    style = [
-        ("FONTSIZE",      (0,0),(-1,-1), 9),
-        ("TOPPADDING",    (0,0),(-1,-1), 4),
-        ("BOTTOMPADDING", (0,0),(-1,-1), 4),
-        ("LEFTPADDING",   (0,0),(-1,-1), 6),
-        ("GRID",          (0,0),(-1,-1), 0.3, GRIS_M),
-        ("ALIGN",         (0,0),(-1,-1), "CENTER"),
-    ]
-    if highlight:
-        style += [("BACKGROUND",(0,0),(-1,-1),ORANGE),
-                    ("TEXTCOLOR",(0,0),(-1,-1),colors.white),
-                    ("FONTNAME",(0,0),(-1,-1),"Helvetica-Bold")]
-    elif profil:
-        style += [("FONTNAME",(0,0),(-2,0),"Helvetica-Bold"),
-                    ("TEXTCOLOR",(0,0),(0,0),"#FF7900"),
-                    ("ROWBACKGROUNDS",(0,0),(-1,-1),[GRIS])]
+    if sig:
+        style = [
+            ("FONTSIZE",      (0, 0), (-1, -1), 9),
+            ("TOPPADDING",    (0, 0), (-1, -1), 6),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 8),
+            ("GRID",          (0, 0), (-1, -1), 0.3, GRIS_M),
+            ("ALIGN",         (0, 0), (-1, -1), "LEFT"),
+            ("VALIGN",        (0, 0), (-1, -1), "TOP"),
+            ("FONTNAME",      (0, 0), (-1, 0),  "Helvetica-Bold"),
+            ("TEXTCOLOR",     (0, 0), (-1, 0),  ORANGE),
+            ("FONTNAME",      (0, 1), (-1, -1), "Helvetica"),
+        ]
     elif footer:
-        style += [("FONTNAME",(0,0),(-1,-1),"Helvetica"),
-                    ("TEXTCOLOR",(0,0),(-1,-1),DARK),
-                    ("BACKGROUND",(0,0),(-1,-1),GRIS)]
-    elif sig:
-        style += [("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
-                    ("TEXTCOLOR",(0,0),(-1,0),ORANGE),
-                    ("VALIGN",(0,0),(-1,-1),"TOP"),
-                    ("ALIGN",(0,0),(-1,-1),"LEFT")]
+        style = [
+            ("FONTSIZE",      (0, 0), (-1, -1), 9),
+            ("TOPPADDING",    (0, 0), (-1, -1), 4),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 6),
+            ("GRID",          (0, 0), (-1, -1), 0.3, GRIS_M),
+            ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
+            ("FONTNAME",      (0, 0), (-1, -1), "Helvetica"),
+            ("TEXTCOLOR",     (0, 0), (-1, -1), DARK),
+            ("BACKGROUND",    (0, 0), (-1, -1), SAUMON_L),
+        ]
     else:
-        style += [("BACKGROUND",(0,0),(-1,0),ORANGE),
-                    ("TEXTCOLOR",(0,0),(-1,0),colors.white),
-                    ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
-                    ("FONTNAME",(0,1),(-1,-1),"Helvetica"),
-                    ("ALIGN",(0,1),(0,-1),"LEFT"),
-                    ("ROWBACKGROUNDS",(0,1),(-1,-1),[colors.white,GRIS])]
+        style = [
+            ("FONTSIZE",      (0, 0), (-1, -1), 9),
+            ("TOPPADDING",    (0, 0), (-1, -1), 4),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 6),
+            ("GRID",          (0, 0), (-1, -1), 0.3, GRIS_M),
+            ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
+            ("BACKGROUND",    (0, 0), (-1, 0),  ORANGE),
+            ("TEXTCOLOR",     (0, 0), (-1, 0),  colors.white),
+            ("FONTNAME",      (0, 0), (-1, 0),  "Helvetica-Bold"),
+            ("FONTNAME",      (0, 1), (-1, -1), "Helvetica"),
+            ("ROWBACKGROUNDS",(0, 1), (-1, -1), [colors.white, SAUMON]),
+        ]
     t.setStyle(TableStyle(style))
     return t

@@ -13,7 +13,7 @@ import sys
 import json
 from datetime import datetime
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.agent_analyste      import AgentAnalyste
 from agents.agent_configurateur import AgentConfigurateur

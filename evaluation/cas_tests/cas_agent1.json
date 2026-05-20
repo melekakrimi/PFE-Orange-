@@ -1,84 +1,50 @@
 [
     {
         "id": 1,
-        "input": "PME de transport LogiTrans, 3 sites (Tunis, Sfax, Sousse), 80 employés. Besoin de fibre optique 500 Mbps et Microsoft 365 pour tous. Budget mensuel : 5000 TND.",
+        "description": "BIAT, secteur bancaire, ETI, 50 employes. Fibre 200 Mbps + Microsoft 365 avec tous les services de securite.",
+        "input": "BIAT, banque tunisienne, 50 employes au siege. On a besoin de la fibre 200 Mbps, le boitier Orange est a 80 metres. Et 50 licences Microsoft avec le mail, OneDrive, SharePoint, Pack Office, Intune pour les mobiles et Defender antivirus. Urgence haute.",
         "expected": {
-            "nom_entreprise": "LogiTrans",
-            "secteur": "Transport",
-            "taille_entreprise": "PME",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 500,
-                "nombre_sites": 3
-            },
-            "besoins_microsoft": {
-                "demande_microsoft": true,
-                "nombre_licences": 80
-            },
-            "budget_annuel": 5000
+            "nom_entreprise": "BIAT",
+            "secteur": "Banque",
+            "taille_entreprise": "ETI",
+            "besoins_fibre": { "demande_fibre": true, "debit_souhaite_mbps": 200 },
+            "besoins_microsoft": { "demande_microsoft": true, "nombre_licences": 50 }
         }
     },
     {
         "id": 2,
-        "input": "Startup TechInnovate dans la tech, 25 développeurs, besoin Microsoft 365 et fibre 200 Mbps. Budget serré : 2000 TND/mois.",
+        "description": "DevSoft, secteur tech, PME, 25 developpeurs. Fibre 100 Mbps + Microsoft 365 pour la collaboration.",
+        "input": "DevSoft, entreprise tech, PME, 25 developpeurs. On demenage dans de nouveaux bureaux. Besoin de la fibre 100 Mbps, boitier Orange a 50 metres. Et 25 licences Microsoft avec Teams, OneDrive, SharePoint et Pack Office pour les developpeurs. Urgence haute.",
         "expected": {
-            "nom_entreprise": "TechInnovate",
+            "nom_entreprise": "DevSoft",
             "secteur": "Tech",
             "taille_entreprise": "PME",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 200
-            },
-            "besoins_microsoft": {
-                "demande_microsoft": true,
-                "nombre_licences": 25
-            },
-            "budget_annuel": 2000
+            "besoins_fibre": { "demande_fibre": true, "debit_souhaite_mbps": 100 },
+            "besoins_microsoft": { "demande_microsoft": true, "nombre_licences": 25 }
         }
     },
     {
         "id": 3,
-        "input": "Clinique médicale HealthCare, 50 employés, besoin seulement de fibre 100 Mbps pour la télémédecine. Pas besoin de Microsoft.",
+        "description": "LegalPro, cabinet juridique, PME, 15 avocats. Microsoft 365 uniquement pour la messagerie et le stockage.",
+        "input": "Cabinet LegalPro, 15 avocats. On a deja internet. On veut uniquement Microsoft 365 pour la messagerie professionnelle et OneDrive pour stocker les dossiers clients en securite. Pas besoin de fibre. Urgence faible.",
         "expected": {
-            "nom_entreprise": "HealthCare",
-            "secteur": "Santé",
+            "nom_entreprise": "LegalPro",
+            "secteur": "Juridique",
             "taille_entreprise": "PME",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 100
-            },
-            "besoins_microsoft": {
-                "demande_microsoft": false
-            }
+            "besoins_fibre": { "demande_fibre": false },
+            "besoins_microsoft": { "demande_microsoft": true, "nombre_licences": 15 }
         }
     },
     {
         "id": 4,
-        "input": "Cabinet d'avocats LegalPro, 15 avocats, besoin uniquement Microsoft 365 avec stockage OneDrive. Pas de fibre.",
+        "description": "FastFood Express, restauration, TPE. Fibre 50 Mbps uniquement pour les caisses et le WiFi clients.",
+        "input": "FastFood Express, restaurant, petite entreprise. On veut juste internet rapide pour les caisses et le WiFi clients. 50 Mega suffit. Le boitier Orange est a environ 80 metres. Pas besoin de Microsoft. Urgence faible.",
         "expected": {
-            "secteur": "Juridique",
-            "taille_entreprise": "PME",
-            "besoins_fibre": {
-                "demande_fibre": false
-            },
-            "besoins_microsoft": {
-                "demande_microsoft": true,
-                "nombre_licences": 15
-            }
-        }
-    },
-    {
-        "id": 5,
-        "input": "Restaurant FastFood Express, 2 sites, 30 employés, fibre 50 Mbps suffit. Budget limité 800 TND/mois.",
-        "expected": {
+            "nom_entreprise": "FastFood Express",
             "secteur": "Restauration",
-            "taille_entreprise": "PME",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 50,
-                "nombre_sites": 2
-            },
-            "budget_annuel": 800
+            "taille_entreprise": "TPE",
+            "besoins_fibre": { "demande_fibre": true, "debit_souhaite_mbps": 50 },
+            "besoins_microsoft": { "demande_microsoft": false }
         }
     }
 ]

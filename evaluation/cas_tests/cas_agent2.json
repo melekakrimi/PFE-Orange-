@@ -1,178 +1,78 @@
 [
     {
         "id": 1,
-        "description": "PME Tech DevSoft, 25 developpeurs, besoin fibre 100 Mbps et Microsoft 365 pour toute l'equipe. Distance boitier Orange 50 metres. Budget 2000 TND/mois.",
+        "description": "BIAT, secteur Banque, ETI, 50 employes. Fibre 200 Mbps + tous les services Microsoft (Intune + Defender).",
         "input": {
-            "nom_entreprise": "DevSoft",
-            "secteur": "Tech",
-            "taille_entreprise": "PME",
-            "urgence": "moyenne",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 100,
-                "nombre_sites": 1,
-                "distance_metres": 50
-            },
+            "nom_entreprise": "BIAT",
+            "secteur": "Banque",
+            "taille_entreprise": "ETI",
+            "urgence": "haute",
+            "besoins_fibre": { "demande_fibre": true, "debit_souhaite_mbps": 200, "distance_metres": 80 },
             "besoins_microsoft": {
                 "demande_microsoft": true,
-                "nombre_licences": 25,
-                "type_besoin": "collaboration",
-                "services_mentionnes": ["Teams", "Word"]
-            },
-            "budget_annuel": 2000
+                "nombre_licences": 50,
+                "services": { "onedrive": true, "sharepoint": true, "mail": true, "pack_office": true, "intune": true, "defender": true }
+            }
         },
         "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "eco_debit": 100,
-                "std_debit": 200,
-                "pre_debit": 500,
-                "recommandation": "standard"
-            },
-            "microsoft": {
-                "trois_configs": true,
-                "produits_distincts": true,
-                "nb_licences": 25,
-                "recommandation": "standard"
-            }
+            "microsoft": { "nom_produit": "Microsoft 365 Business Premium", "nombre_licences": 50 }
         }
     },
     {
         "id": 2,
-        "description": "Restaurant FastFood Express, 2 sites, 30 employes, besoin fibre 50 Mbps uniquement. Distance 80 metres. Budget limite 800 TND/mois.",
+        "description": "DevSoft, secteur Tech, PME, 25 developpeurs. Fibre 100 Mbps + Microsoft avec Pack Office.",
         "input": {
-            "nom_entreprise": "FastFood Express",
-            "secteur": "Restauration",
+            "nom_entreprise": "DevSoft",
+            "secteur": "Tech",
             "taille_entreprise": "PME",
-            "urgence": "faible",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 50,
-                "nombre_sites": 2,
-                "distance_metres": 80
-            },
+            "urgence": "haute",
+            "besoins_fibre": { "demande_fibre": true, "debit_souhaite_mbps": 100, "distance_metres": 50 },
             "besoins_microsoft": {
-                "demande_microsoft": false,
-                "nombre_licences": null,
-                "type_besoin": null,
-                "services_mentionnes": []
-            },
-            "budget_annuel": 800
+                "demande_microsoft": true,
+                "nombre_licences": 25,
+                "services": { "onedrive": true, "sharepoint": true, "mail": true, "pack_office": true, "intune": false, "defender": false }
+            }
         },
         "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "eco_debit": 50,
-                "std_debit": 100,
-                "pre_debit": 200,
-                "recommandation": "economique"
-            },
-            "microsoft": null
+            "microsoft": { "nom_produit": "Microsoft 365 Business Standard", "nombre_licences": 25 }
         }
     },
     {
         "id": 3,
-        "description": "Cabinet d'avocats LegalPro, 15 avocats, besoin uniquement Microsoft 365 avec OneDrive pour le stockage. Pas de fibre. Budget 500 TND/mois.",
+        "description": "LegalPro, cabinet juridique, PME, 15 avocats. Microsoft uniquement, mail et OneDrive.",
         "input": {
             "nom_entreprise": "LegalPro",
             "secteur": "Juridique",
             "taille_entreprise": "PME",
             "urgence": "faible",
-            "besoins_fibre": {
-                "demande_fibre": false,
-                "debit_souhaite_mbps": null,
-                "nombre_sites": null,
-                "distance_metres": null
-            },
+            "besoins_fibre": { "demande_fibre": false, "debit_souhaite_mbps": null, "distance_metres": null },
             "besoins_microsoft": {
                 "demande_microsoft": true,
                 "nombre_licences": 15,
-                "type_besoin": "stockage",
-                "services_mentionnes": ["OneDrive"]
-            },
-            "budget_annuel": 500
+                "services": { "onedrive": true, "sharepoint": false, "mail": true, "pack_office": false, "intune": false, "defender": false }
+            }
         },
         "expected": {
-            "fibre": null,
-            "microsoft": {
-                "trois_configs": true,
-                "produits_distincts": true,
-                "nb_licences": 15,
-                "recommandation": "economique"
-            }
+            "microsoft": { "nom_produit": "Microsoft 365 Business Basic", "nombre_licences": 15 }
         }
     },
     {
         "id": 4,
-        "description": "Ferme agricole zone rurale, besoin fibre 50 Mbps, 1 site. Distance boitier Orange 500 metres (zone eloignee). Budget 300 TND/mois.",
+        "description": "FastFood Express, Restauration, TPE. Fibre 50 Mbps uniquement, pas de Microsoft.",
         "input": {
-            "nom_entreprise": "Ferme Rurale Bio",
-            "secteur": "Agriculture",
+            "nom_entreprise": "FastFood Express",
+            "secteur": "Restauration",
             "taille_entreprise": "TPE",
             "urgence": "faible",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 50,
-                "nombre_sites": 1,
-                "distance_metres": 500
-            },
+            "besoins_fibre": { "demande_fibre": true, "debit_souhaite_mbps": 50, "distance_metres": 80 },
             "besoins_microsoft": {
                 "demande_microsoft": false,
                 "nombre_licences": null,
-                "type_besoin": null,
-                "services_mentionnes": []
-            },
-            "budget_annuel": 300
-        },
-        "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "distance_reduite": true,
-                "recommandation": "economique"
-            },
-            "microsoft": null
-        }
-    },
-    {
-        "id": 5,
-        "description": "Entreprise industrielle IndusTech, 3 sites, 120 employes, besoin fibre 200 Mbps haute performance et Microsoft 365 pour les equipes. Budget 15000 TND/mois.",
-        "input": {
-            "nom_entreprise": "IndusTech",
-            "secteur": "Industrie",
-            "taille_entreprise": "PME",
-            "urgence": "haute",
-            "besoins_fibre": {
-                "demande_fibre": true,
-                "debit_souhaite_mbps": 200,
-                "nombre_sites": 3,
-                "distance_metres": 100
-            },
-            "besoins_microsoft": {
-                "demande_microsoft": true,
-                "nombre_licences": 120,
-                "type_besoin": "bureautique",
-                "services_mentionnes": ["Microsoft 365", "Teams", "Excel"]
-            },
-            "budget_annuel": 15000
-        },
-        "expected": {
-            "fibre": {
-                "debits_distincts": true,
-                "marges_positives": true,
-                "eco_debit": 200,
-                "std_debit": 500,
-                "pre_debit": 1000,
-                "recommandation": "standard"
-            },
-            "microsoft": {
-                "trois_configs": true,
-                "produits_distincts": true,
-                "nb_licences": 120,
-                "recommandation": "premium"
+                "services": { "onedrive": false, "sharepoint": false, "mail": false, "pack_office": false, "intune": false, "defender": false }
             }
+        },
+        "expected": {
+            "microsoft": null
         }
     }
 ]

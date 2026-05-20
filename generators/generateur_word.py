@@ -1,6 +1,7 @@
 # generators/generateur_word.py
 """
-Générateur Word — 1 page document technique modifiable Orange Business
+Générateur Word — description technique et fonctionnelle de l'offre Orange Business
+Document modifiable, 1 configuration unique.
 """
 
 from docx import Document
@@ -9,9 +10,10 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-ORANGE = RGBColor(0xFF, 0x79, 0x00)
-DARK   = RGBColor(0x33, 0x33, 0x33)
+ORANGE = RGBColor(0xFF, 0x79, 0x00)   # Orange officiel
+DARK   = RGBColor(0x1A, 0x1A, 0x1A)   # Quasi-noir Orange
 BLANC  = RGBColor(0xFF, 0xFF, 0xFF)
+SAUMON = RGBColor(0xFF, 0xCC, 0xAA)   # Orange clair (lignes alternées)
 
 
 def generer_word(data: dict, textes: dict, chemin: str):
@@ -24,87 +26,118 @@ def generer_word(data: dict, textes: dict, chemin: str):
     # ── En-tête ───────────────────────────────────────────────────
     p = doc.add_paragraph()
     _run(p, "Orange Business", size=18, bold=True, color=ORANGE)
-    _run(p, f"  ·  Tunisie  |  Proposition Commerciale Confidentielle", size=10, color=DARK)
+    _run(p, "  ·  Tunisie  |  Description Technique et Fonctionnelle", size=10, color=DARK)
 
     p2 = doc.add_paragraph()
-    _run(p2, f"Client : ", size=9, bold=True, color=DARK)
+    _run(p2, "Client : ", size=9, bold=True, color=DARK)
     _run(p2, f"{data['client']}   |   Date : {data['date']}   |   Validité : {data['validite']}", size=9, color=DARK)
     _hr(doc)
 
     # ── Profil client ─────────────────────────────────────────────
     _h1(doc, "PROFIL CLIENT")
-    t = doc.add_table(rows=2, cols=5)
+    t = doc.add_table(rows=2, cols=4)
     t.style = "Table Grid"
-    hdrs = ["Entreprise", "Secteur", "Taille", "Budget/an", "Urgence"]
-    vals = [data["client"], data["secteur"], data["taille"],
-            f"{data['budget']:,.0f} TND" if data["budget"] else "—", data["urgence"].capitalize()]
-    for j, (h, v) in enumerate(zip(hdrs, vals)):
+    for j, (h, v) in enumerate(zip(
+        ["Entreprise", "Secteur", "Taille", "Urgence"],
+        [data["client"], data["secteur"], data["taille"], (data["urgence"] or "").capitalize()]
+    )):
         _cell(t, 0, j, h, bold=True, bg="FF7900", color=BLANC)
         _cell(t, 1, j, v)
     doc.add_paragraph()
 
-    # ── Comparatif scénarios ──────────────────────────────────────
-    _h1(doc, "COMPARATIF DES 3 SCÉNARIOS TARIFAIRES")
-    sc = data["scenarios"]
-    headers = ["Critère", "Compétitif", "Équilibré", "Premium"]
-    rows = [
-        ["Prix annuel (TND)"]      + [f"{x.get('prix_vente_total',0):,.0f}"   for x in sc],
-        ["Coût de revient (TND)"]  + [f"{x.get('cout_revient_total',0):,.0f}" for x in sc],
-        ["Marge brute (TND)"]      + [f"{x.get('marge_brute',0):,.0f}"        for x in sc],
-        ["Taux de marge (%)"]      + [f"{x.get('taux_marge',0):.1f}%"         for x in sc],
-        ["Dans le budget"]         + ["OUI" if x.get("dans_budget") else "NON" for x in sc],
-        ["Marge ≥ 14%"]            + ["OK"  if x.get("contrainte_marge_ok") else "KO" for x in sc],
-    ]
-    _tableau(doc, headers, rows)
+    # ── Description technique Fibre ───────────────────────────────
+    fibre = data.get("fibre")
+    if fibre:
+        _h1(doc, "SOLUTION FIBRE OPTIQUE FTTO — DESCRIPTION TECHNIQUE")
+        tf = doc.add_table(rows=2, cols=5)
+        tf.style = "Table Grid"
+        for j, (h, v) in enumerate(zip(
+            ["Offre", "Débit", "Engagement", "Distance", "Prix annuel (TND)"],
+            [
+                fibre.get("nom_offre", "—"),
+                f"{fibre.get('debit_mbps', '')} Mbps",
+                f"{fibre.get('engagement_mois', '')} mois",
+                f"{fibre.get('distance_metres', '')} m",
+                f"{fibre.get('prix_annuel', 0):,.0f}",
+            ]
+        )):
+            _cell(tf, 0, j, h, bold=True, bg="FF7900", color=BLANC)
+            _cell(tf, 1, j, v)
+        doc.add_paragraph()
+
+        _h2(doc, "Caractéristiques techniques")
+        details = [
+            f"Technologie : Fibre Optique FTTO (Fiber To The Office)",
+            f"Débit garanti : {fibre.get('debit_mbps', '')} Mbps symétrique",
+            f"Engagement contractuel : {fibre.get('engagement_mois', '')} mois",
+            f"Distance raccordement : {fibre.get('distance_metres', '')} mètres",
+            f"Coût d'installation : {fibre.get('cout_initial_total', 0):,.0f} TND (one-time)",
+        ]
+        for d in details:
+            p = doc.add_paragraph(style="List Bullet")
+            _run(p, d, size=9, color=DARK)
+        doc.add_paragraph()
+
+    # ── Description fonctionnelle Microsoft ───────────────────────
+    ms = data.get("microsoft")
+    if ms:
+        _h1(doc, "SOLUTION MICROSOFT 365 — DESCRIPTION FONCTIONNELLE")
+        tm = doc.add_table(rows=2, cols=4)
+        tm.style = "Table Grid"
+        for j, (h, v) in enumerate(zip(
+            ["Plan", "Licences", "Prix unitaire/an (TND)", "Prix total/an (TND)"],
+            [
+                ms.get("nom_produit", "—"),
+                str(ms.get("nombre_licences", "")),
+                f"{ms.get('prix_unitaire_tnd', 0):,.2f}",
+                f"{ms.get('prix_annuel', 0):,.0f}",
+            ]
+        )):
+            _cell(tm, 0, j, h, bold=True, bg="FF7900", color=BLANC)
+            _cell(tm, 1, j, v)
+        doc.add_paragraph()
+
+        _h2(doc, "Services inclus")
+        justification = ms.get("justification", "Plan sélectionné selon les besoins du client.")
+        p = doc.add_paragraph()
+        _run(p, justification, size=9, italic=True, color=DARK)
+        doc.add_paragraph()
+
+    # ── Récapitulatif financier (client) ─────────────────────────
+    _h1(doc, "RÉCAPITULATIF FINANCIER")
+    prix_annuel  = data.get("prix_total_annuel", 0)
+    prix_mensuel = round(prix_annuel / 12, 0)
+    tr = doc.add_table(rows=2, cols=2)
+    tr.style = "Table Grid"
+    for j, (h, v) in enumerate(zip(
+        ["Prix total annuel (TND)", "Équivalent mensuel (TND)"],
+        [f"{prix_annuel:,.0f}", f"{prix_mensuel:,.0f}"]
+    )):
+        _cell(tr, 0, j, h, bold=True, bg="FF7900", color=BLANC)
+        _cell(tr, 1, j, v)
     doc.add_paragraph()
 
-    # ── Recommandation ────────────────────────────────────────────
-    _h1(doc, "RECOMMANDATION ORANGE BUSINESS")
-    rec = data["rec"]
-    p3 = doc.add_paragraph()
-    _run(p3, f"Scénario {rec.get('nom_scenario','').upper()}", size=13, bold=True, color=ORANGE)
-    _run(p3, f"   |   Prix : {rec.get('prix_vente_total',0):,.0f} TND/an"
-                f"   |   Marge : {rec.get('taux_marge',0):.1f}%"
-                f"   |   {'✓ Dans le budget' if rec.get('dans_budget') else 'Hors budget'}",
-            size=11, color=DARK)
-
-    synthese = textes.get("synthese") or data.get("pitch", "")
-    if synthese:
-        p4 = doc.add_paragraph()
-        _run(p4, synthese, size=10, italic=True, color=DARK)
+    # ── Pitch + arguments ─────────────────────────────────────────
+    _h1(doc, "ARGUMENTAIRE COMMERCIAL")
+    pitch = data.get("pitch", "")
+    if pitch:
+        p = doc.add_paragraph()
+        _run(p, pitch, size=10, italic=True, color=DARK)
 
     args = data.get("arguments", [])
     if args:
-        p5 = doc.add_paragraph()
-        _run(p5, "Arguments de négociation : ", size=10, bold=True, color=DARK)
+        p = doc.add_paragraph()
+        _run(p, "Arguments de négociation :", size=10, bold=True, color=DARK)
         for i, arg in enumerate(args, 1):
             pa = doc.add_paragraph(style="List Number")
             _run(pa, arg, size=10)
     doc.add_paragraph()
 
-    # ── Conditions + Signature ────────────────────────────────────
+    # ── Pied de page ──────────────────────────────────────────────
     _hr(doc)
-    p6 = doc.add_paragraph()
-    _run(p6, "Conditions : ", size=9, bold=True, color=DARK)
-    _run(p6, f"Durée 12/24 mois  |  Facturation mensuelle  |  Support 24h/24  |  Validité : {data['validite']}", size=9, color=DARK)
-
-    _h1(doc, "BON POUR ACCORD")
-    ts = doc.add_table(rows=4, cols=2)
-    ts.style = "Table Grid"
-    sig_rows = [
-        ("Pour Orange Business Tunisie", "Pour le Client"),
-        ("Nom : _________________________", "Nom : _________________________"),
-        ("Date : ________________________", "Date : ________________________"),
-        ("Signature & Cachet :\n\n\n",    "Signature & Cachet :\n\n\n"),
-    ]
-    for i, (l, r) in enumerate(sig_rows):
-        _cell(ts, i, 0, l, bold=(i==0), color=ORANGE if i==0 else None)
-        _cell(ts, i, 1, r, bold=(i==0), color=ORANGE if i==0 else None)
-
-    _hr(doc)
-    p7 = doc.add_paragraph()
-    p7.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    _run(p7, "Orange Business Tunisie  |  Document confidentiel", size=8, italic=True, color=DARK)
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    _run(p, "Orange Business Tunisie  |  Document confidentiel", size=8, italic=True, color=DARK)
 
     doc.save(chemin)
 
@@ -113,42 +146,49 @@ def generer_word(data: dict, textes: dict, chemin: str):
 
 def _run(para, texte, size=11, bold=False, italic=False, color=None):
     r = para.add_run(texte)
-    r.font.size = Pt(size); r.font.bold = bold; r.font.italic = italic
-    if color: r.font.color.rgb = color
+    r.font.size   = Pt(size)
+    r.font.bold   = bold
+    r.font.italic = italic
+    if color:
+        r.font.color.rgb = color
 
 def _h1(doc, texte):
     p = doc.add_paragraph()
     _run(p, texte, size=12, bold=True, color=ORANGE)
 
-def _hr(doc):
+def _h2(doc, texte):
     p = doc.add_paragraph()
+    _run(p, texte, size=10, bold=True, color=DARK)
+
+def _hr(doc):
+    p   = doc.add_paragraph()
     pPr = p._p.get_or_add_pPr()
     pBdr = OxmlElement("w:pBdr")
-    bot = OxmlElement("w:bottom")
-    bot.set(qn("w:val"), "single"); bot.set(qn("w:sz"), "6")
-    bot.set(qn("w:space"), "1");   bot.set(qn("w:color"), "FF7900")
-    pBdr.append(bot); pPr.append(pBdr)
+    bot  = OxmlElement("w:bottom")
+    bot.set(qn("w:val"),   "single")
+    bot.set(qn("w:sz"),    "6")
+    bot.set(qn("w:space"), "1")
+    bot.set(qn("w:color"), "FF7900")
+    pBdr.append(bot)
+    pPr.append(pBdr)
 
-def _tableau(doc, headers, rows):
-    nb_c = len(headers)
-    t = doc.add_table(rows=1+len(rows), cols=nb_c)
-    t.style = "Table Grid"
-    for j, h in enumerate(headers):
-        _cell(t, 0, j, h, bold=True, bg="FF7900", color=BLANC)
-    for i, row in enumerate(rows):
-        for j, val in enumerate(row):
-            _cell(t, i+1, j, val, bg="F5F5F5" if i%2==0 else "FFFFFF")
-
-def _cell(table, row, col, texte, bold=False, italic=False, color=None, bg=None):
+def _cell(table, row, col, texte, bold=False, color=None, bg=None, row_idx=None):
     cell = table.cell(row, col)
     p    = cell.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r    = p.add_run(str(texte))
-    r.font.size = Pt(9); r.font.bold = bold; r.font.italic = italic
-    if color: r.font.color.rgb = color if isinstance(color, RGBColor) else RGBColor.from_string(color) if len(str(color))==6 else color
+    r.font.size = Pt(9)
+    r.font.bold = bold
+    if color:
+        r.font.color.rgb = color if isinstance(color, RGBColor) else RGBColor.from_string(color)
+    # Lignes de données : alternance SAUMON / BLANC
+    if bg is None and row_idx is not None:
+        bg = "FFCCAA" if row_idx % 2 == 0 else "FFFFFF"
     if bg:
-        tc = cell._tc; tcPr = tc.get_or_add_tcPr()
-        shd = OxmlElement("w:shd")
-        shd.set(qn("w:val"), "clear"); shd.set(qn("w:color"), "auto")
-        shd.set(qn("w:fill"), str(bg).replace("#",""))
+        tc   = cell._tc
+        tcPr = tc.get_or_add_tcPr()
+        shd  = OxmlElement("w:shd")
+        shd.set(qn("w:val"),   "clear")
+        shd.set(qn("w:color"), "auto")
+        shd.set(qn("w:fill"),  str(bg).replace("#", ""))
         tcPr.append(shd)

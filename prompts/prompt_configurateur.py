@@ -29,10 +29,10 @@ RAISONNEMENT — Chain-of-Thought
 Étape 1 — Identifier précisément les services demandés par le client.
 Étape 2 — Parcourir le catalogue du plan le moins cher au plus cher.
 Étape 3 — Sélectionner le PREMIER plan qui couvre TOUS les services demandés.
-           Ce plan est la solution exacte pour ce client. Pas besoin d'aller plus haut.
+            Ce plan est la solution exacte pour ce client. Pas besoin d'aller plus haut.
 Étape 4 — Calculer : prix_total_annuel = prix_unitaire_tnd × nombre_licences.
 Étape 5 — Rédiger une justification commerciale courte expliquant pourquoi
-           ce plan correspond exactement aux besoins de ce client.
+            ce plan correspond exactement aux besoins de ce client.
 
 ═══════════════════════════════════════════════════════════════
 RÈGLES ABSOLUES

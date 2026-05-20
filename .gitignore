@@ -23,3 +23,16 @@ git_status.txt
 .idea/
 *.swp
 *.swo
+
+# Node
+interface/node_modules/
+interface/dist/
+
+# Fichiers générés
+output/
+
+# Claude
+.claude/
+
+# Données sensibles
+CONTEXTE_PROJET.md

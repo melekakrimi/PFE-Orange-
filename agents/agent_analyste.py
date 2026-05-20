@@ -20,20 +20,16 @@ class AgentAnalyste:
     """
     
     def __init__(self):
-        # 1. Création du modèle IA
         self.llm = ChatGroq(
             model="llama-3.3-70b-versatile",
             api_key=os.getenv("GROQ_API_KEY"),
-            temperature=0.0  # Température 0 pour un JSON parfait
+            temperature=0.0
         )
-        
-        # 2. Chargement du Prompt depuis le fichier séparé
         self.prompt = PromptTemplate(
             input_variables=["description_client"],
             template=TEMPLATE_ANALYSTE
         )
         
-        # 3. Connexion du Prompt à l'IA
         self.chain = self.prompt | self.llm
     
     def analyser(self, description_client: str) -> dict:
@@ -72,17 +68,14 @@ class AgentAnalyste:
         """
         texte = texte.strip()
 
-        # Cas 1 : LLM entoure avec ```json ... ``` ou ``` ... ```
         match = re.search(r"```(?:json)?\s*([\s\S]*?)```", texte)
         if match:
             return match.group(1).strip()
 
-        # Cas 2 : JSON brut sans backticks
         match = re.search(r"(\{[\s\S]*\})", texte)
         if match:
             return match.group(1).strip()
 
-        # Cas 3 : Retourner tel quel (laisse json.loads gérer l'erreur)
         return texte
     
     def _valider_analyse(self, analyse: dict) -> bool:
@@ -94,87 +87,62 @@ class AgentAnalyste:
                 print(f"    Champ manquant : {champ}")
                 return False
         
-        # Vérifier la structure de besoins_fibre
         if "demande_fibre" not in analyse["besoins_fibre"]:
             print("    besoins_fibre.demande_fibre manquant")
             return False
         
-        # Vérifier la structure de besoins_microsoft
         if "demande_microsoft" not in analyse["besoins_microsoft"]:
             print("    besoins_microsoft.demande_microsoft manquant")
             return False
 
-        #  FIX 1 : Vérification du nouveau champ taille_entreprise
         if "taille_entreprise" not in analyse:
             print("    Champ manquant : taille_entreprise")
             return False
         
         return True
-
+    
 
 # ============================================
 # TESTS
 
 if __name__ == "__main__":
-    
-    print(" Tests de l'Agent 1 - Analyste Fibre & Microsoft")
+
+    print(" Tests Agent 1 — Analyste")
     print("=" * 70)
-    
+
     agent = AgentAnalyste()
-    
-    # Test 1 : Fibre + Microsoft
-    print("\n TEST 1 : Startup (Fibre + Microsoft)")
-    print("-" * 70)
-    description1 = """
-    Bonjour, c'est l'entreprise DevSoft. On déménage.
-    Il nous faut la fibre avec 500 mega minimum.
-    Le boîtier Orange est à 120 mètres de nos locaux.
-    Aussi, on a recruté, il nous faut    pour l'équipe avec Word et Teams.
-    C'est urgent. Budget total : 500/TND mois max.
-    """
-    analyse1 = agent.analyser(description1)
-    print(json.dumps(analyse1, indent=2, ensure_ascii=False))
-    
-    # Test 2 : Juste Fibre
-    print("\n\n TEST 2 : Restaurant (Fibre uniquement)")
-    print("-" * 70)
-    description2 = """
-    Restaurant La Belle Vue, on veut juste internet rapide
-    pour les caisses et le WiFi clients. 100 Mega suffit.
-    Distance du boîtier Orange : environ 80 mètres.
-    Budget : 400 TND/mois max.
-    """
-    analyse2 = agent.analyser(description2)
-    print(json.dumps(analyse2, indent=2, ensure_ascii=False))
-    
-    # Test 3 : Juste Microsoft
-    print("\n\n TEST 3 : Cabinet comptable (Microsoft uniquement)")
-    print("-" * 70)
-    description3 = """
-    Cabinet d'expertise comptable National Pen.
-    On a déjà internet, mais on veut passer sur Power BI
-    pour nos 12 comptables. Il nous faut Excel, Word, et le cloud
-    pour partager les dossiers. Budget : 500 TND/mois.
-    """
-    analyse3 = agent.analyser(description3)
-    print(json.dumps(analyse3, indent=2, ensure_ascii=False))
-    
-    # Test 4 : Cas complexe multi-sites
-    print("\n\n TEST 4 : PME multi-sites (Cas complexe)")
-    print("-" * 70)
-    description4 = """
-    Entreprise LogiTrans, secteur transport
-    (Tunis). On veut la fibre
-    Débit minimum 500 Mbps. Distance estimée : 200m pour Tunis,
-    150m pour Sfax, 180m pour Sousse.
-    
-    Aussi, 80 employés ont besoin de Microsoft 365 avec Teams
-    pour les réunions à distance entre sites.
-    
-    Budget global : 5000 TND/mois. C'est assez urgent.
-    """
-    analyse4 = agent.analyser(description4)
-    print(json.dumps(analyse4, indent=2, ensure_ascii=False))
-    
-    print("\n\n" + "=" * 70)
-    print(" Tous les tests terminés !")
+
+    cas = [
+        ("BIAT — Fibre + MS Premium", """
+        BIAT, banque tunisienne, 50 employes au siege.
+        On a besoin de la fibre 200 Mbps, le boitier Orange est a 80 metres.
+        Et 50 licences Microsoft avec le mail, OneDrive, SharePoint, Pack Office,
+        Intune pour les mobiles et Defender antivirus. Urgence haute.
+        """),
+        ("DevSoft — Fibre + MS Standard", """
+        DevSoft, entreprise tech, PME, 25 developpeurs.
+        On demenage dans de nouveaux bureaux. Besoin de la fibre 100 Mbps,
+        boitier Orange a 50 metres. Et 25 licences Microsoft avec Teams,
+        OneDrive, SharePoint et Pack Office. Urgence haute.
+        """),
+        ("LegalPro — MS Basic uniquement", """
+        Cabinet LegalPro, 15 avocats. On a deja internet.
+        On veut uniquement Microsoft 365 pour la messagerie professionnelle
+        et OneDrive pour stocker les dossiers clients. Pas besoin de fibre.
+        """),
+        ("FastFood Express — Fibre uniquement", """
+        FastFood Express, restaurant, petite entreprise.
+        On veut juste internet rapide pour les caisses et le WiFi clients.
+        50 Mega suffit. Le boitier Orange est a environ 80 metres.
+        Pas besoin de Microsoft.
+        """),
+    ]
+
+    for titre, desc in cas:
+        print(f"\n {'='*60}")
+        print(f"  {titre}")
+        print(f" {'='*60}")
+        resultat = agent.analyser(desc)
+        print(json.dumps(resultat, indent=2, ensure_ascii=False))
+
+    print("\n Tests Agent 1 termines !")

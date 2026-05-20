@@ -174,20 +174,17 @@ class AgentConfigurateur:
         if manquants:
             raise ValueError(f"Champs manquants : {manquants}")
 
-        # Corriger le product_id si le LLM a mis le nom à la place
         nom = data["nom_produit"]
         ligne = self.catalogue_df[self.catalogue_df["nom_produit"] == nom]
         if not ligne.empty:
             data["product_id"] = ligne.iloc[0]["product_id"]
         else:
-            # Recherche partielle
             for _, row in self.catalogue_df.iterrows():
                 if row["nom_produit"].lower() in nom.lower() or nom.lower() in row["nom_produit"].lower():
                     data["nom_produit"] = row["nom_produit"]
                     data["product_id"]  = row["product_id"]
                     break
 
-        # Corriger le prix total si mal calculé
         pu         = float(data["prix_unitaire_tnd"])
         pt_attendu = round(pu * nombre_licences, 2)
         pt_fourni  = float(data.get("prix_total_annuel", 0))
@@ -201,28 +198,21 @@ class AgentConfigurateur:
     # ═══════════════════════════════════════════════════════════════
 
     def _configurer_fibre(self, analyse_agent1: dict) -> dict:
-        """
-        Calcule la configuration Fibre exacte selon le débit demandé.
-        Engagement 24 mois (marge optimale), 12 mois si 24 non rentable.
-        """
         besoins         = analyse_agent1.get("besoins_fibre", {})
         debit_souhaite  = int(besoins.get("debit_souhaite_mbps", 100) or 100)
         distance_metres = int(besoins.get("distance_metres", 100) or 100)
 
         debit = self._palier_debit(debit_souhaite)
 
-        # Essayer 24 mois d'abord
         calc = self._calculer_fibre(debit, distance_metres, 24)
         raison_engagement = "Engagement 24 mois (marge optimale)"
 
         if not calc["marge_positive"]:
-            # Essayer 12 mois
             calc12 = self._calculer_fibre(debit, distance_metres, 12)
             if calc12["marge_positive"]:
                 calc = calc12
                 raison_engagement = "Engagement 12 mois (24M non rentable sur cette distance)"
             else:
-                # Limiter la distance
                 dmax = self._distance_max(debit, 24)
                 calc = self._calculer_fibre(debit, dmax, 24)
                 raison_engagement = f"Distance limitee a {dmax}m pour marge positive"
@@ -309,51 +299,54 @@ class AgentConfigurateur:
 if __name__ == "__main__":
     agent = AgentConfigurateur()
 
-    print("\n" + "=" * 70)
-    print(" TEST 1 : Client veut juste le mail")
-    print("=" * 70)
-    analyse1 = {
-        "nom_entreprise": "BoutiqueArt",
-        "secteur": "Commerce", "taille_entreprise": "TPE", "urgence": "faible",
-        "besoins_fibre": {"demande_fibre": False},
-        "besoins_microsoft": {
-            "demande_microsoft": True, "nombre_licences": 5,
-            "services": {"onedrive": False, "sharepoint": False, "mail": True,
-                            "pack_office": False, "intune": False, "defender": False}
-        }
-    }
-    r1 = agent.configurer(analyse1)
-    print(json.dumps(r1, indent=2, ensure_ascii=False))
-
-    print("\n" + "=" * 70)
-    print(" TEST 2 : Client veut Fibre 200M + OneDrive + Pack Office")
-    print("=" * 70)
-    analyse2 = {
-        "nom_entreprise": "DevSoft",
-        "secteur": "Tech", "taille_entreprise": "PME", "urgence": "haute",
-        "besoins_fibre": {"demande_fibre": True, "debit_souhaite_mbps": 200, "distance_metres": 80},
-        "besoins_microsoft": {
-            "demande_microsoft": True, "nombre_licences": 20,
-            "services": {"onedrive": True, "sharepoint": True, "mail": True,
-                            "pack_office": True, "intune": False, "defender": False}
-        }
-    }
-    r2 = agent.configurer(analyse2)
-    print(json.dumps(r2, indent=2, ensure_ascii=False))
-
-    print("\n" + "=" * 70)
-    print(" TEST 3 : Client veut antivirus + gestion appareils (Defender + Intune)")
-    print("=" * 70)
-    analyse3 = {
-        "nom_entreprise": "SecureBank",
-        "secteur": "Banque", "taille_entreprise": "ETI", "urgence": "haute",
-        "besoins_fibre": {"demande_fibre": False},
-        "besoins_microsoft": {
-            "demande_microsoft": True, "nombre_licences": 50,
-            "services": {"onedrive": True, "sharepoint": True, "mail": True,
+    cas = [
+        ("BIAT — Fibre 200M + MS Premium", {
+            "nom_entreprise": "BIAT",
+            "secteur": "Banque", "taille_entreprise": "ETI", "urgence": "haute",
+            "besoins_fibre": {"demande_fibre": True, "debit_souhaite_mbps": 200, "distance_metres": 80},
+            "besoins_microsoft": {
+                "demande_microsoft": True, "nombre_licences": 50,
+                "services": {"onedrive": True, "sharepoint": True, "mail": True,
                             "pack_office": True, "intune": True, "defender": True}
-        }
-    }
-    r3 = agent.configurer(analyse3)
-    print(json.dumps(r3, indent=2, ensure_ascii=False))
+            }
+        }),
+        ("DevSoft — Fibre 100M + MS Standard", {
+            "nom_entreprise": "DevSoft",
+            "secteur": "Tech", "taille_entreprise": "PME", "urgence": "haute",
+            "besoins_fibre": {"demande_fibre": True, "debit_souhaite_mbps": 100, "distance_metres": 50},
+            "besoins_microsoft": {
+                "demande_microsoft": True, "nombre_licences": 25,
+                "services": {"onedrive": True, "sharepoint": True, "mail": True,
+                            "pack_office": True, "intune": False, "defender": False}
+            }
+        }),
+        ("LegalPro — MS Basic uniquement", {
+            "nom_entreprise": "LegalPro",
+            "secteur": "Juridique", "taille_entreprise": "PME", "urgence": "faible",
+            "besoins_fibre": {"demande_fibre": False, "debit_souhaite_mbps": None, "distance_metres": None},
+            "besoins_microsoft": {
+                "demande_microsoft": True, "nombre_licences": 15,
+                "services": {"onedrive": True, "sharepoint": False, "mail": True,
+                            "pack_office": False, "intune": False, "defender": False}
+            }
+        }),
+        ("FastFood Express — Fibre 50M uniquement", {
+            "nom_entreprise": "FastFood Express",
+            "secteur": "Restauration", "taille_entreprise": "TPE", "urgence": "faible",
+            "besoins_fibre": {"demande_fibre": True, "debit_souhaite_mbps": 50, "distance_metres": 80},
+            "besoins_microsoft": {
+                "demande_microsoft": False, "nombre_licences": None,
+                "services": {"onedrive": False, "sharepoint": False, "mail": False,
+                             "pack_office": False, "intune": False, "defender": False}
+            }
+        }),
+    ]
+
+    for titre, analyse in cas:
+        print(f"\n {'='*60}")
+        print(f"  {titre}")
+        print(f" {'='*60}")
+        r = agent.configurer(analyse)
+        print(json.dumps(r, indent=2, ensure_ascii=False))
+
     print("\n Tests Agent 2 termines !")

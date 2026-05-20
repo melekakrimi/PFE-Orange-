@@ -1,0 +1,80 @@
+{
+  "methode": "Evaluation factuelle",
+  "agent_evalue": "Agent 1 — Analyste de besoins",
+  "nb_cas": 4,
+  "nb_valides": 4,
+  "score_global": 0.9643,
+  "scores_champs": {
+    "debit_souhaite_mbps": 1.0,
+    "demande_fibre": 1.0,
+    "demande_microsoft": 1.0,
+    "nom_entreprise": 1.0,
+    "nombre_licences": 1.0,
+    "secteur": 1.0,
+    "taille_entreprise": 0.75
+  },
+  "details": [
+    {
+      "id": 1,
+      "client": "BIAT",
+      "checks": {
+        "nom_entreprise": true,
+        "secteur": true,
+        "taille_entreprise": false,
+        "demande_fibre": true,
+        "debit_souhaite_mbps": true,
+        "demande_microsoft": true,
+        "nombre_licences": true
+      },
+      "corrects": 6,
+      "total": 7,
+      "score": 0.8571
+    },
+    {
+      "id": 2,
+      "client": "DevSoft",
+      "checks": {
+        "nom_entreprise": true,
+        "secteur": true,
+        "taille_entreprise": true,
+        "demande_fibre": true,
+        "debit_souhaite_mbps": true,
+        "demande_microsoft": true,
+        "nombre_licences": true
+      },
+      "corrects": 7,
+      "total": 7,
+      "score": 1.0
+    },
+    {
+      "id": 3,
+      "client": "LegalPro",
+      "checks": {
+        "nom_entreprise": true,
+        "secteur": true,
+        "taille_entreprise": true,
+        "demande_fibre": true,
+        "demande_microsoft": true,
+        "nombre_licences": true
+      },
+      "corrects": 6,
+      "total": 6,
+      "score": 1.0
+    },
+    {
+      "id": 4,
+      "client": "FastFood Express",
+      "checks": {
+        "nom_entreprise": true,
+        "secteur": true,
+        "taille_entreprise": true,
+        "demande_fibre": true,
+        "debit_souhaite_mbps": true,
+        "demande_microsoft": true
+      },
+      "corrects": 6,
+      "total": 6,
+      "score": 1.0
+    }
+  ]
+}

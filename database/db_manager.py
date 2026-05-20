@@ -46,15 +46,14 @@ def sauvegarder_client(analyse: dict) -> int:
 
             # Sinon insérer
             cur.execute("""
-                INSERT INTO clients (nom, entreprise, secteur, taille, budget_annuel)
-                VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO clients (nom, entreprise, secteur, taille)
+                VALUES (%s, %s, %s, %s)
                 RETURNING id
             """, (
                 analyse.get("nom_entreprise", ""),
                 analyse.get("nom_entreprise", ""),
                 analyse.get("secteur", ""),
                 analyse.get("taille_entreprise", ""),
-                analyse.get("budget_annuel", 0),
             ))
             client_id = cur.fetchone()[0]
             conn.commit()
@@ -99,8 +98,8 @@ def sauvegarder_proposition(client_id: int, analyse: dict,
             cur.execute("""
                 INSERT INTO scenarios
                     (proposition_id, nom_scenario, cout_revient, prix_vente,
-                     marge_brute, taux_marge, dans_budget, est_recommande)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                     marge_brute, taux_marge, est_recommande)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
                 RETURNING id
             """, (
                 proposition_id,
@@ -109,7 +108,6 @@ def sauvegarder_proposition(client_id: int, analyse: dict,
                 resultat_agent3.get("prix_total_annuel", 0),
                 resultat_agent3.get("marge_brute", 0),
                 resultat_agent3.get("taux_marge", 0),
-                True,
                 True,
             ))
             scenario_id = cur.fetchone()[0]
@@ -130,7 +128,7 @@ def sauvegarder_proposition(client_id: int, analyse: dict,
                     fibre.get("distance_metres", 0),
                     fibre.get("cout_initial_total", 0),
                     fibre.get("cout_mensuel_total", 0),
-                    fibre.get("prix_mensuel", 0),
+                    fibre.get("prix_mensuel_total", 0),
                     fibre.get("prix_annuel", 0),
                     fibre.get("marge_pct_fibre", 0),
                 ))
@@ -216,12 +214,105 @@ def sauvegarder_log(proposition_id: int, agent_nom: str,
 # ═══════════════════════════════════════════════════════════════
 
 def get_historique() -> list:
-    """Retourne toutes les propositions avec les infos client."""
+    """Retourne toutes les propositions avec les infos client, triées par date."""
     conn = _get_connexion()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT * FROM vue_propositions_client")
+            cur.execute("""
+                SELECT
+                    p.id,
+                    c.entreprise,
+                    c.secteur,
+                    c.taille,
+                    p.plan_recommande,
+                    p.statut,
+                    p.created_at,
+                    s.prix_vente   AS prix_annuel,
+                    s.taux_marge,
+                    EXISTS(SELECT 1 FROM fibre_config     fc WHERE fc.scenario_id = s.id) AS a_fibre,
+                    EXISTS(SELECT 1 FROM microsoft_config mc WHERE mc.scenario_id = s.id) AS a_microsoft
+                FROM propositions p
+                JOIN clients   c ON c.id = p.client_id
+                LEFT JOIN scenarios s ON s.proposition_id = p.id AND s.est_recommande = TRUE
+                ORDER BY p.created_at DESC
+                LIMIT 50
+            """)
             return cur.fetchall()
+    finally:
+        conn.close()
+
+
+def get_proposition_detail(proposition_id: int) -> dict:
+    """Retourne toutes les données d'une proposition pour la recharger dans l'interface."""
+    conn = _get_connexion()
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            # Proposition + client
+            cur.execute("""
+                SELECT p.*, c.entreprise, c.secteur, c.taille
+                FROM propositions p
+                JOIN clients c ON c.id = p.client_id
+                WHERE p.id = %s
+            """, (proposition_id,))
+            prop = cur.fetchone()
+            if not prop:
+                return None
+            prop = dict(prop)
+
+            # Scénario recommandé
+            cur.execute("""
+                SELECT * FROM scenarios
+                WHERE proposition_id = %s AND est_recommande = TRUE
+                LIMIT 1
+            """, (proposition_id,))
+            scenario = cur.fetchone()
+            if not scenario:
+                return prop
+            scenario = dict(scenario)
+
+            # Fibre
+            cur.execute("SELECT * FROM fibre_config WHERE scenario_id = %s", (scenario["id"],))
+            fibre = cur.fetchone()
+
+            # Microsoft
+            cur.execute("SELECT * FROM microsoft_config WHERE scenario_id = %s", (scenario["id"],))
+            ms = cur.fetchone()
+
+            # Documents
+            cur.execute("SELECT * FROM documents WHERE proposition_id = %s LIMIT 1", (proposition_id,))
+            docs = cur.fetchone()
+
+            prix_annuel  = scenario.get("prix_vente", 0) or 0
+            prix_mensuel = round(prix_annuel / 12, 0)
+
+            def rel(path):
+                if not path:
+                    return None
+                return path.replace("\\", "/")
+
+            return {
+                "client":    prop.get("entreprise", ""),
+                "secteur":   prop.get("secteur", ""),
+                "taille":    prop.get("taille", ""),
+                "prix_annuel":  prix_annuel,
+                "prix_mensuel": prix_mensuel,
+                "taux_marge":   scenario.get("taux_marge", 0),
+                "contrainte_ok": True,
+                "fibre": dict(fibre) if fibre else None,
+                "microsoft": {
+                    "nom_produit":      ms.get("nom_produit", ""),
+                    "nombre_licences":  ms.get("nombre_licences", 0),
+                    "prix_unitaire_tnd": ms.get("prix_unitaire", 0),
+                    "prix_annuel":      ms.get("prix_annuel", 0),
+                } if ms else None,
+                "pitch_commercial": f"Proposition commerciale Orange Business pour {prop.get('entreprise', '')} — {prop.get('plan_recommande', '')}.",
+                "pptx_path": rel(docs.get("chemin_pptx")) if docs else None,
+                "word_path": rel(docs.get("chemin_docx")) if docs else None,
+                "pdf_path":  rel(docs.get("chemin_pdf"))  if docs else None,
+                "proposition_id": proposition_id,
+                "temps_generation": None,
+                "agent_times": None,
+            }
     finally:
         conn.close()
 
@@ -241,7 +332,6 @@ if __name__ == "__main__":
             "nom_entreprise": "DevSoft",
             "secteur": "Tech",
             "taille_entreprise": "PME",
-            "budget_annuel": 24000,
             "urgence": "haute"
         }
         client_id = sauvegarder_client(analyse_test)

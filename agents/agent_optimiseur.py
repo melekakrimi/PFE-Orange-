@@ -152,7 +152,8 @@ class AgentOptimiseur:
             return 0.0, 0.0, None
 
         ms_prix_annuel = float(ms_data.get("prix_total_annuel", 0))
-        ms_cout_annuel = round(ms_prix_annuel / (1 + self.MARGE_MS_PCT / 100), 2)
+        # taux_marge = marge / prix_vente → cout = prix × (1 - taux)
+        ms_cout_annuel = round(ms_prix_annuel * (1 - self.MARGE_MS_PCT / 100), 2)
 
         detail = {
             "nom_produit":       ms_data.get("nom_produit", ""),
@@ -161,6 +162,7 @@ class AgentOptimiseur:
             "prix_unitaire_tnd": ms_data.get("prix_unitaire_tnd", 0),
             "prix_annuel":       ms_prix_annuel,
             "cout_annuel":       ms_cout_annuel,
+            "justification":     ms_data.get("justification", ""),
         }
         return ms_cout_annuel, ms_prix_annuel, detail
 
@@ -248,24 +250,46 @@ if __name__ == "__main__":
     from agents.agent_analyste      import AgentAnalyste
     from agents.agent_configurateur import AgentConfigurateur
 
-    print(" Test Agent 3 - Optimiseur")
+    print(" Test Agent 3 — Optimiseur")
     print("=" * 70)
 
     a1 = AgentAnalyste()
     a2 = AgentConfigurateur()
     a3 = AgentOptimiseur()
 
-    desc = """
-    DevSoft, entreprise tech, PME, 20 employes.
-    On demenage dans de nouveaux bureaux. On a besoin de la fibre 200 Mbps,
-    boitier Orange a 80 metres. Et 20 licences Microsoft avec Teams, OneDrive
-    et le Pack Office pour les developpeurs. Budget 26000 TND/an.
-    """
+    cas = [
+        ("BIAT — Fibre 200M + MS Premium", """
+        BIAT, banque tunisienne, 50 employes au siege.
+        On a besoin de la fibre 200 Mbps, le boitier Orange est a 80 metres.
+        Et 50 licences Microsoft avec le mail, OneDrive, SharePoint, Pack Office,
+        Intune pour les mobiles et Defender antivirus. Urgence haute.
+        """),
+        ("DevSoft — Fibre 100M + MS Standard", """
+        DevSoft, entreprise tech, PME, 25 developpeurs.
+        On demenage dans de nouveaux bureaux. Besoin de la fibre 100 Mbps,
+        boitier Orange a 50 metres. Et 25 licences Microsoft avec Teams,
+        OneDrive, SharePoint et Pack Office. Urgence haute.
+        """),
+        ("LegalPro — MS Basic uniquement", """
+        Cabinet LegalPro, 15 avocats. On a deja internet.
+        On veut uniquement Microsoft 365 pour la messagerie professionnelle
+        et OneDrive pour stocker les dossiers clients. Pas besoin de fibre.
+        """),
+        ("FastFood Express — Fibre 50M uniquement", """
+        FastFood Express, restaurant, petite entreprise.
+        On veut juste internet rapide pour les caisses et le WiFi clients.
+        50 Mega suffit. Le boitier Orange est a environ 80 metres.
+        Pas besoin de Microsoft.
+        """),
+    ]
 
-    analyse = a1.analyser(desc)
-    config  = a2.configurer(analyse)
-    result  = a3.optimiser(analyse, config)
+    for titre, desc in cas:
+        print(f"\n {'='*60}")
+        print(f"  {titre}")
+        print(f" {'='*60}")
+        analyse = a1.analyser(desc)
+        config  = a2.configurer(analyse)
+        result  = a3.optimiser(analyse, config)
+        print(json.dumps(result, indent=2, ensure_ascii=False))
 
-    print("\n RESULTATS :")
-    print(json.dumps(result, indent=2, ensure_ascii=False))
-    print("\n Test Agent 3 termine !")
+    print("\n Tests Agent 3 termines !")
